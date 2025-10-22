@@ -60,3 +60,4 @@ test_database.yml ：
 
 - 测试创建 brail_db 数据库红阶段
 - 测试创建 brail_db 数据库绿阶段
+- 测试创建 brail_db 数据库重构阶段
