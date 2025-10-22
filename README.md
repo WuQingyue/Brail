@@ -55,3 +55,4 @@ test_database.yml ：
 - 测试数据库连接重构阶段
 - 测试 brail_db 数据库是否存在红阶段
 - 测试 brail_db 数据库是否存在绿阶段
+- 测试 brail_db 数据库是否存在重构阶段

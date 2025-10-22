@@ -3,19 +3,20 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from utils.config import settings
-from database import verify_connection, engine
+from database import verify_connection, engine, check_database_exists
 
 # 应用启动时连接数据库
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期管理"""
-    # 启动时执行
-    print("正在启动 FastAPI 应用...")
-    
-    # 验证数据库连接
-    print("正在验证数据库连接...")
     if verify_connection():
         print("✅ 数据库连接验证成功")
+        # 检查 brail_db 数据库是否存在
+        if check_database_exists("brail_db"):
+            print("✅ brail_db 数据库存在，应用可以正常使用数据库功能")
+        else:
+            print("⚠️ brail_db 数据库不存在，请先创建数据库")
+            
     else:
         print("❌ 数据库连接验证失败，请检测数据库是否开启并正确配置")
     

@@ -42,11 +42,8 @@ def verify_connection():
         cursor.fetchone()
         cursor.close()
         mysql_conn.close()
-        
-        print("MySQL 服务器连接成功")
         return True
     except Exception as e:
-        print("MySQL 服务器连接失败")
         return False
 
 
@@ -71,10 +68,8 @@ def check_database_exists(database_name="brail_db"):
         mysql_conn.close()
         
         if result:
-            print(f"数据库 '{database_name}' 存在")
             return True
         else:
-            print(f"数据库 '{database_name}' 不存在")
             return False
             
     except Exception as e:
