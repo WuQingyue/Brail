@@ -105,3 +105,35 @@ def create_database(database_name="brail_db", charset="utf8mb4", collate="utf8mb
         return False
 
 
+def create_tables():
+    """创建所有数据库表"""
+    try:
+        # 导入所有模型以确保它们被注册到 Base.metadata
+        from models import User  # 这会导入所有模型
+        
+        # 创建所有表
+        Base.metadata.create_all(bind=engine)
+        return True
+        
+    except Exception as e:
+        print(f"❌ 创建数据库表时发生错误: {e}")
+        return False
+
+
+def create_database_with_tables(database_name="brail_db", charset="utf8mb4", collate="utf8mb4_unicode_ci"):
+    """创建数据库并创建所有表"""
+    try:
+        # 先创建数据库
+        if not create_database(database_name, charset, collate):
+            return False
+        
+        # 创建表
+        if not create_tables():
+            return False
+        return True
+        
+    except Exception as e:
+        print(f"❌ 创建数据库和表时发生错误: {e}")
+        return False
+
+

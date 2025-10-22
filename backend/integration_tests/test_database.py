@@ -45,24 +45,23 @@ class TestDatabaseConnection:
         assert isinstance(result, bool), "测试创建 brail_db 数据库"
         
         if result:
-            return True
-
+            print("✅ brail_db 数据库创建成功")
         else:
-            return False
+            print("❌ brail_db 数据库创建失败")
     
     def test_create_database_with_tables(self):
         """测试创建数据库和表"""
 
         # 创建测试数据库和表
-        result = create_database_with_tables(test_db_name)
+        result = create_database_with_tables("brail_db")
         
         # 验证创建结果
-        assert isinstance(result, bool), "试创建数据库和表"
+        assert isinstance(result, bool), "测试创建数据库和表"
         
         if result:
-            return True
+            print("✅ 数据库和表创建成功")
         else:
-            return False
+            print("❌ 数据库和表创建失败")
     
 if __name__ == "__main__":
     # 运行测试
