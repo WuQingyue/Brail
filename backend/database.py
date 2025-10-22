@@ -1,0 +1,79 @@
+"""
+数据库连接和 ORM 配置
+使用 SQLAlchemy ORM 连接 MySQL 数据库
+"""
+
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import declarative_base
+from utils.config import settings
+import pymysql
+
+# 安装 pymysql 作为 MySQLdb 的替代
+pymysql.install_as_MySQLdb()
+
+# 创建数据库引擎
+engine = create_engine(
+    settings.DATABASE_URL,
+    echo=False,  # 不显示 SQL 语句
+    pool_pre_ping=True,  # 连接前检查连接是否有效
+    pool_recycle=300  # 连接回收时间（秒）
+)
+
+# 创建 Base 类
+Base = declarative_base()
+
+# 数据库连接验证
+def verify_connection():
+    """验证 MySQL 服务器连接（不连接特定数据库）"""
+    try:
+        import os
+        
+        # 连接到 MySQL 服务器（不指定数据库）
+        mysql_conn = pymysql.connect(
+            host=settings.MYSQL_HOST,
+            port=settings.MYSQL_PORT,
+            user=settings.MYSQL_USER,
+            password=settings.MYSQL_PASSWORD
+        )
+        
+        # 执行简单查询验证连接
+        cursor = mysql_conn.cursor()
+        cursor.execute("SELECT 1")
+        cursor.fetchone()
+        cursor.close()
+        mysql_conn.close()
+        return True
+    except Exception as e:
+        return False
+
+
+def check_database_exists(database_name="brail_db"):
+    """检查指定的数据库是否存在"""
+    try:
+        # 连接到 MySQL 服务器（不指定数据库）
+        mysql_conn = pymysql.connect(
+            host=settings.MYSQL_HOST,
+            port=settings.MYSQL_PORT,
+            user=settings.MYSQL_USER,
+            password=settings.MYSQL_PASSWORD
+        )
+        
+        cursor = mysql_conn.cursor()
+        
+        # 查询数据库是否存在
+        cursor.execute("SHOW DATABASES LIKE %s", (database_name,))
+        result = cursor.fetchone()
+        
+        cursor.close()
+        mysql_conn.close()
+        
+        if result:
+            return True
+        else:
+            return False
+            
+    except Exception as e:
+        print(f"检查数据库 '{database_name}' 时发生错误: {e}")
+        return False
+
+
