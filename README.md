@@ -59,3 +59,4 @@ test_database.yml ：
 - 测试 brail_db 数据库是否存在重构阶段
 
 - 测试创建 brail_db 数据库红阶段
+- 测试创建 brail_db 数据库绿阶段

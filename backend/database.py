@@ -77,3 +77,31 @@ def check_database_exists(database_name="brail_db"):
         return False
 
 
+def create_database(database_name="brail_db", charset="utf8mb4", collate="utf8mb4_unicode_ci"):
+    """创建指定的数据库"""
+    try:
+        # 连接到 MySQL 服务器（不指定数据库）
+        mysql_conn = pymysql.connect(
+            host=settings.MYSQL_HOST,
+            port=settings.MYSQL_PORT,
+            user=settings.MYSQL_USER,
+            password=settings.MYSQL_PASSWORD
+        )
+        
+        cursor = mysql_conn.cursor()
+        
+        # 创建数据库
+        create_sql = f"CREATE DATABASE IF NOT EXISTS `{database_name}` CHARACTER SET {charset} COLLATE {collate}"
+        cursor.execute(create_sql)
+        
+        # 提交更改
+        mysql_conn.commit()
+        
+        cursor.close()
+        mysql_conn.close()
+        return True
+        
+    except Exception as e:
+        return False
+
+
