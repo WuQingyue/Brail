@@ -11,9 +11,12 @@ git push --force-with-lease Brail main
 git branch database
 
 # 2. 切换到 database 分支
-git checkout database  # 或 git switch database
+git checkout database
 
-# 3. 将 database 分支推送到远程仓库
+# 3.  提交到本地仓库
+git commit -m 
+
+# 4. 将 database 分支推送到远程仓库
 git push -u Brail database
 
 
@@ -48,3 +51,4 @@ TDD:
 Github Actions 进度
 test_database.yml ：
 - 测试数据库连接红阶段
+- 测试数据库连接绿阶段
