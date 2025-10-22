@@ -2,7 +2,7 @@
 数据库连接集成测试
 测试 database.py 中的数据库连接功能
 """
-from database import verify_connection, check_database_exists, create_database
+from database import verify_connection, check_database_exists, create_database, create_database_with_tables
 import pytest
 import sys
 import os
@@ -47,6 +47,20 @@ class TestDatabaseConnection:
         if result:
             return True
 
+        else:
+            return False
+    
+    def test_create_database_with_tables(self):
+        """测试创建数据库和表"""
+
+        # 创建测试数据库和表
+        result = create_database_with_tables(test_db_name)
+        
+        # 验证创建结果
+        assert isinstance(result, bool), "试创建数据库和表"
+        
+        if result:
+            return True
         else:
             return False
     
