@@ -42,11 +42,38 @@ def verify_connection():
         cursor.fetchone()
         cursor.close()
         mysql_conn.close()
-        
-        print("MySQL 服务器连接成功")
         return True
     except Exception as e:
-        print("MySQL 服务器连接失败")
+        return False
+
+
+def check_database_exists(database_name="brail_db"):
+    """检查指定的数据库是否存在"""
+    try:
+        # 连接到 MySQL 服务器（不指定数据库）
+        mysql_conn = pymysql.connect(
+            host=settings.MYSQL_HOST,
+            port=settings.MYSQL_PORT,
+            user=settings.MYSQL_USER,
+            password=settings.MYSQL_PASSWORD
+        )
+        
+        cursor = mysql_conn.cursor()
+        
+        # 查询数据库是否存在
+        cursor.execute("SHOW DATABASES LIKE %s", (database_name,))
+        result = cursor.fetchone()
+        
+        cursor.close()
+        mysql_conn.close()
+        
+        if result:
+            return True
+        else:
+            return False
+            
+    except Exception as e:
+        print(f"检查数据库 '{database_name}' 时发生错误: {e}")
         return False
 
 
