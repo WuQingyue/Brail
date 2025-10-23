@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import Optional
 from dotenv import load_dotenv
 
@@ -17,8 +17,9 @@ class Settings(BaseSettings):
     MYSQL_USER: Optional[str] = "root"
     MYSQL_PASSWORD: Optional[str] = "123456"
     
-    class Config:
-        env_file = ".env"
-        case_sensitive = True
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        case_sensitive=True
+    )
 
 settings = Settings()

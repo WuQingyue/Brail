@@ -77,3 +77,63 @@ def check_database_exists(database_name="brail_db"):
         return False
 
 
+def create_database(database_name="brail_db", charset="utf8mb4", collate="utf8mb4_unicode_ci"):
+    """创建指定的数据库"""
+    try:
+        # 连接到 MySQL 服务器（不指定数据库）
+        mysql_conn = pymysql.connect(
+            host=settings.MYSQL_HOST,
+            port=settings.MYSQL_PORT,
+            user=settings.MYSQL_USER,
+            password=settings.MYSQL_PASSWORD
+        )
+        
+        cursor = mysql_conn.cursor()
+        
+        # 创建数据库
+        create_sql = f"CREATE DATABASE IF NOT EXISTS `{database_name}` CHARACTER SET {charset} COLLATE {collate}"
+        cursor.execute(create_sql)
+        
+        # 提交更改
+        mysql_conn.commit()
+        
+        cursor.close()
+        mysql_conn.close()
+        return True
+        
+    except Exception as e:
+        return False
+
+
+def create_tables():
+    """创建所有数据库表"""
+    try:
+        # 导入所有模型以确保它们被注册到 Base.metadata
+        from models import User  # 这会导入所有模型
+        
+        # 创建所有表
+        Base.metadata.create_all(bind=engine)
+        return True
+        
+    except Exception as e:
+        print(f"❌ 创建数据库表时发生错误: {e}")
+        return False
+
+
+def create_database_with_tables(database_name="brail_db", charset="utf8mb4", collate="utf8mb4_unicode_ci"):
+    """创建数据库并创建所有表"""
+    try:
+        # 先创建数据库
+        if not create_database(database_name, charset, collate):
+            return False
+        
+        # 创建表
+        if not create_tables():
+            return False
+        return True
+        
+    except Exception as e:
+        print(f"❌ 创建数据库和表时发生错误: {e}")
+        return False
+
+
