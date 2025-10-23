@@ -1,0 +1,151 @@
+{
+  "validRegistrationData": [
+    {
+      "name": "测试科技有限公司",
+      "cnpj": "12.345.678/0001-90",
+      "email": "test@company.com",
+      "password": "password123",
+      "phone": "(11) 99999-9999",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "50k-100k"
+    },
+    {
+      "name": "创新企业有限公司",
+      "cnpj": "98.765.432/0001-10",
+      "email": "innovation@company.com",
+      "password": "securePass456",
+      "phone": "(21) 88888-8888",
+      "employeeCount": "51-200",
+      "monthlyRevenue": "100k-500k"
+    },
+    {
+      "name": "小型创业公司",
+      "cnpj": "11.222.333/0001-44",
+      "email": "startup@company.com",
+      "password": "startup123",
+      "phone": "(31) 77777-7777",
+      "employeeCount": "1-10",
+      "monthlyRevenue": "0-10k"
+    }
+  ],
+  "invalidRegistrationData": [
+    {
+      "name": "",
+      "cnpj": "12.345.678/0001-90",
+      "email": "test@company.com",
+      "password": "password123",
+      "phone": "(11) 99999-9999",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "50k-100k",
+      "expectedError": "企业名称不能为空"
+    },
+    {
+      "name": "测试公司",
+      "cnpj": "123456789",
+      "email": "test@company.com",
+      "password": "password123",
+      "phone": "(11) 99999-9999",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "50k-100k",
+      "expectedError": "CNPJ必须是14位数字"
+    },
+    {
+      "name": "测试公司",
+      "cnpj": "12.345.678/0001-90",
+      "email": "invalid-email",
+      "password": "password123",
+      "phone": "(11) 99999-9999",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "50k-100k",
+      "expectedError": "请输入有效的邮箱地址"
+    },
+    {
+      "name": "测试公司",
+      "cnpj": "12.345.678/0001-90",
+      "email": "test@company.com",
+      "password": "123",
+      "phone": "(11) 99999-9999",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "50k-100k",
+      "expectedError": "密码至少6个字符"
+    },
+    {
+      "name": "测试公司",
+      "cnpj": "12.345.678/0001-90",
+      "email": "test@company.com",
+      "password": "password123",
+      "phone": "123",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "50k-100k",
+      "expectedError": "请输入有效的电话号码"
+    },
+    {
+      "name": "测试公司",
+      "cnpj": "12.345.678/0001-90",
+      "email": "test@company.com",
+      "password": "password123",
+      "phone": "(11) 99999-9999",
+      "employeeCount": "",
+      "monthlyRevenue": "50k-100k",
+      "expectedError": "请选择员工数量"
+    },
+    {
+      "name": "测试公司",
+      "cnpj": "12.345.678/0001-90",
+      "email": "test@company.com",
+      "password": "password123",
+      "phone": "(11) 99999-9999",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "",
+      "expectedError": "请选择月营业额"
+    }
+  ],
+  "existingUserData": [
+    {
+      "name": "已存在公司",
+      "cnpj": "99.999.999/0001-99",
+      "email": "existing@example.com",
+      "password": "password123",
+      "phone": "(11) 99999-9999",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "50k-100k",
+      "expectedError": "邮箱已被注册"
+    }
+  ],
+  "loginTestData": [
+    {
+      "email": "test@example.com",
+      "password": "password123",
+      "expectedResult": "success"
+    },
+    {
+      "email": "wrong@example.com",
+      "password": "password123",
+      "expectedResult": "error"
+    },
+    {
+      "email": "test@example.com",
+      "password": "wrongpassword",
+      "expectedResult": "error"
+    }
+  ],
+  "apiResponses": {
+    "successfulRegistration": {
+      "success": true,
+      "user": {
+        "id": 12345,
+        "name": "测试科技有限公司",
+        "email": "test@company.com",
+        "cnpj": "12.345.678/0001-90"
+      }
+    },
+    "failedRegistration": {
+      "success": false,
+      "message": "邮箱已被注册"
+    },
+    "networkError": {
+      "success": false,
+      "message": "网络错误，请检查网络连接"
+    }
+  }
+}
