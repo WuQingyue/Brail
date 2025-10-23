@@ -442,18 +442,22 @@ const loginUser = async (loginData) => {
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1rem;
+  padding: 1rem 2rem;
   width: 100%;
   margin: 0;
   box-sizing: border-box;
   flex-wrap: wrap;
   gap: 1rem;
+  max-width: none;
 }
 
 .logo h1 {
@@ -736,10 +740,11 @@ const loginUser = async (loginData) => {
 /* 响应式设计 */
 @media (max-width: 768px) {
   .container {
-    padding: 0.5rem;
+    padding: 0.5rem 1rem;
     width: 100%;
     flex-wrap: wrap;
     gap: 0.5rem;
+    max-width: none;
   }
   
   .nav-list {
@@ -761,16 +766,4 @@ const loginUser = async (loginData) => {
   }
 }
 
-@media (max-width: 480px) {
-  .container {
-    padding: 0.5rem;
-    flex-direction: column;
-    align-items: stretch;
-  }
-  
-  .user-actions {
-    justify-content: center;
-    margin-top: 0.5rem;
-  }
-}
 </style>
