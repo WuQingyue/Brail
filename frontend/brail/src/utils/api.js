@@ -45,6 +45,67 @@ export const getCategories = async () => {
   }
 }
 
+export const getProductDetail = async (productId) => {
+  try {
+    const response = await request(`/product/get_product/${productId}`)
+    return response
+  } catch (error) {
+    console.error('Failed to fetch product detail:', error)
+    // 如果API调用失败，返回默认数据
+    return {
+      id: productId,
+      name: '数字电视天线 4K 1080P',
+      description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+      category: '电子产品',
+      price: 13.63,
+      originalPrice: 15.99,
+      images: [
+        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片1',
+        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片2',
+        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片3'
+      ],
+      variations: [
+        {
+          id: 1,
+          name: '3米线缆',
+          price: 13.63,
+          image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=3米',
+          inStock: true
+        },
+        {
+          id: 2,
+          name: '5米线缆',
+          price: 13.63,
+          image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=5米',
+          inStock: true
+        }
+      ],
+      moq: 50,
+      priceRanges: [
+        { min: 50, max: 499, price: 13.63 },
+        { min: 500, max: 4999, price: 12.11 },
+        { min: 5000, max: null, price: 9.09 }
+      ],
+      supplier: {
+        id: '3066544290efeec',
+        name: '供应商名称',
+        rating: 4.8,
+        reviews: 1250
+      },
+      sales: 600,
+      rating: 4.5,
+      reviews: 89,
+      specifications: {
+        '类型': '数字电视天线',
+        '频率': 'VHF/UHF',
+        '增益': '32dB',
+        '功率': '5V DC',
+        '线缆长度': '3米/5米'
+      }
+    }
+  }
+}
+
 export const getProductsByCategory = async (categoryId = null) => {
   try {
     const url = categoryId ? `/product/categories/${categoryId}` : '/product/categories'
