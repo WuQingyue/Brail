@@ -17,6 +17,12 @@
 
       <!-- 用户操作区域 -->
       <div class="user-actions">
+        <!-- 购物车图标 -->
+        <button @click="toggleCart" class="cart-btn" :class="{ 'has-items': cartItemCount > 0 }">
+          <span class="cart-icon">🛒</span>
+          <span v-if="cartItemCount > 0" class="cart-count">{{ cartItemCount }}</span>
+        </button>
+        
         <button v-if="!isLoggedIn" @click="showRegisterModal = true" class="btn btn-primary">
           注册
         </button>
@@ -206,6 +212,8 @@ const showLoginModal = ref(false)
 const isSubmitting = ref(false)
 const message = ref('')
 const messageType = ref('')
+const cartItemCount = ref(0)
+const showCart = ref(false)
 
 // 注册表单数据
 const registerForm = reactive({
@@ -364,6 +372,27 @@ const handleLogin = async () => {
 const logout = () => {
   user.value = null
   isLoggedIn.value = false
+}
+
+// 购物车相关方法
+const toggleCart = () => {
+  showCart.value = !showCart.value
+  // 这里可以添加购物车侧边栏的显示逻辑
+  console.log('购物车切换:', showCart.value)
+}
+
+// 添加商品到购物车
+const addToCart = (product) => {
+  cartItemCount.value += 1
+  console.log('添加到购物车:', product)
+}
+
+// 移除商品从购物车
+const removeFromCart = (productId) => {
+  if (cartItemCount.value > 0) {
+    cartItemCount.value -= 1
+  }
+  console.log('从购物车移除:', productId)
 }
 
 // 关闭模态框
@@ -551,6 +580,64 @@ const loginUser = async (loginData) => {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+/* 购物车按钮样式 */
+.cart-btn {
+  position: relative;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+}
+
+.cart-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.cart-btn.has-items {
+  background: rgba(251, 191, 36, 0.9);
+  border-color: #fbbf24;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+}
+
+.cart-btn.has-items:hover {
+  background: #fbbf24;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.5);
+}
+
+.cart-icon {
+  font-size: 1.2rem;
+  color: white;
+  display: block;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #e53e3e;
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* 模态框样式 */
@@ -758,6 +845,24 @@ const loginUser = async (loginData) => {
   .btn {
     padding: 0.3rem 0.6rem;
     font-size: 0.8rem;
+  }
+  
+  .cart-btn {
+    min-width: 36px;
+    height: 36px;
+    padding: 0.3rem;
+  }
+  
+  .cart-icon {
+    font-size: 1rem;
+  }
+  
+  .cart-count {
+    width: 16px;
+    height: 16px;
+    font-size: 0.7rem;
+    top: -6px;
+    right: -6px;
   }
   
   .modal {
