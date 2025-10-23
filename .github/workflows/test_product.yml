@@ -1,0 +1,49 @@
+name: 产品功能测试
+
+on:
+  push:
+    branches: [ product ]
+  pull_request:
+    branches: [ product ]
+
+jobs:
+  # 单元测试和集成测试
+  test:
+    name: 前端产品测试
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [22.x]
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+      
+    - name: 设置 Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: frontend/brail/package-lock.json
+        
+    - name: 安装依赖
+      working-directory: frontend/brail
+      run: npm ci
+      
+    - name: 运行产品类别单元测试
+      working-directory: frontend/brail
+      run: npm run test:categories
+      env:
+        CI: true
+      timeout-minutes: 5
+      
+    - name: 测试成功
+      run: echo "✅ 产品功能测试已通过！"
+      
+    #  清理测试环境
+    - name: 清理测试环境
+      if: always()
+      run: |
+        echo "🧹 清理测试环境..."
+        echo "✅ 测试环境清理完成"

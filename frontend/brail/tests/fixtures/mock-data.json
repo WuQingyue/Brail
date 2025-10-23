@@ -147,5 +147,116 @@
       "success": false,
       "message": "网络错误，请检查网络连接"
     }
+  },
+  "categoriesTestData": {
+    "mockCategories": [
+      { "id": 1, "name": "Electronics", "icon": "📱" },
+      { "id": 2, "name": "Clothing & Apparel", "icon": "👕" },
+      { "id": 3, "name": "Home & Garden", "icon": "🏠" },
+      { "id": 4, "name": "Sports & Outdoors", "icon": "⚽" },
+      { "id": 5, "name": "Toys & Hobbies", "icon": "🧸" },
+      { "id": 6, "name": "Health & Beauty", "icon": "💄" },
+      { "id": 7, "name": "Automotive", "icon": "🚗" }
+    ],
+    "mockProducts": [
+      {
+        "id": 1,
+        "name": "Sporty Running Sneaker",
+        "category": "Men's Shoes",
+        "price": 89.99,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Running+Sneaker"
+      },
+      {
+        "id": 2,
+        "name": "Classic Wrist Watch",
+        "category": "Accessories",
+        "price": 120.50,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Wrist+Watch"
+      },
+      {
+        "id": 3,
+        "name": "Wireless Headphones",
+        "category": "Electronics",
+        "price": 199.00,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Headphones"
+      },
+      {
+        "id": 4,
+        "name": "Smart Watch Pro",
+        "category": "Electronics",
+        "price": 250.00,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Smart+Watch"
+      },
+      {
+        "id": 5,
+        "name": "Stylish Sunglasses",
+        "category": "Accessories",
+        "price": 45.00,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Sunglasses"
+      },
+      {
+        "id": 6,
+        "name": "Leather Backpack",
+        "category": "Bags & Luggage",
+        "price": 150.00,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Backpack"
+      },
+      {
+        "id": 7,
+        "name": "Gaming Keyboard",
+        "category": "Electronics",
+        "price": 89.99,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Gaming+Keyboard"
+      },
+      {
+        "id": 8,
+        "name": "Yoga Mat",
+        "category": "Sports & Outdoors",
+        "price": 35.00,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Yoga+Mat"
+      },
+      {
+        "id": 9,
+        "name": "Bluetooth Speaker",
+        "category": "Electronics",
+        "price": 79.99,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Bluetooth+Speaker"
+      },
+      {
+        "id": 10,
+        "name": "Fitness Tracker",
+        "category": "Electronics",
+        "price": 129.99,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Fitness+Tracker"
+      },
+      {
+        "id": 11,
+        "name": "Running Shoes",
+        "category": "Men's Shoes",
+        "price": 149.99,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Running+Shoes"
+      },
+      {
+        "id": 12,
+        "name": "Laptop Stand",
+        "category": "Electronics",
+        "price": 59.99,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Laptop+Stand"
+      },
+      {
+        "id": 13,
+        "name": "Travel Mug",
+        "category": "Accessories",
+        "price": 24.99,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Travel+Mug"
+      },
+      {
+        "id": 14,
+        "name": "Wireless Mouse",
+        "category": "Electronics",
+        "price": 39.99,
+        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Wireless+Mouse"
+      }
+    ]
   }
 }
