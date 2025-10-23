@@ -2,7 +2,7 @@
 数据库连接集成测试
 测试 database.py 中的数据库连接功能
 """
-from database import verify_connection, check_database_exists
+from database import verify_connection, check_database_exists, create_database, create_database_with_tables
 import pytest
 import sys
 import os
@@ -34,7 +34,35 @@ class TestDatabaseConnection:
             print("✅ brail_db 数据库存在")
         else:
             print("ℹ️ brail_db 数据库不存在，这是正常情况")
+    
+    def test_create_brail_db(self):
+        """测试创建 brail_db 数据库"""
+        
+        # 尝试创建数据库
+        result = create_database("brail_db")
+        
+        # 验证创建函数返回结果
+        assert isinstance(result, bool), "测试创建 brail_db 数据库"
+        
+        if result:
+            print("✅ brail_db 数据库创建成功")
+        else:
+            print("❌ brail_db 数据库创建失败")
+    
+    def test_create_database_with_tables(self):
+        """测试创建数据库和表"""
 
+        # 创建测试数据库和表
+        result = create_database_with_tables("brail_db")
+        
+        # 验证创建结果
+        assert isinstance(result, bool), "测试创建数据库和表"
+        
+        if result:
+            print("✅ 数据库和表创建成功")
+        else:
+            print("❌ 数据库和表创建失败")
+    
 if __name__ == "__main__":
     # 运行测试
     pytest.main([__file__, "-v"])
