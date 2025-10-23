@@ -19,6 +19,16 @@ git commit -m
 # 4. 将 database 分支推送到远程仓库
 git push -u Brail database
 
+## 在切换分支（git checkout main）之前，你在 database 分支上对 README.md 文件做了修改，但还没有提交或暂存这些更改。Git 为了防止这些更改被覆盖，阻止了分支切换。
+- 暂存更改
+git stash
+git checkout main
+- 随时恢复这些更改
+git stash pop
+
+## 将远程仓库的 main 分支（远程主分支）的最新代码拉取到本地，并自动合并到当前所在的本地分支
+git pull Brail main
+
 
 代码目录
 backend 前端 vue
@@ -65,3 +75,6 @@ test_database.yml ：
 - 测试创建用户表红阶段
 - 测试创建用户表绿阶段
 - 测试创建用户表重构阶段
+
+- 测试注册的单元测试红阶段
+- 测试注册的单元测试绿阶段
