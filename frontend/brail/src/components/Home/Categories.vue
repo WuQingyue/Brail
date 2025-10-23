@@ -60,6 +60,7 @@
             v-for="product in filteredProducts" 
             :key="product.id"
             class="product-card"
+            @click="handleProductClick(product.id)"
           >
             <div class="product-image-container">
               <img 
@@ -119,12 +120,25 @@
       </main>
     </div>
 
+    <!-- 产品详情页模态框 -->
+    <div v-if="showProductDetail" class="product-detail-modal">
+      <div class="modal-overlay" @click="closeProductDetail"></div>
+      <div class="modal-content">
+        <button class="close-btn" @click="closeProductDetail">×</button>
+        <ProductDetail 
+          :product-id="selectedProductId"
+          @add-to-cart="handleAddToCart"
+        />
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { getCategories, getProductsByCategory, handleApiError } from '../../utils/api.js'
+import ProductDetail from '../Product/ProductDetail.vue'
 
 // 响应式数据
 const categories = ref([])
@@ -135,6 +149,8 @@ const currentPage = ref(1)
 const itemsPerPage = ref(8)
 const loading = ref(false)
 const error = ref(null)
+const showProductDetail = ref(false)
+const selectedProductId = ref(null)
 
 // 计算属性
 const filteredProducts = computed(() => {
@@ -256,6 +272,21 @@ const goToPage = (page) => {
 
 const handleImageError = (event) => {
   event.target.src = 'https://via.placeholder.com/300x200/10b981/ffffff?text=Product+Image'
+}
+
+const handleProductClick = (productId) => {
+  selectedProductId.value = productId
+  showProductDetail.value = true
+}
+
+const closeProductDetail = () => {
+  showProductDetail.value = false
+  selectedProductId.value = null
+}
+
+const handleAddToCart = (cartItem) => {
+  console.log('Added to cart:', cartItem)
+  // 这里可以添加购物车逻辑
 }
 
 
@@ -728,6 +759,81 @@ watch(filteredProducts, (newProducts) => {
     padding: 0.5rem 0.75rem;
     font-size: 0.8rem;
     min-width: 2rem;
+  }
+}
+
+/* 产品详情页模态框 */
+.product-detail-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: relative;
+  width: 95%;
+  max-width: 1400px;
+  max-height: 95vh;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 1001;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 1002;
+}
+
+.close-btn:hover {
+  background: white;
+  color: #374151;
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 100%;
+    height: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+  
+  .close-btn {
+    top: 0.5rem;
+    right: 0.5rem;
   }
 }
 </style>
