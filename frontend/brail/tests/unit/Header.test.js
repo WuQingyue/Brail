@@ -18,13 +18,23 @@ describe('Header.vue 注册功能单元测试', () => {
       expect(wrapper.find('.user-actions').exists()).toBe(true)
     })
 
+    it('应该显示购物车图标', () => {
+      expect(wrapper.find('.cart-btn').exists()).toBe(true)
+      expect(wrapper.find('.cart-icon').exists()).toBe(true)
+      expect(wrapper.find('.cart-icon').text()).toBe('🛒')
+    })
+
     it('应该显示注册和登录按钮', () => {
-      expect(wrapper.find('button').text()).toContain('注册')
-      expect(wrapper.findAll('button').length).toBeGreaterThan(0)
+      const buttons = wrapper.findAll('button')
+      const buttonTexts = buttons.map(btn => btn.text())
+      
+      expect(buttonTexts).toContain('注册')
+      expect(buttonTexts).toContain('登录')
+      expect(buttons.length).toBeGreaterThan(0)
     })
 
     it('点击注册按钮应该打开注册模态框', async () => {
-      const registerBtn = wrapper.find('button')
+      const registerBtn = wrapper.findAll('button').find(btn => btn.text().includes('注册'))
       await registerBtn.trigger('click')
       
       expect(wrapper.find('.modal-overlay').exists()).toBe(true)
@@ -35,7 +45,8 @@ describe('Header.vue 注册功能单元测试', () => {
   describe('注册表单字段测试', () => {
     beforeEach(async () => {
       // 打开注册模态框
-      await wrapper.find('button').trigger('click')
+      const registerBtn = wrapper.findAll('button').find(btn => btn.text().includes('注册'))
+      await registerBtn.trigger('click')
     })
 
     it('应该渲染所有必需的注册字段', () => {
@@ -70,7 +81,8 @@ describe('Header.vue 注册功能单元测试', () => {
 
   describe('表单验证测试', () => {
     beforeEach(async () => {
-      await wrapper.find('button').trigger('click')
+      const registerBtn = wrapper.findAll('button').find(btn => btn.text().includes('注册'))
+      await registerBtn.trigger('click')
     })
 
     it('应该验证CNPJ格式', async () => {
@@ -117,7 +129,8 @@ describe('Header.vue 注册功能单元测试', () => {
 
   describe('按钮状态测试', () => {
     beforeEach(async () => {
-      await wrapper.find('button').trigger('click')
+      const registerBtn = wrapper.findAll('button').find(btn => btn.text().includes('注册'))
+      await registerBtn.trigger('click')
     })
 
     it('无效表单时注册按钮应该被禁用', () => {
@@ -165,7 +178,8 @@ describe('Header.vue 注册功能单元测试', () => {
   describe('模态框交互测试', () => {
     it('应该能够打开和关闭注册模态框', async () => {
       // 打开模态框
-      await wrapper.find('button').trigger('click')
+      const registerBtn = wrapper.findAll('button').find(btn => btn.text().includes('注册'))
+      await registerBtn.trigger('click')
       expect(wrapper.find('.modal-overlay').exists()).toBe(true)
 
       // 关闭模态框
@@ -176,7 +190,8 @@ describe('Header.vue 注册功能单元测试', () => {
 
     it('点击模态框外部应该关闭模态框', async () => {
       // 打开模态框
-      await wrapper.find('button').trigger('click')
+      const registerBtn = wrapper.findAll('button').find(btn => btn.text().includes('注册'))
+      await registerBtn.trigger('click')
       expect(wrapper.find('.modal-overlay').exists()).toBe(true)
 
       // 点击模态框外部
@@ -186,13 +201,27 @@ describe('Header.vue 注册功能单元测试', () => {
 
     it('取消按钮应该关闭模态框', async () => {
       // 打开模态框
-      await wrapper.find('button').trigger('click')
+      const registerBtn = wrapper.findAll('button').find(btn => btn.text().includes('注册'))
+      await registerBtn.trigger('click')
       expect(wrapper.find('.modal-overlay').exists()).toBe(true)
 
       // 点击取消按钮
       const cancelBtn = wrapper.find('button[type="button"]')
       await cancelBtn.trigger('click')
       expect(wrapper.find('.modal-overlay').exists()).toBe(false)
+    })
+  })
+
+  describe('购物车功能测试', () => {
+    it('购物车图标应该存在', () => {
+      const cartBtn = wrapper.find('.cart-btn')
+      expect(cartBtn.exists()).toBe(true)
+    })
+
+    it('购物车图标应该显示正确的图标', () => {
+      const cartIcon = wrapper.find('.cart-icon')
+      expect(cartIcon.exists()).toBe(true)
+      expect(cartIcon.text()).toBe('🛒')
     })
   })
 
