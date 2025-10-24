@@ -482,5 +482,244 @@
       { "quantity": 20, "selected": true },
       { "quantity": 30, "selected": true }
     ]
+  },
+  "orderTestData": {
+    "mockOrders": [
+      {
+        "id": "ORD-001",
+        "status": "Pending",
+        "statusStep": 1,
+        "statusText": "订单和审批",
+        "statusDetailText": "订单已接收",
+        "statusClass": "status-pending",
+        "customerName": "张三",
+        "totalAmount": 1299.99,
+        "orderDate": "2024-01-15",
+        "items": [
+          { 
+            "id": 1,
+            "productName": "产品A", 
+            "quantity": 2, 
+            "price": 99.99,
+            "image": "https://via.placeholder.com/100x100/10b981/ffffff?text=ProductA"
+          },
+          { 
+            "id": 2,
+            "productName": "产品B", 
+            "quantity": 1, 
+            "price": 199.99,
+            "image": "https://via.placeholder.com/100x100/10b981/ffffff?text=ProductB"
+          }
+        ],
+        "shippingAddress": {
+          "street": "北京市朝阳区建国路88号",
+          "city": "北京",
+          "zipCode": "100000"
+        },
+        "paymentMethod": "Credit Card",
+        "notes": "请尽快发货"
+      },
+      {
+        "id": "ORD-002",
+        "status": "Processing",
+        "statusStep": 2,
+        "statusText": "生产和准备发货",
+        "statusDetailText": "正在处理",
+        "statusClass": "status-processing",
+        "customerName": "李四",
+        "totalAmount": 2599.99,
+        "orderDate": "2024-01-14",
+        "items": [
+          { 
+            "id": 3,
+            "productName": "产品C", 
+            "quantity": 1, 
+            "price": 2599.99,
+            "image": "https://via.placeholder.com/100x100/10b981/ffffff?text=ProductC"
+          }
+        ],
+        "shippingAddress": {
+          "street": "上海市浦东新区陆家嘴环路1000号",
+          "city": "上海",
+          "zipCode": "200000"
+        },
+        "paymentMethod": "Alipay",
+        "notes": "请小心包装"
+      },
+      {
+        "id": "ORD-003",
+        "status": "Shipped",
+        "statusStep": 3,
+        "statusText": "运输和到达巴西",
+        "statusDetailText": "已发货",
+        "statusClass": "status-shipped",
+        "customerName": "王五",
+        "totalAmount": 899.99,
+        "orderDate": "2024-01-13",
+        "items": [
+          { 
+            "id": 4,
+            "productName": "产品D", 
+            "quantity": 3, 
+            "price": 299.99,
+            "image": "https://via.placeholder.com/100x100/10b981/ffffff?text=ProductD"
+          }
+        ],
+        "shippingAddress": {
+          "street": "广州市天河区珠江新城花城大道85号",
+          "city": "广州",
+          "zipCode": "510000"
+        },
+        "paymentMethod": "WeChat Pay",
+        "notes": "工作日配送"
+      },
+      {
+        "id": "ORD-004",
+        "status": "Delivered",
+        "statusStep": 4,
+        "statusText": "清关和交付",
+        "statusDetailText": "已送达",
+        "statusClass": "status-delivered",
+        "customerName": "赵六",
+        "totalAmount": 1599.99,
+        "orderDate": "2024-01-12",
+        "items": [
+          { 
+            "id": 5,
+            "productName": "产品E", 
+            "quantity": 2, 
+            "price": 799.99,
+            "image": "https://via.placeholder.com/100x100/10b981/ffffff?text=ProductE"
+          }
+        ],
+        "shippingAddress": {
+          "street": "深圳市南山区科技园南区深南大道9988号",
+          "city": "深圳",
+          "zipCode": "518000"
+        },
+        "paymentMethod": "Bank Transfer",
+        "notes": "已签收"
+      }
+    ],
+    "orderStatusTestData": {
+      "statusSteps": {
+        "Pending": 1,
+        "Processing": 2,
+        "Shipped": 3,
+        "Delivered": 4,
+        "Cancelled": 0
+      },
+      "statusTexts": {
+        "Pending": "订单和审批",
+        "Processing": "生产和准备发货",
+        "Shipped": "运输和到达巴西",
+        "Delivered": "清关和交付",
+        "Cancelled": "已取消"
+      },
+      "statusDetailTexts": {
+        "Pending": "订单已接收",
+        "Processing": "正在处理",
+        "Shipped": "已发货",
+        "Delivered": "已送达",
+        "Cancelled": "已取消"
+      },
+      "statusClasses": {
+        "Pending": "status-pending",
+        "Processing": "status-processing",
+        "Shipped": "status-shipped",
+        "Delivered": "status-delivered",
+        "Cancelled": "status-cancelled"
+      }
+    },
+    "orderInteractionTestData": {
+      "singleOrder": {
+        "id": "ORD-001",
+        "status": "Pending",
+        "customerName": "张三",
+        "totalAmount": 1299.99,
+        "orderDate": "2024-01-15",
+        "items": [
+          { 
+            "id": 1,
+            "productName": "产品A", 
+            "quantity": 2, 
+            "price": 99.99,
+            "image": "https://via.placeholder.com/100x100/10b981/ffffff?text=ProductA"
+          }
+        ]
+      },
+      "expandedOrderDetails": {
+        "items": [
+          { 
+            "id": 1,
+            "productName": "产品A", 
+            "quantity": 2, 
+            "price": 99.99,
+            "image": "https://via.placeholder.com/100x100/10b981/ffffff?text=ProductA"
+          },
+          { 
+            "id": 2,
+            "productName": "产品B", 
+            "quantity": 1, 
+            "price": 199.99,
+            "image": "https://via.placeholder.com/100x100/10b981/ffffff?text=ProductB"
+          }
+        ],
+        "shippingAddress": {
+          "street": "北京市朝阳区建国路88号",
+          "city": "北京",
+          "zipCode": "100000"
+        },
+        "paymentMethod": "Credit Card",
+        "notes": "请尽快发货"
+      }
+    },
+    "orderFilterTestData": {
+      "statusFilter": {
+        "all": "",
+        "pending": "Pending",
+        "processing": "Processing",
+        "shipped": "Shipped",
+        "delivered": "Delivered"
+      },
+      "dateFilter": {
+        "specificDate": "2024-01-15",
+        "noDate": ""
+      },
+      "searchQuery": {
+        "orderId": "ORD-001",
+        "customerName": "张三",
+        "noMatch": "不存在的订单"
+      }
+    },
+    "orderOperationTestData": {
+      "statusUpdate": {
+        "orderId": "ORD-001",
+        "newStatus": "Processing",
+        "expectedMessage": "订单 ORD-001 状态已更新为 Processing"
+      },
+      "orderCancellation": {
+        "orderId": "ORD-001",
+        "newStatus": "Cancelled"
+      }
+    },
+    "orderIdResponseTestData": {
+      "multipleOrders": {
+        "success": true,
+        "orderIds": ["ORD-001", "ORD-002", "ORD-003", "ORD-004"]
+      },
+      "singleOrder": {
+        "success": true,
+        "orderIds": ["ORD-001"]
+      },
+      "failedResponse": {
+        "success": false,
+        "message": "获取订单列表失败"
+      },
+      "emptyResponse": {
+        "success": true,
+        "orderIds": []
+      }
+    }
   }
 }

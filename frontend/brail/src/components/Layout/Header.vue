@@ -478,7 +478,7 @@ const getUserInitials = (name) => {
 const goToRequests = () => {
   showUserDropdown.value = false
   console.log('跳转到我的请求页面')
-  // 这里可以添加路由跳转逻辑
+  window.location.href = '/order'
 }
 
 // 跳转到管理账户页面
