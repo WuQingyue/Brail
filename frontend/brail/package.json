@@ -15,7 +15,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:header": "vitest run tests/unit/Header.test.js",
-    "test:categories": "vitest run tests/unit/Categories.test.js tests/unit/product.test.js",
+    "test:categories": "vitest run tests/unit/Categories.test.js tests/unit/product.test.js tests/unit/cart.test.js",
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
     "test:all": "npm run test:unit && npm run test:integration",

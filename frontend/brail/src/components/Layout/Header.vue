@@ -198,11 +198,19 @@
         </form>
       </div>
     </div>
+
+    <!-- 购物车对话框 -->
+    <Cart 
+      :userId="currentUserId" 
+      :isVisible="showCart" 
+      @close="closeCart"
+    />
   </header>
 </template>
 
 <script setup>
 import { ref, computed, reactive } from 'vue'
+import Cart from '../Cart/Cart.vue'
 
 // 响应式数据
 const isLoggedIn = ref(false)
@@ -214,6 +222,7 @@ const message = ref('')
 const messageType = ref('')
 const cartItemCount = ref(0)
 const showCart = ref(false)
+const currentUserId = ref(1) // 当前用户ID，实际应用中应该从登录状态获取
 
 // 注册表单数据
 const registerForm = reactive({
@@ -377,8 +386,11 @@ const logout = () => {
 // 购物车相关方法
 const toggleCart = () => {
   showCart.value = !showCart.value
-  // 这里可以添加购物车侧边栏的显示逻辑
   console.log('购物车切换:', showCart.value)
+}
+
+const closeCart = () => {
+  showCart.value = false
 }
 
 // 添加商品到购物车
