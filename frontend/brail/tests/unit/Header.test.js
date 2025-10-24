@@ -2,6 +2,14 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import Header from '@/components/Layout/Header.vue'
 import mockData from '../fixtures/mock-data.json'
+import { loginUser, registerUser, handleApiError } from '@/utils/api.js'
+
+// Mock API functions
+vi.mock('@/utils/api.js', () => ({
+  loginUser: vi.fn(),
+  registerUser: vi.fn(),
+  handleApiError: vi.fn()
+}))
 
 describe('Header.vue 注册功能单元测试', () => {
   let wrapper
@@ -157,6 +165,11 @@ describe('Header.vue 注册功能单元测试', () => {
     it('提交时按钮应该显示加载状态', async () => {
       const validData = mockData.validRegistrationData[0]
       
+      // 模拟慢速API响应
+      registerUser.mockImplementation(() => new Promise(resolve => 
+        setTimeout(() => resolve({ success: true, user: {} }), 100)
+      ))
+      
       // 填写有效数据
       await wrapper.find('#name').setValue(validData.name)
       await wrapper.find('#cnpj').setValue(validData.cnpj)
@@ -172,6 +185,57 @@ describe('Header.vue 注册功能单元测试', () => {
 
       // 检查按钮文本变化
       expect(wrapper.find('button[type="submit"]').text()).toBe('注册中...')
+    })
+
+    it('注册成功时应该更新用户状态', async () => {
+      const validData = mockData.validRegistrationData[0]
+      const mockResponse = mockData.apiResponses.successfulRegistration
+      
+      registerUser.mockResolvedValue(mockResponse)
+      
+      // 填写有效数据
+      await wrapper.find('#name').setValue(validData.name)
+      await wrapper.find('#cnpj').setValue(validData.cnpj)
+      await wrapper.find('#email').setValue(validData.email)
+      await wrapper.find('#password').setValue(validData.password)
+      await wrapper.find('#phone').setValue(validData.phone)
+      await wrapper.find('#employeeCount').setValue(validData.employeeCount)
+      await wrapper.find('#monthlyRevenue').setValue(validData.monthlyRevenue)
+
+      // 提交表单
+      const form = wrapper.find('.register-form')
+      await form.trigger('submit')
+      
+      // 等待异步操作完成
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.vm.isLoggedIn).toBe(true)
+      expect(wrapper.vm.user).toEqual(mockResponse.user)
+    })
+
+    it('注册失败时应该显示错误消息', async () => {
+      const validData = mockData.validRegistrationData[0]
+      const mockResponse = mockData.apiResponses.failedRegistration
+      
+      registerUser.mockResolvedValue(mockResponse)
+      
+      // 填写有效数据
+      await wrapper.find('#name').setValue(validData.name)
+      await wrapper.find('#cnpj').setValue(validData.cnpj)
+      await wrapper.find('#email').setValue(validData.email)
+      await wrapper.find('#password').setValue(validData.password)
+      await wrapper.find('#phone').setValue(validData.phone)
+      await wrapper.find('#employeeCount').setValue(validData.employeeCount)
+      await wrapper.find('#monthlyRevenue').setValue(validData.monthlyRevenue)
+
+      // 提交表单
+      const form = wrapper.find('.register-form')
+      await form.trigger('submit')
+      
+      // 等待异步操作完成
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.find('.message.error').text()).toBe('邮箱已被注册')
     })
   })
 
@@ -209,6 +273,212 @@ describe('Header.vue 注册功能单元测试', () => {
       const cancelBtn = wrapper.find('button[type="button"]')
       await cancelBtn.trigger('click')
       expect(wrapper.find('.modal-overlay').exists()).toBe(false)
+    })
+  })
+
+  describe('登录功能测试', () => {
+    beforeEach(async () => {
+      // 打开登录模态框
+      const loginBtn = wrapper.findAll('button').find(btn => btn.text().includes('登录'))
+      await loginBtn.trigger('click')
+    })
+
+    it('应该渲染登录表单字段', () => {
+      expect(wrapper.find('#loginEmail').exists()).toBe(true)
+      expect(wrapper.find('#loginPassword').exists()).toBe(true)
+    })
+
+    it('应该显示正确的登录标签', () => {
+      const labels = wrapper.findAll('label')
+      const labelTexts = labels.map(label => label.text())
+      
+      expect(labelTexts).toContain('邮箱')
+      expect(labelTexts).toContain('密码')
+    })
+
+    it('登录成功时应该更新用户状态', async () => {
+      const mockResponse = mockData.apiResponses.successfulLogin
+      
+      loginUser.mockResolvedValue(mockResponse)
+      
+      // 填写登录信息
+      await wrapper.find('#loginEmail').setValue('test@example.com')
+      await wrapper.find('#loginPassword').setValue('password123')
+      
+      // 提交表单
+      const form = wrapper.find('.login-form')
+      await form.trigger('submit')
+      
+      // 等待异步操作完成
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.vm.isLoggedIn).toBe(true)
+      expect(wrapper.vm.user).toEqual(mockResponse.user)
+      
+      // 检查用户下拉菜单是否显示
+      expect(wrapper.find('.user-dropdown').exists()).toBe(true)
+      expect(wrapper.find('.user-name').text()).toBe('测试用户')
+    })
+
+    it('登录失败时应该显示错误消息', async () => {
+      const mockResponse = mockData.apiResponses.failedLogin
+      
+      loginUser.mockResolvedValue(mockResponse)
+      
+      // 填写登录信息
+      await wrapper.find('#loginEmail').setValue('wrong@example.com')
+      await wrapper.find('#loginPassword').setValue('wrongpassword')
+      
+      // 提交表单
+      const form = wrapper.find('.login-form')
+      await form.trigger('submit')
+      
+      // 等待异步操作完成
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.find('.message.error').text()).toBe('邮箱或密码错误')
+    })
+
+    it('登录时应该显示加载状态', async () => {
+      // 模拟慢速API响应
+      loginUser.mockImplementation(() => new Promise(resolve => 
+        setTimeout(() => resolve({ success: true, user: {} }), 100)
+      ))
+      
+      // 填写登录信息
+      await wrapper.find('#loginEmail').setValue('test@example.com')
+      await wrapper.find('#loginPassword').setValue('password123')
+      
+      // 提交表单
+      const form = wrapper.find('.login-form')
+      await form.trigger('submit')
+      
+      // 检查按钮文本变化
+      expect(wrapper.find('button[type="submit"]').text()).toBe('登录中...')
+    })
+
+    it('登录模态框应该能够正确关闭', async () => {
+      // 点击关闭按钮
+      const closeBtn = wrapper.find('.close-btn')
+      await closeBtn.trigger('click')
+      
+      expect(wrapper.find('.modal-overlay').exists()).toBe(false)
+    })
+
+    it('点击模态框外部应该关闭登录模态框', async () => {
+      // 点击模态框外部
+      await wrapper.find('.modal-overlay').trigger('click')
+      expect(wrapper.find('.modal-overlay').exists()).toBe(false)
+    })
+  })
+
+  describe('用户下拉菜单测试', () => {
+    beforeEach(async () => {
+      // 模拟登录状态
+      wrapper.vm.isLoggedIn = true
+      wrapper.vm.user = mockData.userDropdownTestData.loggedInUser
+      await wrapper.vm.$nextTick()
+    })
+
+    it('应该显示用户头像和用户名', () => {
+      expect(wrapper.find('.user-dropdown').exists()).toBe(true)
+      expect(wrapper.find('.avatar-circle').exists()).toBe(true)
+      expect(wrapper.find('.user-name').text()).toBe('测试用户')
+      expect(wrapper.find('.online-indicator').exists()).toBe(true)
+    })
+
+    it('应该显示用户姓名首字母', () => {
+      const avatarText = wrapper.find('.avatar-text')
+      expect(avatarText.exists()).toBe(true)
+      expect(avatarText.text()).toBe('测试')
+    })
+
+    it('getUserInitials函数应该正确处理不同格式的姓名', () => {
+      const testData = mockData.userDropdownTestData
+      const expectedInitials = testData.expectedInitials
+      
+      // 测试纯中文姓名
+      expect(wrapper.vm.getUserInitials(testData.chineseNames.singleName)).toBe(expectedInitials['张三'])
+      
+      // 测试包含空格的中文姓名
+      const result = wrapper.vm.getUserInitials(testData.chineseNames.doubleName)
+      console.log('实际结果:', result)
+      expect(result).toBe(expectedInitials['张三 李四'])
+      
+      // 测试英文姓名
+      expect(wrapper.vm.getUserInitials(testData.englishNames.fullName)).toBe(expectedInitials['John Doe'])
+      
+      // 测试空值
+      expect(wrapper.vm.getUserInitials('')).toBe('U')
+      expect(wrapper.vm.getUserInitials(null)).toBe('U')
+    })
+
+    it('点击用户下拉菜单应该打开下拉菜单', async () => {
+      const userDropdown = wrapper.find('.user-dropdown')
+      await userDropdown.trigger('click')
+      
+      expect(wrapper.find('.dropdown-menu').exists()).toBe(true)
+      expect(wrapper.find('.dropdown-arrow').classes()).toContain('rotated')
+    })
+
+    it('下拉菜单应该显示用户信息', async () => {
+      const userDropdown = wrapper.find('.user-dropdown')
+      await userDropdown.trigger('click')
+      
+      expect(wrapper.find('.dropdown-header').exists()).toBe(true)
+      expect(wrapper.find('.user-name-large').text()).toBe('测试用户')
+      expect(wrapper.find('.user-email').text()).toBe('test@example.com')
+    })
+
+    it('下拉菜单应该显示菜单项', async () => {
+      const userDropdown = wrapper.find('.user-dropdown')
+      await userDropdown.trigger('click')
+      
+      const dropdownItems = wrapper.findAll('.dropdown-item')
+      expect(dropdownItems).toHaveLength(2)
+      
+      expect(dropdownItems[0].find('.item-text').text()).toBe('我的请求')
+      expect(dropdownItems[1].find('.item-text').text()).toBe('管理账户')
+    })
+
+    it('应该显示退出登录按钮', async () => {
+      const userDropdown = wrapper.find('.user-dropdown')
+      await userDropdown.trigger('click')
+      
+      expect(wrapper.find('.logout-btn').exists()).toBe(true)
+      expect(wrapper.find('.logout-text').text()).toBe('退出登录')
+    })
+
+    it('点击我的请求应该关闭下拉菜单', async () => {
+      const userDropdown = wrapper.find('.user-dropdown')
+      await userDropdown.trigger('click')
+      
+      const requestsItem = wrapper.find('.dropdown-item')
+      await requestsItem.trigger('click')
+      
+      expect(wrapper.vm.showUserDropdown).toBe(false)
+    })
+
+    it('点击管理账户应该关闭下拉菜单', async () => {
+      const userDropdown = wrapper.find('.user-dropdown')
+      await userDropdown.trigger('click')
+      
+      const accountItems = wrapper.findAll('.dropdown-item')
+      await accountItems[1].trigger('click')
+      
+      expect(wrapper.vm.showUserDropdown).toBe(false)
+    })
+
+    it('点击退出登录应该退出用户', async () => {
+      const userDropdown = wrapper.find('.user-dropdown')
+      await userDropdown.trigger('click')
+      
+      const logoutBtn = wrapper.find('.logout-btn')
+      await logoutBtn.trigger('click')
+      
+      expect(wrapper.vm.isLoggedIn).toBe(false)
+      expect(wrapper.vm.user).toBeNull()
+      expect(wrapper.vm.showUserDropdown).toBe(false)
     })
   })
 

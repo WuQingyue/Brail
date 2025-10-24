@@ -30,8 +30,49 @@
           登录
         </button>
         <div v-if="isLoggedIn" class="user-menu">
-          <span>欢迎, {{ user.name }}</span>
-          <button @click="logout" class="btn btn-outline">退出</button>
+          <!-- 用户头像和下拉菜单 -->
+          <div class="user-dropdown" @click="toggleUserDropdown">
+            <div class="user-avatar">
+              <div class="avatar-circle">
+                <span class="avatar-text">{{ getUserInitials(user.name) }}</span>
+                <div class="online-indicator"></div>
+              </div>
+            </div>
+            <span class="user-name">{{ user.name }}</span>
+            <div class="dropdown-arrow" :class="{ 'rotated': showUserDropdown }">▼</div>
+          </div>
+          
+          <!-- 下拉菜单 -->
+          <div v-if="showUserDropdown" class="dropdown-menu" @click.stop>
+            <div class="dropdown-header">
+              <div class="dropdown-avatar">
+                <span class="avatar-text">{{ getUserInitials(user.name) }}</span>
+                <div class="online-indicator"></div>
+              </div>
+              <div class="user-info">
+                <div class="user-name-large">{{ user.name }}</div>
+                <div class="user-email">{{ user.email }}</div>
+              </div>
+            </div>
+            
+            <div class="dropdown-items">
+              <div class="dropdown-item" @click="goToRequests">
+                <span class="item-icon">↕</span>
+                <span class="item-text">我的请求</span>
+              </div>
+              <div class="dropdown-item" @click="goToAccount">
+                <span class="item-icon">⚙</span>
+                <span class="item-text">管理账户</span>
+              </div>
+            </div>
+            
+            <div class="dropdown-footer">
+              <button @click="logout" class="logout-btn">
+                <span class="logout-icon">🚪</span>
+                <span class="logout-text">退出登录</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -193,7 +234,17 @@
           </div>
           <div class="form-actions">
             <button type="button" @click="closeLoginModal" class="btn btn-secondary">取消</button>
-            <button type="submit" class="btn btn-primary">登录</button>
+            <button 
+              type="submit" 
+              :disabled="isSubmitting"
+              class="btn btn-primary"
+            >
+              {{ isSubmitting ? '登录中...' : '登录' }}
+            </button>
+          </div>
+
+          <div v-if="message" :class="['message', messageType]">
+            {{ message }}
           </div>
         </form>
       </div>
@@ -209,8 +260,9 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, reactive, onMounted, onUnmounted } from 'vue'
 import Cart from '../Cart/Cart.vue'
+import { loginUser, registerUser, handleApiError } from '@/utils/api.js'
 
 // 响应式数据
 const isLoggedIn = ref(false)
@@ -222,6 +274,7 @@ const message = ref('')
 const messageType = ref('')
 const cartItemCount = ref(0)
 const showCart = ref(false)
+const showUserDropdown = ref(false)
 const currentUserId = ref(1) // 当前用户ID，实际应用中应该从登录状态获取
 
 // 注册表单数据
@@ -332,7 +385,7 @@ const handleRegister = async () => {
   message.value = ''
 
   try {
-    // 模拟API调用
+    // 调用真实API
     const response = await registerUser(registerForm)
     
     if (response.success) {
@@ -352,7 +405,7 @@ const handleRegister = async () => {
       messageType.value = 'error'
     }
   } catch (error) {
-    message.value = '网络错误，请检查网络连接'
+    message.value = handleApiError(error)
     messageType.value = 'error'
   } finally {
     isSubmitting.value = false
@@ -361,19 +414,33 @@ const handleRegister = async () => {
 
 // 登录函数
 const handleLogin = async () => {
+  isSubmitting.value = true
+  message.value = ''
+
   try {
     const response = await loginUser(loginForm)
+    
     if (response.success) {
+      message.value = '登录成功！'
+      messageType.value = 'success'
+      
+      // 设置用户登录状态
       user.value = response.user
       isLoggedIn.value = true
-      closeLoginModal()
+      
+      // 延迟关闭模态框
+      setTimeout(() => {
+        closeLoginModal()
+      }, 1500)
     } else {
-      message.value = response.message || '登录失败'
+      message.value = response.message || '登录失败，请重试'
       messageType.value = 'error'
     }
   } catch (error) {
-    message.value = '登录失败，请重试'
+    message.value = handleApiError(error)
     messageType.value = 'error'
+  } finally {
+    isSubmitting.value = false
   }
 }
 
@@ -381,6 +448,44 @@ const handleLogin = async () => {
 const logout = () => {
   user.value = null
   isLoggedIn.value = false
+  showUserDropdown.value = false
+}
+
+// 切换用户下拉菜单
+const toggleUserDropdown = () => {
+  showUserDropdown.value = !showUserDropdown.value
+}
+
+// 获取用户姓名首字母
+const getUserInitials = (name) => {
+  if (!name) return 'U'
+  
+  // 处理包含空格的中文姓名 - 取每个词的首字符
+  if (name.includes(' ') && /[\u4e00-\u9fff]/.test(name)) {
+    return name.split(' ').map(word => word.charAt(0)).join('').slice(0, 2)
+  }
+  
+  // 处理纯中文姓名 - 直接取前两个字符
+  if (/[\u4e00-\u9fff]/.test(name)) {
+    return name.slice(0, 2)
+  }
+  
+  // 处理英文姓名 - 取每个单词的首字母
+  return name.split(' ').map(word => word.charAt(0)).join('').toUpperCase().slice(0, 2)
+}
+
+// 跳转到我的请求页面
+const goToRequests = () => {
+  showUserDropdown.value = false
+  console.log('跳转到我的请求页面')
+  // 这里可以添加路由跳转逻辑
+}
+
+// 跳转到管理账户页面
+const goToAccount = () => {
+  showUserDropdown.value = false
+  console.log('跳转到管理账户页面')
+  // 这里可以添加路由跳转逻辑
 }
 
 // 购物车相关方法
@@ -422,6 +527,13 @@ const closeRegisterModal = () => {
   message.value = ''
 }
 
+// 点击外部关闭下拉菜单
+const handleClickOutside = (event) => {
+  if (showUserDropdown.value && !event.target.closest('.user-dropdown') && !event.target.closest('.dropdown-menu')) {
+    showUserDropdown.value = false
+  }
+}
+
 const closeLoginModal = () => {
   showLoginModal.value = false
   Object.keys(loginForm).forEach(key => {
@@ -430,50 +542,15 @@ const closeLoginModal = () => {
   message.value = ''
 }
 
-// 模拟API函数
-const registerUser = async (userData) => {
-  // 模拟网络延迟
-  await new Promise(resolve => setTimeout(resolve, 1000))
-  
-  // 模拟API响应
-  if (userData.email === 'existing@example.com') {
-    return { success: false, message: '邮箱已被注册' }
-  }
-  
-  if (userData.cnpj === '11111111111111') {
-    return { success: false, message: 'CNPJ已被注册' }
-  }
-  
-  return { 
-    success: true, 
-    user: {
-      id: Date.now(),
-      name: userData.name,
-      email: userData.email,
-      cnpj: userData.cnpj,
-      phone: userData.phone,
-      employeeCount: userData.employeeCount,
-      monthlyRevenue: userData.monthlyRevenue
-    }
-  }
-}
+// 生命周期钩子
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
 
-const loginUser = async (loginData) => {
-  await new Promise(resolve => setTimeout(resolve, 500))
-  
-  if (loginData.email === 'test@example.com' && loginData.password === 'password123') {
-    return {
-      success: true,
-      user: {
-        id: 1,
-        name: '测试用户',
-        email: loginData.email
-      }
-    }
-  }
-  
-  return { success: false, message: '邮箱或密码错误' }
-}
+onUnmounted(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
+
 </script>
 
 <style scoped>
@@ -589,9 +666,207 @@ const loginUser = async (loginData) => {
 }
 
 .user-menu {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+/* 用户下拉菜单样式 */
+.user-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-dropdown:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.user-avatar {
+  position: relative;
+}
+
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fbbf24, #10b981);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-text {
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.online-indicator {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border: 2px solid white;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.user-name {
+  color: white;
+  font-weight: 500;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.dropdown-arrow {
+  color: white;
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.dropdown-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+/* 下拉菜单 */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e1e8ed;
+  min-width: 280px;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.dropdown-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border-bottom: 1px solid #e1e8ed;
+}
+
+.dropdown-avatar {
+  position: relative;
+}
+
+.dropdown-avatar .avatar-circle {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #10b981, #fbbf24);
+}
+
+.dropdown-avatar .avatar-text {
+  font-size: 1.1rem;
+}
+
+.dropdown-avatar .online-indicator {
+  width: 14px;
+  height: 14px;
+  bottom: 3px;
+  right: 3px;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.user-name-large {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 0.25rem;
+}
+
+.user-email {
+  font-size: 0.9rem;
+  color: #718096;
+}
+
+.dropdown-items {
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #2d3748;
+}
+
+.dropdown-item:hover {
+  background: #f7fafc;
+  color: #10b981;
+}
+
+.item-icon {
+  font-size: 1.2rem;
+  width: 20px;
+  text-align: center;
+}
+
+.item-text {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.dropdown-footer {
+  padding: 1rem 1.5rem;
+  background: #f8fafc;
+  border-top: 1px solid #e1e8ed;
+}
+
+.logout-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #6b7280;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+  color: #374151;
+}
+
+.logout-icon {
+  font-size: 1rem;
+}
+
+.logout-text {
+  font-size: 0.9rem;
 }
 
 /* 购物车按钮样式 */
@@ -880,6 +1155,69 @@ const loginUser = async (loginData) => {
   .modal {
     width: 95%;
     margin: 1rem;
+  }
+  
+  .user-dropdown {
+    padding: 0.3rem;
+  }
+  
+  .avatar-circle {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .avatar-text {
+    font-size: 0.8rem;
+  }
+  
+  .user-name {
+    font-size: 0.8rem;
+  }
+  
+  .dropdown-menu {
+    min-width: 260px;
+    right: -10px;
+  }
+  
+  .dropdown-header {
+    padding: 1rem;
+  }
+  
+  .dropdown-avatar .avatar-circle {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .dropdown-avatar .avatar-text {
+    font-size: 1rem;
+  }
+  
+  .user-name-large {
+    font-size: 1rem;
+  }
+  
+  .user-email {
+    font-size: 0.8rem;
+  }
+  
+  .dropdown-item {
+    padding: 0.6rem 1rem;
+  }
+  
+  .item-text {
+    font-size: 0.9rem;
+  }
+  
+  .dropdown-footer {
+    padding: 0.8rem 1rem;
+  }
+  
+  .logout-btn {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  .logout-text {
+    font-size: 0.8rem;
   }
 }
 

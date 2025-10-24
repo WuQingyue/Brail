@@ -139,6 +139,18 @@
         "cnpj": "12.345.678/0001-90"
       }
     },
+    "successfulLogin": {
+      "success": true,
+      "user": {
+        "id": 1,
+        "name": "测试用户",
+        "email": "test@example.com"
+      }
+    },
+    "failedLogin": {
+      "success": false,
+      "message": "邮箱或密码错误"
+    },
     "failedRegistration": {
       "success": false,
       "message": "邮箱已被注册"
@@ -146,6 +158,30 @@
     "networkError": {
       "success": false,
       "message": "网络错误，请检查网络连接"
+    }
+  },
+  "userDropdownTestData": {
+    "loggedInUser": {
+      "id": 1,
+      "name": "测试用户",
+      "email": "test@example.com"
+    },
+    "chineseNames": {
+      "singleName": "张三",
+      "doubleName": "张三 李四",
+      "companyName": "测试科技有限公司",
+      "userName": "测试用户"
+    },
+    "englishNames": {
+      "fullName": "John Doe",
+      "singleName": "Alice"
+    },
+    "expectedInitials": {
+      "张三": "张三",
+      "张三 李四": "张李",
+      "John Doe": "JD",
+      "测试用户": "测试",
+      "测试科技有限公司": "测试"
     }
   },
   "categoriesTestData": {
