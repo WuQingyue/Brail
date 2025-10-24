@@ -109,7 +109,7 @@ def create_tables():
     """创建所有数据库表"""
     try:
         # 导入所有模型以确保它们被注册到 Base.metadata
-        from models import User, Category  # 导入所有模型
+        from models import User, Category, Cart, CartItem  # 导入所有模型
         
         # 创建所有表
         Base.metadata.create_all(bind=engine)
