@@ -1,6 +1,38 @@
 <script setup>
+import { ref, computed, onMounted } from 'vue'
 import Header from './components/Layout/Header.vue'
 import Categories from './components/Home/Categories.vue'
+import Order from './components/Order/Order.vue'
+
+// 简单的路由状态管理
+const currentRoute = ref('home')
+
+// 监听URL变化
+const updateRoute = () => {
+  const path = window.location.pathname
+  if (path === '/order' || path === '/orders') {
+    currentRoute.value = 'order'
+  } else {
+    currentRoute.value = 'home'
+  }
+}
+
+// 计算当前组件
+const currentComponent = computed(() => {
+  switch (currentRoute.value) {
+    case 'order':
+      return Order
+    default:
+      return Categories
+  }
+})
+
+// 生命周期
+onMounted(() => {
+  updateRoute()
+  // 监听浏览器前进后退
+  window.addEventListener('popstate', updateRoute)
+})
 </script>
 
 <template>
@@ -10,7 +42,7 @@ import Categories from './components/Home/Categories.vue'
     
     <!-- 主要内容区域 -->
     <main class="main-content">
-      <Categories />
+      <component :is="currentComponent" />
     </main>
   </div>
 </template>

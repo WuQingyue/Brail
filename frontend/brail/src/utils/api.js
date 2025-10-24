@@ -426,6 +426,68 @@ export const removeCartItem = async (cartId, itemId) => {
   }
 }
 
+// 订单相关API
+
+// 获取订单ID列表
+export const getOrderId = async () => {
+  try {
+    // 在开发环境中返回模拟数据
+    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 返回所有订单ID列表
+      const availableOrderIds = ['ORD-001', 'ORD-002', 'ORD-003', 'ORD-004']
+      
+      return {
+        success: true,
+        orderIds: availableOrderIds  // 返回所有订单ID数组
+      }
+    }
+    
+    // 生产环境调用真实API
+    const response = await request('/order/get_order_id', {
+      method: 'GET'
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get order ID:', error)
+    throw error
+  }
+}
+
+export const getOrderDetails = async (orderId) => {
+  try {
+    // 在开发环境中返回模拟数据
+    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 200))
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders
+      
+      // 根据订单ID返回对应的订单详情
+      const order = mockOrders.find(o => o.id === orderId)
+      if (order) {
+        return order
+      } else {
+        // 如果找不到对应的订单，返回默认订单
+        return mockOrders[0]
+      }
+    }
+    
+    // 生产环境调用真实API
+    const response = await request(`/order/get_order_detail/${orderId}`, {
+      method: 'GET'
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get order details:', error)
+    throw error
+  }
+}
+
 // 错误处理
 export const handleApiError = (error) => {
   console.error('API Error:', error)
@@ -451,6 +513,8 @@ export default {
   getCartData,
   updateCartItem,
   removeCartItem,
+  getOrderId,
+  getOrderDetails,
   handleApiError
 }
 
