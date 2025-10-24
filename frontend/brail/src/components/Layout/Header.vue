@@ -56,11 +56,11 @@
             </div>
             
             <div class="dropdown-items">
-              <div class="dropdown-item" @click="goToRequests">
+              <div v-if="!isAdmin" class="dropdown-item" @click="goToRequests">
                 <span class="item-icon">↕</span>
                 <span class="item-text">我的请求</span>
               </div>
-              <div class="dropdown-item" @click="goToAccount">
+              <div v-if="!isAdmin" class="dropdown-item" @click="goToAccount">
                 <span class="item-icon">⚙</span>
                 <span class="item-text">管理账户</span>
               </div>
@@ -366,6 +366,11 @@ const isFormValid = computed(() => {
          registerForm.monthlyRevenue
 })
 
+// 判断是否是管理员
+const isAdmin = computed(() => {
+  return user.value && user.value.role === 'admin'
+})
+
 // 注册函数
 const handleRegister = async () => {
   // 验证所有字段
@@ -428,9 +433,13 @@ const handleLogin = async () => {
       user.value = response.user
       isLoggedIn.value = true
       
-      // 延迟关闭模态框
+      // 延迟关闭模态框并根据用户角色跳转
       setTimeout(() => {
         closeLoginModal()
+        // 如果是管理员，自动跳转到管理员页面
+        if (response.user.role === 'admin') {
+          window.location.href = '/admin'
+        }
       }, 1500)
     } else {
       message.value = response.message || '登录失败，请重试'
