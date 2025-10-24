@@ -231,6 +231,109 @@ export const getProductsByCategory = async (categoryId = null) => {
   }
 }
 
+// 用户认证相关API
+export const loginUser = async (loginData) => {
+  try {
+    // 在开发环境中返回模拟数据
+    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      // 模拟登录验证
+      if (loginData.email === 'test@example.com' && loginData.password === 'password123') {
+        return {
+          success: true,
+          user: {
+            id: 1,
+            name: '测试用户',
+            email: 'test@example.com',
+            avatar: null,
+            role: 'user',
+            company: '测试科技有限公司'
+          }
+        }
+      } else if (loginData.email === 'admin@example.com' && loginData.password === 'admin123') {
+        return {
+          success: true,
+            user: {
+            id: 2,
+            name: '管理员',
+            email: 'admin@example.com',
+            avatar: null,
+            role: 'admin',
+            company: '系统管理'
+          }
+        }
+      } else {
+        return {
+          success: false,
+          message: '邮箱或密码错误'
+        }
+      }
+    }
+    
+    // 生产环境调用真实API
+    const response = await request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify(loginData)
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to login:', error)
+    throw error
+  }
+}
+
+export const registerUser = async (userData) => {
+  try {
+    // 在开发环境中返回模拟数据
+    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 1000))
+      
+      // 模拟注册验证
+      if (userData.email === 'existing@example.com') {
+        return {
+          success: false,
+          message: '邮箱已被注册'
+        }
+      }
+      
+      if (userData.cnpj === '11111111111111') {
+        return {
+          success: false,
+          message: 'CNPJ已被注册'
+        }
+      }
+      
+      return {
+        success: true,
+        user: {
+          id: Date.now(),
+          name: userData.name,
+          email: userData.email,
+          cnpj: userData.cnpj,
+          phone: userData.phone,
+          employeeCount: userData.employeeCount,
+          monthlyRevenue: userData.monthlyRevenue,
+          role: 'user',
+          company: userData.name
+        }
+      }
+    }
+    
+    // 生产环境调用真实API
+    const response = await request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to register:', error)
+    throw error
+  }
+}
+
 // 购物车相关API
 export const getCartId = async (userId) => {
   try {
@@ -341,6 +444,9 @@ export const handleApiError = (error) => {
 export default {
   getCategories,
   getProductsByCategory,
+  getProductDetail,
+  loginUser,
+  registerUser,
   getCartId,
   getCartData,
   updateCartItem,
