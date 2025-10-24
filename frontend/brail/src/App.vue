@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import Header from './components/Layout/Header.vue'
 import Categories from './components/Home/Categories.vue'
 import Order from './components/Order/Order.vue'
+import Databash from './components/Admin/Databash.vue'
 
 // 简单的路由状态管理
 const currentRoute = ref('home')
@@ -12,6 +13,8 @@ const updateRoute = () => {
   const path = window.location.pathname
   if (path === '/order' || path === '/orders') {
     currentRoute.value = 'order'
+  } else if (path === '/admin') {
+    currentRoute.value = 'admin'
   } else {
     currentRoute.value = 'home'
   }
@@ -22,6 +25,8 @@ const currentComponent = computed(() => {
   switch (currentRoute.value) {
     case 'order':
       return Order
+    case 'admin':
+      return Databash
     default:
       return Categories
   }
@@ -32,6 +37,20 @@ onMounted(() => {
   updateRoute()
   // 监听浏览器前进后退
   window.addEventListener('popstate', updateRoute)
+  
+  // 监听 pushState 和 replaceState 调用（用于手动导航）
+  const originalPushState = history.pushState
+  const originalReplaceState = history.replaceState
+  
+  history.pushState = function(...args) {
+    originalPushState.apply(history, args)
+    updateRoute()
+  }
+  
+  history.replaceState = function(...args) {
+    originalReplaceState.apply(history, args)
+    updateRoute()
+  }
 })
 </script>
 
