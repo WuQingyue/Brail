@@ -309,5 +309,142 @@
         "线缆长度": "3米/5米"
       }
     }
+  },
+  "cartTestData": {
+    "mockCartData": {
+      "items": [
+        {
+          "id": 1,
+          "name": "数字电视天线 4K 1080P",
+          "description": "地面数字电视信号放大器 内置DVB-T2高清智能电视天线",
+          "specification": "3米线缆",
+          "image": "https://via.placeholder.com/120x120/10b981/ffffff?text=天线",
+          "unitPrice": 13.63,
+          "totalPrice": 681.50,
+          "quantity": 50,
+          "moq": 50
+        },
+        {
+          "id": 2,
+          "name": "无线蓝牙耳机",
+          "description": "高品质无线蓝牙耳机，支持降噪功能",
+          "specification": "黑色",
+          "image": "https://via.placeholder.com/120x120/10b981/ffffff?text=耳机",
+          "unitPrice": 25.99,
+          "totalPrice": 1299.50,
+          "quantity": 50,
+          "moq": 50
+        },
+        {
+          "id": 3,
+          "name": "智能手表",
+          "description": "多功能智能手表，支持健康监测",
+          "specification": "银色",
+          "image": "https://via.placeholder.com/120x120/10b981/ffffff?text=手表",
+          "unitPrice": 89.99,
+          "totalPrice": 4499.50,
+          "quantity": 50,
+          "moq": 50
+        }
+      ],
+      "summary": {
+        "totalAmount": 6480.50,
+        "minInvestment": 10000.00,
+        "remainingAmount": 3519.50,
+        "progressPercentage": 64.8,
+        "shippingNote": "免费配送"
+      }
+    },
+    "interactionTestData": {
+      "singleItem": [
+        {
+          "id": 1,
+          "name": "测试商品",
+          "description": "测试描述",
+          "specification": "测试规格",
+          "image": "test.jpg",
+          "unitPrice": 10.00,
+          "totalPrice": 100.00,
+          "quantity": 10,
+          "moq": 5,
+          "originalQuantity": 10,
+          "hasChanges": false,
+          "selected": true
+        }
+      ],
+      "summary": {
+        "totalAmount": 100.00
+      }
+    },
+    "multipleItems": [
+      {
+        "id": 1,
+        "name": "数字电视天线 4K 1080P",
+        "description": "地面数字电视信号放大器 内置DVB-T2高清智能电视天线",
+        "specification": "3米线缆",
+        "image": "https://via.placeholder.com/120x120/10b981/ffffff?text=天线",
+        "unitPrice": 13.63,
+        "totalPrice": 681.50,
+        "quantity": 50,
+        "moq": 50,
+        "originalQuantity": 50,
+        "hasChanges": false,
+        "selected": true
+      },
+      {
+        "id": 2,
+        "name": "无线蓝牙耳机",
+        "description": "高品质无线蓝牙耳机，支持降噪功能",
+        "specification": "黑色",
+        "image": "https://via.placeholder.com/120x120/10b981/ffffff?text=耳机",
+        "unitPrice": 25.99,
+        "totalPrice": 1299.50,
+        "quantity": 50,
+        "moq": 50,
+        "originalQuantity": 50,
+        "hasChanges": false,
+        "selected": true
+      },
+      {
+        "id": 3,
+        "name": "智能手表",
+        "description": "多功能智能手表，支持健康监测",
+        "specification": "银色",
+        "image": "https://via.placeholder.com/120x120/10b981/ffffff?text=手表",
+        "unitPrice": 89.99,
+        "totalPrice": 4499.50,
+        "quantity": 50,
+        "moq": 50,
+        "originalQuantity": 50,
+        "hasChanges": false,
+        "selected": true
+      }
+    ],
+    "multipleItemsSummary": {
+      "totalAmount": 6480.50
+    },
+    "basicTestData": {
+      "singleItem": [
+        {
+          "id": 1,
+          "name": "测试商品",
+          "description": "测试描述",
+          "specification": "测试规格",
+          "image": "test.jpg",
+          "unitPrice": 10.00,
+          "totalPrice": 100.00,
+          "quantity": 10,
+          "moq": 5
+        }
+      ],
+      "summary": {
+        "totalAmount": 100.00
+      }
+    },
+    "calculationTestData": [
+      { "quantity": 10, "selected": true },
+      { "quantity": 20, "selected": true },
+      { "quantity": 30, "selected": true }
+    ]
   }
 }

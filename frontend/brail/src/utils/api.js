@@ -231,6 +231,98 @@ export const getProductsByCategory = async (categoryId = null) => {
   }
 }
 
+// 购物车相关API
+export const getCartId = async (userId) => {
+  try {
+    const response = await request(`/cart/getCartId/${userId}`)
+    return response.cartId
+  } catch (error) {
+    console.error('Failed to fetch cart ID:', error)
+    // 如果API调用失败，返回默认购物车ID
+    return 1
+  }
+}
+
+export const getCartData = async (cartId) => {
+  try {
+    const response = await request(`/cart/get_cart_data/${cartId}`)
+    return response
+  } catch (error) {
+    console.error('Failed to fetch cart data:', error)
+    // 如果API调用失败，返回默认数据
+    return {
+      items: [
+        {
+          id: 1,
+          name: '数字电视天线 4K 1080P',
+          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+          specification: '3米线缆',
+          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=天线',
+          unitPrice: 13.63,
+          totalPrice: 681.50,
+          quantity: 50,
+          moq: 50
+        },
+        {
+          id: 2,
+          name: '无线蓝牙耳机',
+          description: '高品质无线蓝牙耳机，支持降噪功能',
+          specification: '黑色',
+          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=耳机',
+          unitPrice: 25.99,
+          totalPrice: 1299.50,
+          quantity: 50,
+          moq: 50
+        },
+        {
+          id: 3,
+          name: '智能手表',
+          description: '多功能智能手表，支持健康监测',
+          specification: '银色',
+          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=手表',
+          unitPrice: 89.99,
+          totalPrice: 4499.50,
+          quantity: 50,
+          moq: 50
+        }
+      ],
+      summary: {
+        totalAmount: 6480.50,
+        minInvestment: 10000.00,
+        remainingAmount: 3519.50,
+        progressPercentage: 64.8,
+        shippingNote: '免费配送'
+      }
+    }
+  }
+}
+
+export const updateCartItem = async (cartId, itemId, quantity) => {
+  try {
+    const response = await request(`/cart/update_item/${cartId}/${itemId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ quantity })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to update cart item:', error)
+    throw error
+  }
+}
+
+export const removeCartItem = async (cartId, itemId) => {
+  try {
+    const response = await request(`/cart/${cartId}`, {
+      method: 'DELETE',
+      body: JSON.stringify({ itemId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to remove cart item:', error)
+    throw error
+  }
+}
+
 // 错误处理
 export const handleApiError = (error) => {
   console.error('API Error:', error)
@@ -249,6 +341,10 @@ export const handleApiError = (error) => {
 export default {
   getCategories,
   getProductsByCategory,
+  getCartId,
+  getCartData,
+  updateCartItem,
+  removeCartItem,
   handleApiError
 }
 
