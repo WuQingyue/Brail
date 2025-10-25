@@ -18,17 +18,17 @@ class Settings(BaseSettings):
     MYSQL_PASSWORD: Optional[str] = "123456"
 
     # Redis配置
-    REDIS_HOST: str
-    REDIS_PORT: int
-    REDIS_DB: int
-    REDIS_PASSWORD: Optional[str]
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
+    REDIS_DB: int = 0
+    REDIS_PASSWORD: Optional[str] = None
     
     # Session配置
-    SESSION_SECRET_KEY: str
-    SESSION_EXPIRE_SECONDS: int
-    SESSION_COOKIE_DOMAIN: Optional[str]
-    SESSION_COOKIE_SECURE: bool
-    SESSION_COOKIE_SAMESITE: str
+    SESSION_SECRET_KEY: str = "your-secret-key-here-change-in-production"
+    SESSION_EXPIRE_SECONDS: int = 86400  # 24小时
+    SESSION_COOKIE_DOMAIN: Optional[str] = None
+    SESSION_COOKIE_SECURE: bool = False
+    SESSION_COOKIE_SAMESITE: str = "lax"
     
     model_config = SettingsConfigDict(
         env_file=".env",

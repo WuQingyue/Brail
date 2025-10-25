@@ -37,6 +37,9 @@ git branch -D foo      # -D 强制删除，不管是否已合并
 # 删除远程分支
 git push origin --delete foo （foo是分支名）
 
+放弃本地未完成的合并
+git merge --abort
+
 先拉取分支，再修改代码
 所有提交后的代码，保持统一或没有冲突
 
@@ -102,3 +105,4 @@ test_database.yml ：
 - 注册接口对接
 - 用户信息存储
 - 产品类别接口对接
+- 测试创建供应商表绿阶段

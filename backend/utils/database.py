@@ -163,11 +163,68 @@ def init_categories_data():
         print(f"❌ 读取分类数据失败: {str(e)}")
 
 
+def init_suppliers_data():
+    """初始化 suppliers 表数据（如果 mock-data.json 中有数据）"""
+    try:
+        import json
+        import os
+        from models.supplier import Supplier
+        
+        # 检查 mock-data.json 文件是否存在
+        mock_data_path = 'fixtures/mock-data.json'
+        if not os.path.exists(mock_data_path):
+            print("⚠️  未找到 fixtures/mock-data.json 文件，跳过供应商数据初始化")
+            return
+        
+        # 读取 mock 数据
+        with open(mock_data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        suppliers_data = data.get('suppliers', [])
+        
+        if not suppliers_data:
+            print("⚠️  mock-data.json 中没有 suppliers 数据，跳过初始化")
+            return
+        
+        # 获取数据库会话
+        db = SessionLocal()
+        
+        try:
+            # 检查是否已有供应商数据
+            existing_count = db.query(Supplier).count()
+            
+            if existing_count > 0:
+                print(f"✅ 供应商数据已存在 ({existing_count} 个供应商)，跳过初始化")
+                return
+            
+            # 插入供应商数据
+            print(f"💾 正在初始化 {len(suppliers_data)} 个供应商...")
+            for sup_data in suppliers_data:
+                supplier = Supplier(
+                    id=sup_data['id'],
+                    name=sup_data['company_name'],
+                    location=sup_data['location']
+                )
+                db.add(supplier)
+            
+            db.commit()
+            print(f"✅ 成功初始化 {len(suppliers_data)} 个供应商")
+            
+        except Exception as e:
+            print(f"❌ 初始化供应商数据失败: {str(e)}")
+            db.rollback()
+        finally:
+            db.close()
+            
+    except Exception as e:
+        print(f"❌ 读取供应商数据失败: {str(e)}")
+
+
 def create_tables():
-    """创建所有数据库表"""
+    """创建所有数据库表""" 
     try:
         # 导入所有模型以确保它们被注册到 Base.metadata
-        from models import User, Category, Cart, CartItem  # 导入所有模型
+        from models import User, Category, Cart, CartItem, Supplier  # 导入所有模型
         
         # 创建所有表
         Base.metadata.create_all(bind=engine)
@@ -175,6 +232,9 @@ def create_tables():
         
         # 初始化 categories 数据（如果有）
         init_categories_data()
+        
+        # 初始化 suppliers 数据（如果有）
+        init_suppliers_data()
         
         return True
         
