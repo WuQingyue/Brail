@@ -5,5 +5,6 @@ from .user import User
 from .category import Category
 from .cart import Cart
 from .cart_item import CartItem
+from .supplier import Supplier
 
-__all__ = ["User", "Category", "Cart", "CartItem"]
+__all__ = ["User", "Category", "Cart", "CartItem", "Supplier"]
