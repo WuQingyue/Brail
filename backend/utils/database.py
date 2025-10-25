@@ -144,7 +144,9 @@ def init_categories_data():
             for cat_data in categories_data:
                 category = Category(
                     id=cat_data['id'],
-                    name=cat_data['name']
+                    name=cat_data['name'],
+                    icon=cat_data.get('icon'),
+                    description=cat_data.get('description')
                 )
                 db.add(category)
             

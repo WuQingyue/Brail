@@ -12,7 +12,7 @@
             :class="['category-item', { active: selectedCategory === category.id }]"
             @click="selectCategory(category.id)"
           >
-            <span class="category-icon">{{ category.icon }}</span>
+            <div class="category-icon" v-html="category.icon"></div>
             <span class="category-name">{{ category.name }}</span>
             <span class="category-arrow">→</span>
           </li>
@@ -383,11 +383,27 @@ watch(filteredProducts, (newProducts) => {
 
 .category-icon {
   margin-right: 0.75rem;
-  font-size: 1.4rem;
-  display: inline-block;
-  width: 1.5rem;
-  text-align: center;
+  width: 2rem;
+  height: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   transition: transform 0.2s ease;
+  color: #374151; /* SVG 图标颜色 */
+}
+
+.category-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 鼠标悬停时改变颜色 */
+.category-item:hover .category-icon {
+  color: #10b981; /* 悬停时的绿色 */
+}
+
+.category-item.active .category-icon {
+  color: #d97706; /* 激活时的橙色 */
 }
 
 .category-name {

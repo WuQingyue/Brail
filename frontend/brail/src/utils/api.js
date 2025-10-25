@@ -40,20 +40,20 @@ async function request(url, options = {}) {
 // 产品类别相关API
 export const getCategories = async () => {
   try {
-    const response = await request('/product/categories')
-    return response
+    const response = await request('/product/categories', {
+      credentials: 'include' // 发送Cookie
+    })
+    
+    // 后端返回格式: { success: true, count: number, categories: [...] }
+    if (response.success && response.categories) {
+      return response.categories
+    }
+    
+    return []
   } catch (error) {
     console.error('Failed to fetch categories:', error)
-    // 如果API调用失败，返回默认数据
-    return [
-      { id: 1, name: 'Electronics', icon: '📱' },
-      { id: 2, name: 'Clothing & Apparel', icon: '👕' },
-      { id: 3, name: 'Home & Garden', icon: '🏠' },
-      { id: 4, name: 'Sports & Outdoors', icon: '⚽' },
-      { id: 5, name: 'Toys & Hobbies', icon: '🧸' },
-      { id: 6, name: 'Health & Beauty', icon: '💄' },
-      { id: 7, name: 'Automotive', icon: '🚗' }
-    ]
+    // 如果API调用失败，返回空数组
+    return []
   }
 }
 
