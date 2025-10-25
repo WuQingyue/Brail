@@ -68,6 +68,7 @@ TDD:
     - 你的目标就是让刚才那个处于失败状态的测试用例运行成功（Passing）。
 - 重构（Refactor）： 一旦所有测试（包括你刚刚通过的那个）都通过了（Passing/Green），你就可以安全地重构代码。
 
+在 @api.js中使用process.env.NODE_ENV区分开发环境和生产环境
 
 Github Actions 进度
 test_database.yml ：
@@ -98,4 +99,5 @@ test_database.yml ：
 - 测试用户登录成功状态转换绿阶段
 - 测试订单显示绿阶段
 - 测试管理员界面订单显示绿阶段
-
+- 注册接口对接
+- 用户信息存储

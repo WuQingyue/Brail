@@ -4,7 +4,7 @@
 """
 from sqlalchemy import Column, Integer, String, DateTime, Numeric, Text
 from sqlalchemy.sql import func
-from database import Base
+from utils.database import Base
 
 class User(Base):
     """企业用户表模型"""
@@ -20,13 +20,16 @@ class User(Base):
     
     # 企业信息
     cnpj = Column(String(18), unique=True, index=True, nullable=True, comment="CNPJ（企业税号）")
-    employee_count = Column(Integer, nullable=True, comment="员工数量")
-    monthly_revenue = Column(Numeric(15, 2), nullable=True, comment="月营业额")
+    employee_count = Column(String(20), nullable=True, comment="员工数量范围")
+    monthly_revenue = Column(String(20), nullable=True, comment="月营业额范围")
     phone = Column(String(20), nullable=True, comment="联系电话")
+    
+    # 用户角色
+    role = Column(String(20), nullable=False, default='user', comment="用户角色(user/admin/courier)")
     
     # 时间戳
     created_at = Column(DateTime(timezone=True), server_default=func.now(), comment="创建时间")
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), comment="更新时间")
     
     def __repr__(self):
-        return f"<User(id={self.id}, name='{self.name}', email='{self.email}', cnpj='{self.cnpj}')>"
+        return f"<User(id={self.id}, name='{self.name}', email='{self.email}', role='{self.role}')>"

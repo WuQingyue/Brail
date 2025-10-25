@@ -100,6 +100,92 @@
       "expectedError": "请选择月营业额"
     }
   ],
+  "integrationTestData": [
+    {
+      "name": "完整测试企业",
+      "email": "complete-test@example.com",
+      "password": "password123",
+      "cnpj": "12345678901234",
+      "phone": "1234567890",
+      "employeeCount": "1-10",
+      "monthlyRevenue": "0-10k"
+    },
+    {
+      "name": "格式化CNPJ测试",
+      "email": "formatted-cnpj@example.com",
+      "password": "password123",
+      "cnpj": "12.345.678/0001-90",
+      "phone": "1234567890",
+      "employeeCount": "1-10",
+      "monthlyRevenue": "0-10k"
+    },
+    {
+      "name": "纯数字CNPJ测试",
+      "email": "numeric-cnpj@example.com",
+      "password": "password123",
+      "cnpj": "12345678901234",
+      "phone": "1234567890",
+      "employeeCount": "1-10",
+      "monthlyRevenue": "0-10k"
+    }
+  ],
+  "cnpjFormatTestCases": [
+    {
+      "name": "格式化CNPJ测试",
+      "dataIndex": 1
+    },
+    {
+      "name": "纯数字CNPJ测试",
+      "dataIndex": 2
+    }
+  ],
+  "performanceTestData": [
+    {
+      "name": "性能测试企业1",
+      "email": "perf-test-1@example.com",
+      "password": "password123",
+      "cnpj": "12345678901234",
+      "phone": "1234567890",
+      "employeeCount": "1-10",
+      "monthlyRevenue": "0-10k"
+    },
+    {
+      "name": "性能测试企业2",
+      "email": "perf-test-2@example.com",
+      "password": "password123",
+      "cnpj": "23456789012345",
+      "phone": "2345678901",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "10k-50k"
+    },
+    {
+      "name": "性能测试企业3",
+      "email": "perf-test-3@example.com",
+      "password": "password123",
+      "cnpj": "34567890123456",
+      "phone": "3456789012",
+      "employeeCount": "51-200",
+      "monthlyRevenue": "50k-100k"
+    },
+    {
+      "name": "性能测试企业4",
+      "email": "perf-test-4@example.com",
+      "password": "password123",
+      "cnpj": "45678901234567",
+      "phone": "4567890123",
+      "employeeCount": "1-10",
+      "monthlyRevenue": "0-10k"
+    },
+    {
+      "name": "性能测试企业5",
+      "email": "perf-test-5@example.com",
+      "password": "password123",
+      "cnpj": "56789012345678",
+      "phone": "5678901234",
+      "employeeCount": "11-50",
+      "monthlyRevenue": "10k-50k"
+    }
+  ],
   "existingUserData": [
     {
       "name": "已存在公司",

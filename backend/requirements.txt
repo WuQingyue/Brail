@@ -1,12 +1,18 @@
 # FastAPI 应用依赖
 fastapi>=0.100.0
 uvicorn[standard]>=0.20.0
-pydantic-settings>=2.0.0  # 添加这一行
+pydantic-settings>=2.0.0
 
 # 数据库依赖
 pymysql>=1.0.0
 sqlalchemy>=1.4.0
-cryptography>=3.4.8  # 添加这一行
+cryptography>=3.4.8
+
+# Redis 依赖（用于Session管理）
+redis>=4.5.0
+
+# 密码加密
+passlib[bcrypt]>=1.7.4
 
 # 测试依赖
 pytest>=7.0.0

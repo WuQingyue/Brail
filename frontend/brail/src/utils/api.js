@@ -1,5 +1,10 @@
 // API工具函数
-const API_BASE_URL = '/api'
+const API_BASE_URL = 'http://localhost:8000/api'
+
+// 环境检查函数 - 只检查 NODE_ENV
+const isDevelopment = () => {
+  return process.env.NODE_ENV === 'real'
+}
 
 // 通用请求函数
 async function request(url, options = {}) {
@@ -15,7 +20,14 @@ async function request(url, options = {}) {
     const response = await fetch(`${API_BASE_URL}${url}`, config)
     
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`)
+      // 尝试解析错误响应
+      let errorMessage
+        const errorData = await response.json()
+        errorMessage = JSON.stringify({
+          detail: errorData.detail || " ",
+          status_code: response.status || 500
+        })
+      throw new Error(errorMessage)
     }
     
     return await response.json()
@@ -235,7 +247,7 @@ export const getProductsByCategory = async (categoryId = null) => {
 export const loginUser = async (loginData) => {
   try {
     // 在开发环境中返回模拟数据
-    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+    if (isDevelopment()) {
       // 模拟网络延迟
       await new Promise(resolve => setTimeout(resolve, 500))
       
@@ -243,6 +255,8 @@ export const loginUser = async (loginData) => {
       if (loginData.email === 'test@example.com' && loginData.password === 'password123') {
         return {
           success: true,
+          code: 200,
+          message: '登录成功',
           user: {
             id: 1,
             name: '测试用户',
@@ -255,7 +269,9 @@ export const loginUser = async (loginData) => {
       } else if (loginData.email === 'admin@example.com' && loginData.password === 'admin123') {
         return {
           success: true,
-            user: {
+          code: 200,
+          message: '登录成功',
+          user: {
             id: 2,
             name: '管理员',
             email: 'admin@example.com',
@@ -267,6 +283,7 @@ export const loginUser = async (loginData) => {
       } else {
         return {
           success: false,
+          code: 401,
           message: '邮箱或密码错误'
         }
       }
@@ -275,19 +292,35 @@ export const loginUser = async (loginData) => {
     // 生产环境调用真实API
     const response = await request('/auth/login', {
       method: 'POST',
-      body: JSON.stringify(loginData)
+      body: JSON.stringify(loginData),
+      credentials: 'include'  // 重要：携带Cookie
     })
     return response
   } catch (error) {
     console.error('Failed to login:', error)
-    throw error
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '登录失败'
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: error.message || '登录失败，请稍后重试'
+      }
+    }
   }
 }
 
 export const registerUser = async (userData) => {
   try {
     // 在开发环境中返回模拟数据
-    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+    if (isDevelopment()) {
       // 模拟网络延迟
       await new Promise(resolve => setTimeout(resolve, 1000))
       
@@ -295,19 +328,72 @@ export const registerUser = async (userData) => {
       if (userData.email === 'existing@example.com') {
         return {
           success: false,
+          code: 409,
           message: '邮箱已被注册'
+        }
+      }
+      
+      if (userData.name === '已存在企业') {
+        return {
+          success: false,
+          code: 409,
+          message: '企业名称已被注册'
         }
       }
       
       if (userData.cnpj === '11111111111111') {
         return {
           success: false,
+          code: 409,
           message: 'CNPJ已被注册'
+        }
+      }
+      
+      // 验证必填字段
+      const requiredFields = ['name', 'email', 'password', 'cnpj', 'phone', 'employeeCount', 'monthlyRevenue']
+      for (const field of requiredFields) {
+        if (!userData[field]) {
+          return {
+            success: false,
+            code: 400,
+            message: `缺少必填字段: ${field}`
+          }
+        }
+      }
+      
+      // 验证邮箱格式
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+      if (!emailPattern.test(userData.email)) {
+        return {
+          success: false,
+          code: 400,
+          message: '邮箱格式不正确'
+        }
+      }
+      
+      // 验证CNPJ格式（14位数字）
+      const cnpjPattern = /^[0-9]{14}$/
+      if (!cnpjPattern.test(userData.cnpj)) {
+        return {
+          success: false,
+          code: 400,
+          message: 'CNPJ格式不正确，应为14位数字'
+        }
+      }
+      
+      // 验证密码长度
+      if (userData.password.length < 6) {
+        return {
+          success: false,
+          code: 400,
+          message: '密码长度至少6位'
         }
       }
       
       return {
         success: true,
+        code: 200,
+        message: '注册成功',
         user: {
           id: Date.now(),
           name: userData.name,
@@ -329,8 +415,25 @@ export const registerUser = async (userData) => {
     })
     return response
   } catch (error) {
-    console.error('Failed to register:', error)
-    throw error
+    console.error('Failed to register')
+    console.log('error', error)
+    
+    // 解析 error.message 中的 JSON 字符串
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || errorData.message || '注册失败'
+      }
+    } catch (parseError) {
+      // 如果解析失败，返回默认错误
+      return {
+        success: false,
+        code: 500,
+        message: error.message || '注册失败'
+      }
+    }
   }
 }
 
@@ -432,7 +535,7 @@ export const removeCartItem = async (cartId, itemId) => {
 export const getOrderId = async () => {
   try {
     // 在开发环境中返回模拟数据
-    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+    if (isDevelopment()) {
       // 模拟网络延迟
       await new Promise(resolve => setTimeout(resolve, 300))
       
@@ -459,7 +562,7 @@ export const getOrderId = async () => {
 export const getOrderDetails = async (orderId) => {
   try {
     // 在开发环境中返回模拟数据
-    if (process.env.NODE_ENV === 'development' || !process.env.NODE_ENV) {
+    if (isDevelopment()) {
       // 模拟网络延迟
       await new Promise(resolve => setTimeout(resolve, 200))
       

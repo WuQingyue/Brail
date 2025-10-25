@@ -2,7 +2,7 @@
 数据库连接集成测试
 测试 database.py 中的数据库连接功能
 """
-from database import verify_connection, check_database_exists, create_database, create_database_with_tables
+from utils.database import verify_connection, check_database_exists, create_database, create_database_with_tables
 import pytest
 import sys
 import os
