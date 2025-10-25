@@ -4,7 +4,7 @@
 """
 from sqlalchemy import Column, Integer, String, DateTime, Numeric, Text
 from sqlalchemy.sql import func
-from database import Base
+from utils.database import Base
 
 class User(Base):
     """企业用户表模型"""
@@ -20,8 +20,8 @@ class User(Base):
     
     # 企业信息
     cnpj = Column(String(18), unique=True, index=True, nullable=True, comment="CNPJ（企业税号）")
-    employee_count = Column(Integer, nullable=True, comment="员工数量")
-    monthly_revenue = Column(Numeric(15, 2), nullable=True, comment="月营业额")
+    employee_count = Column(String(20), nullable=True, comment="员工数量范围")
+    monthly_revenue = Column(String(20), nullable=True, comment="月营业额范围")
     phone = Column(String(20), nullable=True, comment="联系电话")
     
     # 时间戳

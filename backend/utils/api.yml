@@ -1,0 +1,139 @@
+openapi: 3.0.0
+info:
+  title: 外贸网站API
+  version: 1.0.0
+  description: 外贸网站API接口文档
+  contact:
+    email: 3265696377@qq.com
+servers:
+  - url: localhost:8000/api
+tags:
+  - name: 产品管理
+    description: 产品管理操作
+
+paths:
+# 认证
+  /auth/register:
+    post:
+      tags:
+        - 认证
+      summary: 用户注册
+      description: 企业用户注册接口
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - email
+                - password
+                - cnpj
+                - phone
+                - employeeCount
+                - monthlyRevenue
+              properties:
+                name:
+                  type: string
+                  description: 企业名称
+                  example: "测试科技有限公司"
+                email:
+                  type: string
+                  format: email
+                  description: 企业邮箱
+                  example: "company@example.com"
+                password:
+                  type: string
+                  minLength: 6
+                  description: 密码（至少6位）
+                  example: "password123"
+                cnpj:
+                  type: string
+                  pattern: '^[0-9]{14}$'
+                  description: CNPJ企业税号（14位数字）
+                  example: "12345678000195"
+                phone:
+                  type: string
+                  description: 联系电话
+                  example: "+55 11 99999-9999"
+                employeeCount:
+                  type: string
+                  description: 员工数量范围
+                  example: "1-10"
+                monthlyRevenue:
+                  type: string
+                  description: 月营业额范围
+                  example: "0-10k"
+      responses:
+        '200':
+          description: 注册成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "注册成功"
+        '400':
+          description: 请求参数错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 400
+                  message:
+                    type: string
+                    examples:
+                      missing_field: "缺少必填字段: name"
+                      invalid_email: "邮箱格式不正确"
+                      invalid_cnpj: "CNPJ格式不正确，应为14位数字"
+                      short_password: "密码长度至少6位"
+        '409':
+          description: 冲突错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 409
+                  message:
+                    type: string
+                    examples:
+                      email_exists: "邮箱已被注册"
+                      name_exists: "企业名称已被注册"
+                      cnpj_exists: "CNPJ已被注册"
+        '500':
+          description: 服务器内部错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  code:
+                    type: integer
+                    example: 500
+                  message:
+                    type: string
+                    example: "注册失败，请稍后重试"
