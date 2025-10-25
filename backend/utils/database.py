@@ -137,3 +137,15 @@ def create_database_with_tables(database_name="brail_db", charset="utf8mb4", col
         return False
 
 
+from sqlalchemy.orm import sessionmaker
+# 创建SessionLocal类
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+# 创建数据库会话
+def get_db():
+    """获取数据库会话"""
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close() 

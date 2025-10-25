@@ -3,7 +3,7 @@
 """
 from sqlalchemy import Column, Integer, DateTime, ForeignKey
 from sqlalchemy.sql import func
-from database import Base
+from utils.database import Base
 
 class Cart(Base):
     """购物车主表模型"""

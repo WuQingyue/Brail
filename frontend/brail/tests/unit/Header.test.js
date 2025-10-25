@@ -187,7 +187,7 @@ describe('Header.vue 注册功能单元测试', () => {
       expect(wrapper.find('button[type="submit"]').text()).toBe('注册中...')
     })
 
-    it('注册成功时应该更新用户状态', async () => {
+    it('注册成功时应该显示成功消息但不自动登录', async () => {
       const validData = mockData.validRegistrationData[0]
       const mockResponse = mockData.apiResponses.successfulRegistration
       
@@ -209,8 +209,16 @@ describe('Header.vue 注册功能单元测试', () => {
       // 等待异步操作完成
       await wrapper.vm.$nextTick()
       
-      expect(wrapper.vm.isLoggedIn).toBe(true)
-      expect(wrapper.vm.user).toEqual(mockResponse.user)
+      // 注册成功后不应该自动登录（根据需求，只有登录才会设置用户状态）
+      expect(wrapper.vm.isLoggedIn).toBe(false)
+      expect(wrapper.vm.user).toBeNull()
+      
+      // 但应该显示成功消息
+      expect(wrapper.vm.message).toBe('注册成功！欢迎加入Brail平台！')
+      expect(wrapper.vm.messageType).toBe('success')
+      
+      // 提交按钮应该重置为"创建账户"（不是"注册中..."）
+      expect(wrapper.vm.isSubmitting).toBe(false)
     })
 
     it('注册失败时应该显示错误消息', async () => {

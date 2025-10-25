@@ -3,7 +3,7 @@
 """
 from sqlalchemy import Column, Integer, String, DateTime, Text
 from sqlalchemy.sql import func
-from database import Base
+from utils.database import Base
 
 class Category(Base):
     """产品类别表模型"""

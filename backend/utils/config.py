@@ -7,7 +7,7 @@ load_dotenv()
 
 class Settings(BaseSettings):
     # 应用配置
-    FRONTEND_URL: str = "http://localhost:3000"
+    FRONTEND_URL: str = "http://localhost:5173"
     BACKEND_URL: str = "http://localhost:8000"
     
     # 数据库配置

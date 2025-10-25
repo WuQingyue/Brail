@@ -394,25 +394,27 @@ const handleRegister = async () => {
     const response = await registerUser(registerForm)
     
     if (response.success) {
-      message.value = '注册成功！'
+      message.value = '注册成功！欢迎加入Brail平台！'
       messageType.value = 'success'
       
-      // 设置用户登录状态
-      user.value = response.user
-      isLoggedIn.value = true
+      // 注册成功后不自动登录，用户需要手动登录
       
-      // 延迟关闭模态框
+      // 重置提交状态，让按钮恢复为"创建账户"
+      isSubmitting.value = false
+      
+      // 延长显示时间，让用户看到成功消息
       setTimeout(() => {
         closeRegisterModal()
-      }, 2000)
+      }, 3000)
     } else {
+      console.log('注册失败', response)
       message.value = response.message || '注册失败，请重试'
       messageType.value = 'error'
+      isSubmitting.value = false
     }
   } catch (error) {
     message.value = handleApiError(error)
     messageType.value = 'error'
-  } finally {
     isSubmitting.value = false
   }
 }
@@ -534,6 +536,8 @@ const closeRegisterModal = () => {
   registerForm.monthlyRevenue = ''
   errors.value = {}
   message.value = ''
+  // 重置提交状态
+  isSubmitting.value = false
 }
 
 // 点击外部关闭下拉菜单
@@ -549,6 +553,8 @@ const closeLoginModal = () => {
     loginForm[key] = ''
   })
   message.value = ''
+  // 重置提交状态
+  isSubmitting.value = false
 }
 
 // 生命周期钩子
