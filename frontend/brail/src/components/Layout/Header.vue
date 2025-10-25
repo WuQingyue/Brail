@@ -34,11 +34,11 @@
           <div class="user-dropdown" @click="toggleUserDropdown">
             <div class="user-avatar">
               <div class="avatar-circle">
-                <span class="avatar-text">{{ getUserInitials(user.name) }}</span>
+                <span class="avatar-text">{{ getUserInitials(user.user_name) }}</span>
                 <div class="online-indicator"></div>
               </div>
             </div>
-            <span class="user-name">{{ user.name }}</span>
+            <span class="user-name">{{ user.user_name }}</span>
             <div class="dropdown-arrow" :class="{ 'rotated': showUserDropdown }">▼</div>
           </div>
           
@@ -46,12 +46,12 @@
           <div v-if="showUserDropdown" class="dropdown-menu" @click.stop>
             <div class="dropdown-header">
               <div class="dropdown-avatar">
-                <span class="avatar-text">{{ getUserInitials(user.name) }}</span>
+                <span class="avatar-text">{{ getUserInitials(user.user_name) }}</span>
                 <div class="online-indicator"></div>
               </div>
               <div class="user-info">
-                <div class="user-name-large">{{ user.name }}</div>
-                <div class="user-email">{{ user.email }}</div>
+                <div class="user-name-large">{{ user.user_name }}</div>
+                <div class="user-email">{{ user.user_email }}</div>
               </div>
             </div>
             
@@ -263,10 +263,14 @@
 import { ref, computed, reactive, onMounted, onUnmounted } from 'vue'
 import Cart from '../Cart/Cart.vue'
 import { loginUser, registerUser, handleApiError } from '@/utils/api.js'
+import { useUserStore } from '@/stores/user.js'
 
-// 响应式数据
-const isLoggedIn = ref(false)
-const user = ref(null)
+// 使用 Pinia store
+const userStore = useUserStore()
+
+// 响应式数据 - 从 store 获取
+const isLoggedIn = computed(() => userStore.isLoggedIn)
+const user = computed(() => userStore.user)
 const showRegisterModal = ref(false)
 const showLoginModal = ref(false)
 const isSubmitting = ref(false)
@@ -431,9 +435,15 @@ const handleLogin = async () => {
       message.value = '登录成功！'
       messageType.value = 'success'
       
-      // 设置用户登录状态
-      user.value = response.user
-      isLoggedIn.value = true
+      // 使用 Pinia store 设置用户登录状态（自动持久化）
+      userStore.setUser({
+        user_id: response.user.id,
+        user_email: response.user.email,
+        user_name: response.user.name,
+        role: response.user.role
+      })
+      
+      console.log('登录成功，用户信息已保存:', response.user)
       
       // 延迟关闭模态框并根据用户角色跳转
       setTimeout(() => {
@@ -457,9 +467,13 @@ const handleLogin = async () => {
 
 // 退出登录
 const logout = () => {
-  user.value = null
-  isLoggedIn.value = false
+  // 使用 Pinia store 清除用户信息（自动清除持久化数据）
+  userStore.clearUser()
   showUserDropdown.value = false
+  console.log('用户已退出登录，信息已清除')
+  
+  // 跳转到首页
+  window.location.href = '/'
 }
 
 // 切换用户下拉菜单
@@ -560,6 +574,10 @@ const closeLoginModal = () => {
 // 生命周期钩子
 onMounted(() => {
   document.addEventListener('click', handleClickOutside)
+  
+  // 从 localStorage 恢复用户登录状态
+  userStore.initUserFromStorage()
+  console.log('Header 组件已挂载，用户登录状态:', userStore.isLoggedIn)
 })
 
 onUnmounted(() => {

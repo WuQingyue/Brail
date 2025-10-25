@@ -105,6 +105,62 @@ def create_database(database_name="brail_db", charset="utf8mb4", collate="utf8mb
         return False
 
 
+def init_categories_data():
+    """初始化 categories 表数据（如果 mock-data.json 中有数据）"""
+    try:
+        import json
+        import os
+        from models.category import Category
+        
+        # 检查 mock-data.json 文件是否存在
+        mock_data_path = 'fixtures/mock-data.json'
+        if not os.path.exists(mock_data_path):
+            print("⚠️  未找到 fixtures/mock-data.json 文件，跳过分类数据初始化")
+            return
+        
+        # 读取 mock 数据
+        with open(mock_data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        categories_data = data.get('categories', [])
+        
+        if not categories_data:
+            print("⚠️  mock-data.json 中没有 categories 数据，跳过初始化")
+            return
+        
+        # 获取数据库会话
+        db = SessionLocal()
+        
+        try:
+            # 检查是否已有分类数据
+            existing_count = db.query(Category).count()
+            
+            if existing_count > 0:
+                print(f"✅ 分类数据已存在 ({existing_count} 个分类)，跳过初始化")
+                return
+            
+            # 插入分类数据
+            print(f"💾 正在初始化 {len(categories_data)} 个分类...")
+            for cat_data in categories_data:
+                category = Category(
+                    id=cat_data['id'],
+                    name=cat_data['name']
+                )
+                db.add(category)
+            
+            db.commit()
+            print(f"✅ 成功初始化 {len(categories_data)} 个分类")
+            
+        except Exception as e:
+            print(f"❌ 初始化分类数据失败: {str(e)}")
+            db.rollback()
+        finally:
+            db.close()
+            
+    except Exception as e:
+        print(f"❌ 读取分类数据失败: {str(e)}")
+
+
 def create_tables():
     """创建所有数据库表"""
     try:
@@ -113,6 +169,11 @@ def create_tables():
         
         # 创建所有表
         Base.metadata.create_all(bind=engine)
+        print("✅ 数据库表创建成功")
+        
+        # 初始化 categories 数据（如果有）
+        init_categories_data()
+        
         return True
         
     except Exception as e:

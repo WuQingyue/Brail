@@ -14,7 +14,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
-    "test:header": "vitest run tests/unit/Header.test.js tests/unit/admin.test.js",
+    "test:header": "vitest run tests/unit/Header.test.js tests/unit/admin.test.js tests/unit/user-store.test.js",
     "test:categories": "vitest run tests/unit/Categories.test.js tests/unit/product.test.js tests/unit/cart.test.js tests/unit/order.test.js",
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
@@ -27,7 +27,8 @@
   },
   "dependencies": {
     "vue": "^3.5.22",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.1",
