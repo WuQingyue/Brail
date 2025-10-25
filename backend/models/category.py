@@ -15,7 +15,7 @@ class Category(Base):
     # 基本信息
     name = Column(String(100), nullable=False, unique=True, comment="类别名称")
     description = Column(Text, nullable=True, comment="类别描述")
-    icon = Column(String(255), nullable=True, comment="类别图标")
+    icon = Column(Text, nullable=True, comment="类别图标(支持URL或SVG代码)")
     
     # 时间戳
     created_at = Column(DateTime(timezone=True), server_default=func.now(), comment="创建时间")

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from utils.config import settings
 from utils.database import verify_connection, engine, check_database_exists, create_database_with_tables
-from api import auth
+from api import auth, product
 
 # 应用启动时连接数据库
 @asynccontextmanager
@@ -49,7 +49,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 健康检查接口
+# 健康检查接口  
 @app.get("/api/health")
 async def health_check():
     """健康检查接口，用于验证服务是否正常运行"""
@@ -61,6 +61,7 @@ async def health_check():
 
 # 注册路由 
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(product.router, prefix="/api/product", tags=["product"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
