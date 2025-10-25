@@ -220,11 +220,86 @@ def init_suppliers_data():
         print(f"❌ 读取供应商数据失败: {str(e)}")
 
 
+def init_products_data():
+    """初始化 products 表数据（如果 mock-data.json 中有数据）"""
+    try:
+        import json
+        import os
+        from models.product import Product
+        
+        # 检查 mock-data.json 文件是否存在
+        mock_data_path = 'fixtures/mock-data.json'
+        if not os.path.exists(mock_data_path):
+            print("⚠️  未找到 fixtures/mock-data.json 文件，跳过产品数据初始化")
+            return
+        
+        # 读取 mock 数据
+        with open(mock_data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        products_data = data.get('products', [])
+        
+        if not products_data:
+            print("⚠️  mock-data.json 中没有 products 数据，跳过初始化")
+            return
+        
+        # 获取数据库会话
+        db = SessionLocal()
+        
+        try:
+            # 检查是否已有产品数据
+            existing_count = db.query(Product).count()
+            
+            if existing_count > 0:
+                print(f"✅ 产品数据已存在 ({existing_count} 个产品)，跳过初始化")
+                return
+            
+            # 插入产品数据
+            print(f"💾 正在初始化 {len(products_data)} 个产品...")
+            for prod_data in products_data:
+                product = Product(
+                    id=prod_data['id'],
+                    title=prod_data['title'],
+                    description=prod_data.get('description'),
+                    img=prod_data.get('img'),
+                    product_mlb_thumbnail=prod_data.get('product_mlb_thumbnail'),
+                    category_id=prod_data['category_id'],
+                    supplier_id=prod_data['supplier_id'],
+                    shipping_from=prod_data.get('shipping_from'),
+                    weight=prod_data.get('weight'),
+                    dimensions=prod_data.get('dimensions'),
+                    moq=prod_data.get('moq', 1),
+                    tags=prod_data.get('tags'),
+                    stock_quantity=prod_data.get('stock_quantity', 0),
+                    reserved_quantity=prod_data.get('reserved_quantity', 0),
+                    low_stock_threshold=prod_data.get('low_stock_threshold', 10),
+                    max_order_quantity=prod_data.get('max_order_quantity'),
+                    cost_price=prod_data.get('cost_price'),
+                    selling_price=prod_data['selling_price'],
+                    discount_price=prod_data.get('discount_price'),
+                    product_mlb_price=prod_data.get('product_mlb_price'),
+                    roi=prod_data.get('roi')
+                )
+                db.add(product)
+            
+            db.commit()
+            print(f"✅ 成功初始化 {len(products_data)} 个产品")
+            
+        except Exception as e:
+            print(f"❌ 初始化产品数据失败: {str(e)}")
+            db.rollback()
+        finally:
+            db.close()
+            
+    except Exception as e:
+        print(f"❌ 读取产品数据失败: {str(e)}")
+
+
 def create_tables():
-    """创建所有数据库表""" 
+    """创建所有数据库表"""
     try:
         # 导入所有模型以确保它们被注册到 Base.metadata
-        from models import User, Category, Cart, CartItem, Supplier  # 导入所有模型
+        from models import User, Category, Cart, CartItem, Supplier, Product  # 导入所有模型
         
         # 创建所有表
         Base.metadata.create_all(bind=engine)
@@ -235,6 +310,9 @@ def create_tables():
         
         # 初始化 suppliers 数据（如果有）
         init_suppliers_data()
+        
+        # 初始化 products 数据（如果有）
+        init_products_data()
         
         return True
         
