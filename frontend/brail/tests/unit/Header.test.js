@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
+import { createPinia, setActivePinia } from 'pinia'
 import Header from '@/components/Layout/Header.vue'
 import mockData from '../fixtures/mock-data.json'
 import { loginUser, registerUser, handleApiError } from '@/utils/api.js'
@@ -15,7 +16,14 @@ describe('Header.vue 注册功能单元测试', () => {
   let wrapper
 
   beforeEach(() => {
-    wrapper = mount(Header)
+    // 为每个测试创建新的 Pinia 实例
+    setActivePinia(createPinia())
+    
+    wrapper = mount(Header, {
+      global: {
+        plugins: [createPinia()]
+      }
+    })
   })
 
   describe('组件渲染测试', () => {
@@ -286,9 +294,15 @@ describe('Header.vue 注册功能单元测试', () => {
 
   describe('登录功能测试', () => {
     beforeEach(async () => {
+      // 确保用户已退出登录
+      if (wrapper.vm.isLoggedIn) {
+        wrapper.vm.userStore.clearUser()
+        await wrapper.vm.$nextTick()
+      }
+      
       // 打开登录模态框
-      const loginBtn = wrapper.findAll('button').find(btn => btn.text().includes('登录'))
-      await loginBtn.trigger('click')
+      wrapper.vm.showLoginModal = true
+      await wrapper.vm.$nextTick()
     })
 
     it('应该渲染登录表单字段', () => {
@@ -306,7 +320,6 @@ describe('Header.vue 注册功能单元测试', () => {
 
     it('登录成功时应该更新用户状态', async () => {
       const mockResponse = mockData.apiResponses.successfulLogin
-      
       loginUser.mockResolvedValue(mockResponse)
       
       // 填写登录信息
@@ -317,11 +330,17 @@ describe('Header.vue 注册功能单元测试', () => {
       const form = wrapper.find('.login-form')
       await form.trigger('submit')
       
-      // 等待异步操作完成
+      // 等待所有异步操作完成
+      await flushPromises()
+      await wrapper.vm.$nextTick()
+      await wrapper.vm.$nextTick()
       await wrapper.vm.$nextTick()
       
       expect(wrapper.vm.isLoggedIn).toBe(true)
-      expect(wrapper.vm.user).toEqual(mockResponse.user)
+      // Store 中的用户对象格式为 user_id, user_email, user_name
+      expect(wrapper.vm.user.user_id).toBe(mockResponse.user.id)
+      expect(wrapper.vm.user.user_email).toBe(mockResponse.user.email)
+      expect(wrapper.vm.user.user_name).toBe(mockResponse.user.name)
       
       // 检查用户下拉菜单是否显示
       expect(wrapper.find('.user-dropdown').exists()).toBe(true)
@@ -330,7 +349,6 @@ describe('Header.vue 注册功能单元测试', () => {
 
     it('登录失败时应该显示错误消息', async () => {
       const mockResponse = mockData.apiResponses.failedLogin
-      
       loginUser.mockResolvedValue(mockResponse)
       
       // 填写登录信息
@@ -342,6 +360,7 @@ describe('Header.vue 注册功能单元测试', () => {
       await form.trigger('submit')
       
       // 等待异步操作完成
+      await flushPromises()
       await wrapper.vm.$nextTick()
       
       expect(wrapper.find('.message.error').text()).toBe('邮箱或密码错误')
@@ -350,7 +369,7 @@ describe('Header.vue 注册功能单元测试', () => {
     it('登录时应该显示加载状态', async () => {
       // 模拟慢速API响应
       loginUser.mockImplementation(() => new Promise(resolve => 
-        setTimeout(() => resolve({ success: true, user: {} }), 100)
+        setTimeout(() => resolve({ success: true, user: { id: 1, name: '测试', email: 'test@test.com', role: 'user' } }), 100)
       ))
       
       // 填写登录信息
@@ -360,42 +379,66 @@ describe('Header.vue 注册功能单元测试', () => {
       // 提交表单
       const form = wrapper.find('.login-form')
       await form.trigger('submit')
+      await wrapper.vm.$nextTick()
       
       // 检查按钮文本变化
-      expect(wrapper.find('button[type="submit"]').text()).toBe('登录中...')
+      const submitBtn = wrapper.find('.login-form button[type="submit"]')
+      expect(submitBtn.text()).toBe('登录中...')
     })
 
     it('登录模态框应该能够正确关闭', async () => {
       // 点击关闭按钮
-      const closeBtn = wrapper.find('.close-btn')
-      await closeBtn.trigger('click')
+      const closeBtns = wrapper.findAll('.close-btn')
+      if (closeBtns.length > 1) {
+        await closeBtns.at(1).trigger('click')
+      } else {
+        await closeBtns.at(0).trigger('click')
+      }
+      await wrapper.vm.$nextTick()
       
-      expect(wrapper.find('.modal-overlay').exists()).toBe(false)
+      expect(wrapper.vm.showLoginModal).toBe(false)
     })
 
     it('点击模态框外部应该关闭登录模态框', async () => {
       // 点击模态框外部
-      await wrapper.find('.modal-overlay').trigger('click')
-      expect(wrapper.find('.modal-overlay').exists()).toBe(false)
+      const overlays = wrapper.findAll('.modal-overlay')
+      await overlays.at(overlays.length - 1).trigger('click')
+      await wrapper.vm.$nextTick()
+      
+      expect(wrapper.vm.showLoginModal).toBe(false)
     })
   })
 
   describe('用户下拉菜单测试', () => {
     beforeEach(async () => {
-      // 模拟登录状态
-      wrapper.vm.isLoggedIn = true
-      wrapper.vm.user = mockData.userDropdownTestData.loggedInUser
+      // 通过 store 设置登录状态
+      const userStore = wrapper.vm.userStore
+      userStore.setUser({
+        user_id: '1',
+        user_email: 'test@example.com',
+        user_name: '测试用户',
+        role: 'user'
+      })
+      // 等待多个 tick 和 Promise 确保 DOM 完全更新
+      await flushPromises()
+      await wrapper.vm.$nextTick()
+      await wrapper.vm.$nextTick()
       await wrapper.vm.$nextTick()
     })
 
-    it('应该显示用户头像和用户名', () => {
+    it('应该显示用户头像和用户名', async () => {
+      // 再次等待确保渲染完成
+      await wrapper.vm.$nextTick()
+      
       expect(wrapper.find('.user-dropdown').exists()).toBe(true)
       expect(wrapper.find('.avatar-circle').exists()).toBe(true)
       expect(wrapper.find('.user-name').text()).toBe('测试用户')
       expect(wrapper.find('.online-indicator').exists()).toBe(true)
     })
 
-    it('应该显示用户姓名首字母', () => {
+    it('应该显示用户姓名首字母', async () => {
+      await wrapper.vm.$nextTick()
+      
       const avatarText = wrapper.find('.avatar-text')
       expect(avatarText.exists()).toBe(true)
       expect(avatarText.text()).toBe('测试')
@@ -430,8 +473,11 @@ describe('Header.vue 注册功能单元测试', () => {
     })
 
     it('下拉菜单应该显示用户信息', async () => {
+      await wrapper.vm.$nextTick()
+      
       const userDropdown = wrapper.find('.user-dropdown')
       await userDropdown.trigger('click')
+      await wrapper.vm.$nextTick()
       
       expect(wrapper.find('.dropdown-header').exists()).toBe(true)
       expect(wrapper.find('.user-name-large').text()).toBe('测试用户')

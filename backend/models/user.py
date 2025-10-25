@@ -24,9 +24,12 @@ class User(Base):
     monthly_revenue = Column(String(20), nullable=True, comment="月营业额范围")
     phone = Column(String(20), nullable=True, comment="联系电话")
     
+    # 用户角色
+    role = Column(String(20), nullable=False, default='user', comment="用户角色(user/admin/courier)")
+    
     # 时间戳
     created_at = Column(DateTime(timezone=True), server_default=func.now(), comment="创建时间")
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), comment="更新时间")
     
     def __repr__(self):
-        return f"<User(id={self.id}, name='{self.name}', email='{self.email}', cnpj='{self.cnpj}')>"
+        return f"<User(id={self.id}, name='{self.name}', email='{self.email}', role='{self.role}')>"

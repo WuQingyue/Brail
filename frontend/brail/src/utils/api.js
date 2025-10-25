@@ -255,6 +255,8 @@ export const loginUser = async (loginData) => {
       if (loginData.email === 'test@example.com' && loginData.password === 'password123') {
         return {
           success: true,
+          code: 200,
+          message: '登录成功',
           user: {
             id: 1,
             name: '测试用户',
@@ -267,7 +269,9 @@ export const loginUser = async (loginData) => {
       } else if (loginData.email === 'admin@example.com' && loginData.password === 'admin123') {
         return {
           success: true,
-            user: {
+          code: 200,
+          message: '登录成功',
+          user: {
             id: 2,
             name: '管理员',
             email: 'admin@example.com',
@@ -279,6 +283,7 @@ export const loginUser = async (loginData) => {
       } else {
         return {
           success: false,
+          code: 401,
           message: '邮箱或密码错误'
         }
       }
@@ -287,12 +292,28 @@ export const loginUser = async (loginData) => {
     // 生产环境调用真实API
     const response = await request('/auth/login', {
       method: 'POST',
-      body: JSON.stringify(loginData)
+      body: JSON.stringify(loginData),
+      credentials: 'include'  // 重要：携带Cookie
     })
     return response
   } catch (error) {
     console.error('Failed to login:', error)
-    throw error
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '登录失败'
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: error.message || '登录失败，请稍后重试'
+      }
+    }
   }
 }
 

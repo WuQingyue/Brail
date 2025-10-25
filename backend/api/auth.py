@@ -1,8 +1,10 @@
-from fastapi import APIRouter, Request, HTTPException, status, Depends
+from fastapi import APIRouter, Request, Response, HTTPException, status, Depends
 from sqlalchemy.orm import Session
+from datetime import datetime
 import hashlib
 from models.user import User
 from utils.database import get_db
+from utils.session import SessionManager, get_session
 import re
 
 router = APIRouter()
@@ -32,7 +34,7 @@ def validate_cnpj(cnpj):
 async def register(
     request: Request,
     db: Session = Depends(get_db)
-):
+    ):
     """用户注册"""
     try:
         user_data = await request.json()
@@ -100,7 +102,8 @@ async def register(
             cnpj=user_data.get('cnpj'),
             phone=user_data.get('phone'),
             employee_count=user_data.get('employeeCount'),
-            monthly_revenue=user_data.get('monthlyRevenue')
+            monthly_revenue=user_data.get('monthlyRevenue'),
+            role='user'
         )
         
         db.add(user)
@@ -119,4 +122,85 @@ async def register(
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="注册失败，请稍后重试"
+        )
+
+# 登录接口
+@router.post("/login")
+async def login(
+    request: Request,
+    response: Response,
+    db: Session = Depends(get_db),
+    session: SessionManager = Depends(get_session)
+    ):
+    """邮箱密码登录"""
+    try:
+        # 获取登录数据
+        user_data = await request.json()
+        email = user_data.get('email', '').strip()
+        password = user_data.get('password', '')
+        
+        print(f"接收到的登录请求 - 邮箱: {email}")
+        
+        # 验证必填字段
+        if not email or not password:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="邮箱和密码不能为空"
+            )
+        
+        # 查找用户
+        user = db.query(User).filter(User.email == email).first()
+        
+        # 验证用户是否存在
+        if not user:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="邮箱或密码错误"
+            )
+        
+        # 验证密码（前端发送的是明文密码，需要哈希后比较）
+        hashed_password = get_password_hash(password)
+        if hashed_password != user.password:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="邮箱或密码错误"
+            )
+        
+        # 登录成功，设置session
+        session.set("user_id", user.id)
+        session.set("user_email", user.email)
+        session.set("user_name", user.name)
+        session.set("login_time", datetime.now().isoformat())
+        
+        # 保存session
+        await session.save_session()
+        
+        # 设置Cookie
+        session.set_session_cookie(session.SESSIONID)
+        session.set_customer_code_cookie(user.email)
+        session.set_customerid_cookie(str(user.id))
+        
+        
+        return {
+            "success": True,
+            "code": 200,
+            "message": "登录成功",
+            "user": {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email,
+                "role": user.role
+            } 
+        }
+
+    except HTTPException:
+        # 重新抛出HTTP异常
+        raise
+    except Exception as e:
+        print(f"登录失败: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="登录失败，请稍后重试"
         )
