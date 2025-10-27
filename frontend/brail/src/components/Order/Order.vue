@@ -32,7 +32,26 @@
 
       <!-- 订单列表 -->
       <div v-else class="orders-container">
+        <!-- 加载状态 -->
+        <div v-if="loading" class="account-container">
+          <div class="no-data">
+            <div class="no-data-icon">⏳</div>
+            <div class="no-data-title">加载中...</div>
+            <div class="no-data-description">正在获取订单数据</div>
+          </div>
+        </div>
+        
+        <!-- 暂无数据提示 -->
+        <div v-else-if="filteredOrders.length === 0" class="account-container">
+          <div class="no-data">
+            <div class="no-data-icon">📦</div>
+            <div class="no-data-title">暂无数据</div>
+            <div class="no-data-description">您还没有任何订单请求</div>
+          </div>
+        </div>
+        
         <div 
+          v-else
           v-for="order in filteredOrders" 
           :key="order.id"
           class="order-card"
@@ -119,13 +138,17 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { getOrderId, getOrderDetails } from '@/utils/api.js'
+import { getOrderList } from '../../utils/api.js'
+import { useUserStore } from '../../stores/user.js'
 
 // 响应式数据
 const orders = ref([])
 const loading = ref(false)
 const expandedOrder = ref(null)
 const currentTab = ref('orders')
+
+// 获取用户store
+const userStore = useUserStore()
 
 // 计算属性
 const filteredOrders = computed(() => {
@@ -136,21 +159,26 @@ const filteredOrders = computed(() => {
 const loadOrders = async () => {
   loading.value = true
   try {
-    // 先获取所有订单ID
-    const orderIdResponse = await getOrderId()
-    console.log('获取到订单ID列表:', orderIdResponse.orderIds)
+    // 获取用户ID
+    const userId = userStore.getUserId()
     
-    // 遍历所有订单ID，获取每个订单的详情
-    const allOrders = []
-    for (const orderId of orderIdResponse.orderIds) {
-      const orderDetails = await getOrderDetails(orderId)
-      allOrders.push(orderDetails)
+    if (!userId) {
+      console.warn('用户未登录，无法加载订单')
+      orders.value = []
+      return
     }
     
-    console.log('获取到所有订单详情:', allOrders)
+    // 获取订单列表
+    const response = await getOrderList(userId)
+    console.log('获取到订单列表:', response)
     
-    // 设置订单列表
-    orders.value = allOrders
+    if (response.success && response.orders) {
+      // 设置订单列表
+      orders.value = response.orders
+      console.log('已加载订单数量:', orders.value.length)
+    } else {
+      orders.value = []
+    }
   } catch (error) {
     console.error('加载订单失败:', error)
     orders.value = []

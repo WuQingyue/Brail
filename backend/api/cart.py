@@ -146,6 +146,7 @@ async def get_cart_data(cart_id: int, db: Session = Depends(get_db)):
             
             items.append({
                 "id": item.id,
+                "product_id": item.product_id,  # 添加商品ID
                 "name": product.title,
                 "description": product.description,
                 "specification": "标准版本",  # 可以根据实际情况添加规格字段

@@ -523,6 +523,7 @@
       "singleItem": [
         {
           "id": 1,
+          "product_id": "test-prod-001",
           "name": "测试商品",
           "description": "测试描述",
           "specification": "测试规格",
@@ -848,6 +849,49 @@
         "success": true,
         "orderIds": []
       }
+    },
+    "orderListApiResponse": {
+      "success": true,
+      "orders": [
+        {
+          "id": "ORD-001",
+          "orderDate": "2024-01-15T10:30:00",
+          "statusStep": 1,
+          "statusText": "订单和审批",
+          "statusDetailText": "订单已接收",
+          "status": "Pending",
+          "statusClass": "status-pending",
+          "items": [
+            {
+              "id": 1,
+              "product_id": "prod-001",
+              "productName": "产品A",
+              "image": "https://via.placeholder.com/100x100",
+              "quantity": 2,
+              "price": 99.99
+            }
+          ]
+        },
+        {
+          "id": "ORD-002",
+          "orderDate": "2024-01-16T10:30:00",
+          "statusStep": 2,
+          "statusText": "生产和准备发货",
+          "statusDetailText": "正在处理",
+          "status": "Processing",
+          "statusClass": "status-processing",
+          "items": [
+            {
+              "id": 2,
+              "product_id": "prod-002",
+              "productName": "产品B",
+              "image": "https://via.placeholder.com/100x100",
+              "quantity": 1,
+              "price": 199.99
+            }
+          ]
+        }
+      ]
     }
   }
 }

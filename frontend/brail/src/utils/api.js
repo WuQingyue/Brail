@@ -174,6 +174,69 @@ export const getProductsByCategory = async (categoryId = null) => {
   }
 }
 
+export const searchProducts = async (keyword) => {
+  try {
+    // 开发环境：返回模拟搜索结果
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 模拟搜索结果数据
+      const mockSearchResults = [
+        {
+          id: 'search-001',
+          title: `数字电视天线 4K 1080P - ${keyword}`,
+          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+          img: 'https://via.placeholder.com/300x200/10b981/ffffff?text=搜索结果',
+          category_id: 'MLB5672',
+          category_name: '电子产品',
+          selling_price: 13.63,
+          stock_quantity: 150,
+          moq: 50
+        }
+      ]
+      
+      return {
+        success: true,
+        code: 200,
+        count: mockSearchResults.length,
+        keyword: keyword,
+        products: mockSearchResults
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/product/search/keyword', {
+      method: 'POST',
+      body: JSON.stringify({ keyword })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to search products:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '搜索产品失败',
+        count: 0,
+        keyword: keyword,
+        products: []
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '搜索产品失败，请稍后重试',
+        count: 0,
+        keyword: keyword,
+        products: []
+      }
+    }
+  }
+}
+
 // 用户认证相关API
 export const loginUser = async (loginData) => {
   try {
@@ -574,34 +637,55 @@ export const getOrderId = async () => {
   }
 }
 
-export const getOrderDetails = async (orderId) => {
+// 订单相关API
+export const createOrder = async (orderData) => {
   try {
-    // 在开发环境中返回模拟数据
+    // 开发环境：返回模拟成功响应
     if (isDevelopment()) {
-      // 模拟网络延迟
-      await new Promise(resolve => setTimeout(resolve, 200))
-      
-      // 从 mock-data.json 导入订单数据
-      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
-      const mockOrders = orderTestData.mockOrders
-      
-      // 根据订单ID返回对应的订单详情
-      const order = mockOrders.find(o => o.id === orderId)
-      if (order) {
-        return order
-      } else {
-        // 如果找不到对应的订单，返回默认订单
-        return mockOrders[0]
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        order_id: `ORD-${Date.now()}`,
+        message: "订单创建成功"
       }
     }
     
-    // 生产环境调用真实API
-    const response = await request(`/order/get_order_detail/${orderId}`, {
-      method: 'GET'
+    // 生产环境：调用真实API
+    const response = await request('/order/create', {
+      method: 'POST',
+      body: JSON.stringify(orderData)
     })
     return response
   } catch (error) {
-    console.error('Failed to get order details:', error)
+    console.error('Failed to create order:', error)
+    throw error
+  }
+}
+
+export const getOrderList = async (userId) => {
+  try {
+    // 开发环境：返回模拟订单列表
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders || []
+      
+      return {
+        success: true,
+        orders: mockOrders
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/list', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get order list:', error)
     throw error
   }
 }
@@ -625,6 +709,7 @@ export default {
   getCategories,
   getProductsByCategory,
   getProductDetail,
+  searchProducts,
   loginUser,
   registerUser,
   getCartId,
@@ -633,7 +718,8 @@ export default {
   updateCartItem,
   removeCartItem,
   getOrderId,
-  getOrderDetails,
+  createOrder,
+  getOrderList,
   handleApiError
 }
 

@@ -133,7 +133,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { getCategories, getProductsByCategory, handleApiError } from '../../utils/api.js'
+import { getCategories, getProductsByCategory, searchProducts, handleApiError } from '../../utils/api.js'
 import ProductDetail from '../Product/ProductDetail.vue'
 
 // 响应式数据
@@ -150,22 +150,8 @@ const selectedProductId = ref(null)
 
 // 计算属性
 const filteredProducts = computed(() => {
-  let filtered = products.value
-
-  // 注意：由于我们已经通过API获取指定类别的产品，不需要再过滤类别
-  // 后端已经返回了指定类别的产品
-  // if (selectedCategory.value) {
-  //   filtered = filtered.filter(product => product.categoryId === selectedCategory.value)
-  // }
-
-  // 按搜索查询过滤
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(product => 
-      product.title?.toLowerCase().includes(query) ||
-      product.description?.toLowerCase().includes(query)
-    )
-  }
+  // 由于搜索和过滤都在后端完成，直接对 products.value 进行分页即可
+  const filtered = products.value
 
   // 分页
   const start = (currentPage.value - 1) * itemsPerPage.value
@@ -174,22 +160,8 @@ const filteredProducts = computed(() => {
 })
 
 const totalPages = computed(() => {
-  // 获取过滤后的产品总数
-  let filtered = products.value
-
-  // 注意：由于我们已经通过API获取指定类别的产品，不需要再过滤类别
-  // if (selectedCategory.value) {
-  //   filtered = filtered.filter(product => product.categoryId === selectedCategory.value)
-  // }
-
-  // 按搜索查询过滤
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(product => 
-      product.title?.toLowerCase().includes(query) ||
-      product.description?.toLowerCase().includes(query)
-    )
-  }
+  // 由于搜索和过滤都在后端完成，直接使用 products.value 的长度
+  const filtered = products.value
 
   // 如果没有产品，返回0页
   if (filtered.length === 0) {
@@ -252,8 +224,40 @@ const selectCategory = async (categoryId) => {
   await loadProducts(categoryId)
 }
 
-const handleSearch = () => {
+const handleSearch = async () => {
   currentPage.value = 1
+  
+  // 如果搜索框不为空，调用搜索API
+  if (searchQuery.value.trim()) {
+    try {
+      loading.value = true
+      error.value = null
+      
+      // 搜索时不限定类别，清除类别选择（不高亮任何类别）
+      selectedCategory.value = null
+      
+      const response = await searchProducts(searchQuery.value)
+      
+      if (response.success && response.products) {
+        products.value = response.products
+      } else {
+        products.value = []
+      }
+    } catch (err) {
+      error.value = handleApiError(err)
+      console.error('搜索失败:', err)
+      products.value = []
+    } finally {
+      loading.value = false
+    }
+  } else {
+    // 如果搜索框为空，重新加载当前类别的产品
+    if (selectedCategory.value) {
+      await loadProducts(selectedCategory.value)
+    } else {
+      await loadProducts()
+    }
+  }
 }
 
 const goToPage = (page) => {

@@ -7,6 +7,7 @@ from typing import List, Optional
 from models.category import Category
 from models.product import Product
 from utils.database import get_db
+from sqlalchemy import or_
 
 router = APIRouter()
 
@@ -306,5 +307,124 @@ async def get_product_detail(
         raise HTTPException(
             status_code=500,
             detail=f"获取产品详情失败: {str(e)}"
+        )
+
+
+@router.post("/search/keyword")
+async def search_products(
+    request: Request,
+    db: Session = Depends(get_db)
+    ):
+    """
+    根据关键词搜索产品（模糊查询）
+    
+    请求体参数:
+        keyword (str): 搜索关键词（必填）
+    
+    Returns:
+        dict: 包含成功状态和产品列表
+    
+    Example:
+        POST /api/product/search/keyword
+        
+        Request Body:
+        {
+            "keyword": "天线"
+        }
+        
+        Response:
+        {
+            "success": true,
+            "code": 200,
+            "count": 5,
+            "keyword": "天线",
+            "products": [
+                {
+                    "id": "MLB123456",
+                    "title": "数字电视天线",
+                    "description": "地面数字电视信号放大器",
+                    "img": "产品图片URL",
+                    "selling_price": 89.9,
+                    ...
+                },
+                ...
+            ]
+        }
+    """
+    try:
+        # 获取请求体数据
+        request_data = await request.json()
+        print(f"接收到的搜索请求数据: {request_data}")
+        
+        # 获取搜索关键词
+        keyword = request_data.get('keyword', '').strip()
+        
+        # 验证关键词不为空
+        if not keyword:
+            raise HTTPException(
+                status_code=400,
+                detail="缺少必填字段: keyword"
+            )
+        
+        print(f"接收到的搜索关键词: {keyword}")
+        
+        # 在 products 表的 title 字段中进行模糊查询
+        # 使用 LIKE 查询实现模糊匹配
+        products = db.query(Product).filter(
+            Product.title.like(f'%{keyword}%')
+        ).order_by(Product.created_at.desc()).all()
+        
+        # 转换为字典列表
+        result = []
+        for product in products:
+            # 获取类别名称
+            category = db.query(Category).filter(Category.id == product.category_id).first()
+            result.append({
+                "id": product.id,
+                "title": product.title,
+                "description": product.description,
+                "img": product.img,
+                "product_mlb_thumbnail": product.product_mlb_thumbnail,
+                "category_id": product.category_id,
+                "category_name": category.name if category else None,
+                "supplier_id": product.supplier_id,
+                "shipping_from": product.shipping_from,
+                "weight": product.weight,
+                "dimensions": product.dimensions,
+                "moq": product.moq,
+                "tags": product.tags,
+                "stock_quantity": product.stock_quantity,
+                "reserved_quantity": product.reserved_quantity,
+                "low_stock_threshold": product.low_stock_threshold,
+                "max_order_quantity": product.max_order_quantity,
+                "cost_price": product.cost_price,
+                "selling_price": product.selling_price,
+                "discount_price": product.discount_price,
+                "product_mlb_price": product.product_mlb_price,
+                "roi": product.roi,
+                "created_at": product.created_at.isoformat() if product.created_at else None,
+                "updated_at": product.updated_at.isoformat() if product.updated_at else None
+            })
+        
+        print(f"✅ 搜索关键词 '{keyword}' 找到 {len(result)} 个产品")
+        
+        return {
+            "success": True,
+            "code": 200,
+            "count": len(result),
+            "keyword": keyword,
+            "products": result
+        }
+        
+    except HTTPException as he:
+        # 重新抛出HTTP异常
+        raise he
+    except Exception as e:
+        print(f"❌ 搜索产品失败: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"搜索产品失败: {str(e)}"
         )
 
