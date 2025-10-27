@@ -21,6 +21,12 @@
       <!-- 待审核订单页面 -->
       <OrderReview v-if="currentTab === 'pending'" />
       
+      <!-- 已处理订单页面 -->
+      <ProcessedOrders v-else-if="currentTab === 'processed'" />
+      
+      <!-- 产品管理页面 -->
+      <ProductManagement v-else-if="currentTab === 'products'" />
+      
       <!-- 其他页面 - 暂无数据 -->
       <div v-else class="content-wrapper">
         <!-- 页面标题 -->
@@ -44,6 +50,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 import OrderReview from './OrderReview.vue'
+import ProcessedOrders from './ProcessedOrders.vue'
+import ProductManagement from './ProductManagement.vue'
 
 // 响应式数据
 const currentTab = ref('pending')

@@ -17,7 +17,7 @@ class Product(Base):
     title = Column(String(500), nullable=False, comment="产品标题")
     description = Column(Text, nullable=True, comment="产品详细描述")
     img = Column(String(500), nullable=True, comment="产品主图URL")
-    product_mlb_thumbnail = Column(JSON, nullable=True, comment="MLB主图缩略图URL列表")
+    product_mlb_thumbnail = Column(JSON, nullable=True, comment="主图缩略图URL列表")
     
     # 外键关联（必填，级联删除）
     category_id = Column(

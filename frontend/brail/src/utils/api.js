@@ -1,7 +1,7 @@
 // API工具函数
 const API_BASE_URL = 'http://localhost:8000/api'
 
-// 环境检查函数 - 只检查 NODE_ENV
+// 环境检查函数 - 检查是否为开发/测试环境
 const isDevelopment = () => {
   return process.env.NODE_ENV === 'real'
 }
@@ -64,60 +64,60 @@ export const getProductDetail = async (productId) => {
       // 模拟网络延迟
       await new Promise(resolve => setTimeout(resolve, 300))
       
-      return {
+    return {
         success: true,
         code: 200,
         product: {
-          id: productId,
-          name: '数字电视天线 4K 1080P',
-          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
-          category: '电子产品',
-          price: 13.63,
-          originalPrice: 15.99,
-          images: [
-            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片1',
-            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片2',
-            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片3'
-          ],
-          variations: [
-            {
+      id: productId,
+      name: '数字电视天线 4K 1080P',
+      description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+      category: '电子产品',
+      price: 13.63,
+      originalPrice: 15.99,
+      images: [
+        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片1',
+        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片2',
+        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片3'
+      ],
+      variations: [
+        {
               id: 'var-001',
               name: '3米线缆版本',
               image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=3米',
-              price: 13.63,
+          price: 13.63,
               specification: '3米线缆长度版本',
               stock_quantity: 150
-            },
-            {
+        },
+        {
               id: 'var-002',
               name: '5米线缆版本',
-              image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=5米',
+          image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=5米',
               price: 14.99,
               specification: '5米线缆长度版本',
               stock_quantity: 120
-            }
-          ],
-          moq: 50,
-          priceRanges: [
-            { min: 50, max: 499, price: 13.63 },
-            { min: 500, max: 4999, price: 12.11 },
-            { min: 5000, max: null, price: 9.09 }
-          ],
-          supplier: {
-            id: '3066544290efeec',
-            name: '供应商名称',
-            rating: 4.8,
-            reviews: 1250
-          },
-          sales: 600,
-          rating: 4.5,
-          reviews: 89,
-          specifications: {
-            '类型': '数字电视天线',
-            '频率': 'VHF/UHF',
-            '增益': '32dB',
-            '功率': '5V DC',
-            '线缆长度': '3米/5米'
+        }
+      ],
+      moq: 50,
+      priceRanges: [
+        { min: 50, max: 499, price: 13.63 },
+        { min: 500, max: 4999, price: 12.11 },
+        { min: 5000, max: null, price: 9.09 }
+      ],
+      supplier: {
+        id: '3066544290efeec',
+        name: '供应商名称',
+        rating: 4.8,
+        reviews: 1250
+      },
+      sales: 600,
+      rating: 4.5,
+      reviews: 89,
+      specifications: {
+        '类型': '数字电视天线',
+        '频率': 'VHF/UHF',
+        '增益': '32dB',
+        '功率': '5V DC',
+        '线缆长度': '3米/5米'
           }
         }
       }
@@ -162,7 +162,7 @@ export const getProductsByCategory = async (categoryId = null) => {
     
     // 如果直接返回数组
     if (Array.isArray(response)) {
-      return response
+    return response
     }
     
     // 默认返回空数组
@@ -232,6 +232,164 @@ export const searchProducts = async (keyword) => {
         count: 0,
         keyword: keyword,
         products: []
+      }
+    }
+  }
+}
+
+export const getProductTags = async () => {
+  try {
+    // 测试环境：返回模拟标签数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 从 mock-data.json 导入标签数据
+      const { productTagsData } = await import('../../tests/fixtures/mock-data.json')
+      const mockTags = productTagsData.tags || []
+      
+      return {
+        success: true,
+        code: 200,
+        count: mockTags.length,
+        tags: mockTags
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/product/tags')
+    return response
+  } catch (error) {
+    console.error('Failed to get product tags:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '获取产品标签失败',
+        count: 0,
+        tags: []
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '获取产品标签失败，请稍后重试',
+        count: 0,
+        tags: []
+      }
+    }
+  }
+}
+
+export const getSuppliers = async () => {
+  try {
+    // 测试环境：返回模拟供应商数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 从 mock-data.json 导入供应商数据，并转换为数据库格式
+      const { suppliers } = await import('../../tests/fixtures/mock-data.json')
+      const mockSuppliers = (suppliers || []).map(supplier => ({
+        id: supplier.id,
+        name: supplier.company_name || supplier.name,
+        location: supplier.location,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      }))
+      
+      return {
+        success: true,
+        code: 200,
+        count: mockSuppliers.length,
+        suppliers: mockSuppliers
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/product/supplier')
+    return response
+  } catch (error) {
+    console.error('Failed to get suppliers:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '获取供应商信息失败',
+        count: 0,
+        suppliers: []
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '获取供应商信息失败，请稍后重试',
+        count: 0,
+        suppliers: []
+      }
+    }
+  }
+}
+
+export const createProduct = async (productData) => {
+  try {
+    // 测试环境：返回模拟成功响应
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      // 模拟产品创建成功
+      const mockProduct = {
+        id: `MLB${Date.now().toString(36).toUpperCase()}`,
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        category_id: productData.category_id,
+        supplier_id: productData.supplier_id,
+        stock_quantity: productData.stock,
+        img: productData.main_image_url || '',
+        product_mlb_thumbnail: productData.thumbnail_urls || [],
+        tags: productData.tags || [],
+        variations: productData.variations || [],
+        created_at: new Date().toISOString()
+      }
+      
+      return {
+        success: true,
+        code: 200,
+        message: '产品创建成功',
+        product: mockProduct
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/product/create', {
+      method: 'POST',
+      body: JSON.stringify(productData)
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to create product:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '创建产品失败'
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '创建产品失败，请稍后重试'
       }
     }
   }
@@ -464,48 +622,48 @@ export const getCartData = async (cartId) => {
       await new Promise(resolve => setTimeout(resolve, 300))
       
       // 返回模拟购物车数据
-      return {
-        items: [
-          {
-            id: 1,
-            name: '数字电视天线 4K 1080P',
-            description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
-            specification: '3米线缆',
-            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=天线',
-            unitPrice: 13.63,
-            totalPrice: 681.50,
-            quantity: 50,
-            moq: 50
-          },
-          {
-            id: 2,
-            name: '无线蓝牙耳机',
-            description: '高品质无线蓝牙耳机，支持降噪功能',
-            specification: '黑色',
-            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=耳机',
-            unitPrice: 25.99,
-            totalPrice: 1299.50,
-            quantity: 50,
-            moq: 50
-          },
-          {
-            id: 3,
-            name: '智能手表',
-            description: '多功能智能手表，支持健康监测',
-            specification: '银色',
-            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=手表',
-            unitPrice: 89.99,
-            totalPrice: 4499.50,
-            quantity: 50,
-            moq: 50
-          }
-        ],
-        summary: {
-          totalAmount: 6480.50,
-          minInvestment: 10000.00,
-          remainingAmount: 3519.50,
-          progressPercentage: 64.8,
-          shippingNote: '免费配送'
+    return {
+      items: [
+        {
+          id: 1,
+          name: '数字电视天线 4K 1080P',
+          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+          specification: '3米线缆',
+          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=天线',
+          unitPrice: 13.63,
+          totalPrice: 681.50,
+          quantity: 50,
+          moq: 50
+        },
+        {
+          id: 2,
+          name: '无线蓝牙耳机',
+          description: '高品质无线蓝牙耳机，支持降噪功能',
+          specification: '黑色',
+          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=耳机',
+          unitPrice: 25.99,
+          totalPrice: 1299.50,
+          quantity: 50,
+          moq: 50
+        },
+        {
+          id: 3,
+          name: '智能手表',
+          description: '多功能智能手表，支持健康监测',
+          specification: '银色',
+          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=手表',
+          unitPrice: 89.99,
+          totalPrice: 4499.50,
+          quantity: 50,
+          moq: 50
+        }
+      ],
+      summary: {
+        totalAmount: 6480.50,
+        minInvestment: 10000.00,
+        remainingAmount: 3519.50,
+        progressPercentage: 64.8,
+        shippingNote: '免费配送'
         }
       }
     }
@@ -775,6 +933,34 @@ export const rejectOrder = async (orderId, userId, reason = '') => {
   }
 }
 
+export const getProcessedOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('📋 [开发模式] 使用模拟数据获取已处理订单')
+      
+      // 从 mock-data.json 导入管理员订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockResponse = orderTestData.adminProcessedOrdersResponse
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      return mockResponse
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/admin/processed', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get processed orders:', error)
+    throw error
+  }
+}
+
 // 错误处理
 export const handleApiError = (error) => {
   console.error('API Error:', error)
@@ -795,6 +981,9 @@ export default {
   getProductsByCategory,
   getProductDetail,
   searchProducts,
+  getProductTags,
+  getSuppliers,
+  createProduct,
   loginUser,
   registerUser,
   getCartId,
@@ -806,6 +995,7 @@ export default {
   createOrder,
   getOrderList,
   getPendingOrders,
+  getProcessedOrders,
   approveOrder,
   rejectOrder,
   handleApiError

@@ -989,6 +989,211 @@
     "adminRejectOrderResponse": {
       "success": true,
       "message": "订单已拒绝"
+    },
+    "adminProcessedOrdersResponse": {
+      "success": true,
+      "orders": [
+        {
+          "id": "ORD-AP001",
+          "orderDate": "2024-10-25T14:30:00",
+          "statusStep": 2,
+          "statusText": "生产和准备发货",
+          "statusDetailText": "订单已批准，正在生产",
+          "status": "Processing",
+          "statusClass": "status-processing",
+          "customer_name": "王明",
+          "total_amount": 1499.70,
+          "shipping": {
+            "street": "深圳市南山区科技园北路15号",
+            "city": "深圳",
+            "zipcode": "518057"
+          },
+          "payment_method": "银行转账",
+          "notes": "加急订单",
+          "items": [
+            {
+              "id": 101,
+              "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+              "productName": "Relógio Parede Antigo Madeira Nobre",
+              "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+              "quantity": 5,
+              "price": 299.90
+            }
+          ]
+        },
+        {
+          "id": "ORD-PR001",
+          "orderDate": "2024-10-24T09:15:00",
+          "statusStep": 2,
+          "statusText": "生产和准备发货",
+          "statusDetailText": "正在生产中",
+          "status": "Processing",
+          "statusClass": "status-processing",
+          "customer_name": "陈静",
+          "total_amount": 899.70,
+          "shipping": {
+            "street": "成都市高新区天府大道中段1366号",
+            "city": "成都",
+            "zipcode": "610041"
+          },
+          "payment_method": "支付宝",
+          "notes": "",
+          "items": [
+            {
+              "id": 102,
+              "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+              "productName": "Relógio Parede Antigo Madeira Nobre",
+              "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+              "quantity": 3,
+              "price": 299.90
+            }
+          ]
+        },
+        {
+          "id": "ORD-SH001",
+          "orderDate": "2024-10-22T16:45:00",
+          "statusStep": 3,
+          "statusText": "运输和到达",
+          "statusDetailText": "已发货，运输中",
+          "status": "Shipped",
+          "statusClass": "status-shipped",
+          "customer_name": "刘芳",
+          "total_amount": 599.80,
+          "shipping": {
+            "street": "杭州市西湖区文一西路998号",
+            "city": "杭州",
+            "zipcode": "310012"
+          },
+          "payment_method": "微信支付",
+          "notes": "请确保包装完好",
+          "items": [
+            {
+              "id": 103,
+              "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+              "productName": "Relógio Parede Antigo Madeira Nobre",
+              "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+              "quantity": 2,
+              "price": 299.90
+            }
+          ]
+        },
+        {
+          "id": "ORD-DL001",
+          "orderDate": "2024-10-20T11:20:00",
+          "statusStep": 4,
+          "statusText": "清关和交付",
+          "statusDetailText": "已送达",
+          "status": "Delivered",
+          "statusClass": "status-delivered",
+          "customer_name": "赵强",
+          "total_amount": 2999.00,
+          "shipping": {
+            "street": "南京市鼓楼区中山北路200号",
+            "city": "南京",
+            "zipcode": "210008"
+          },
+          "payment_method": "信用卡",
+          "notes": "已完成交付",
+          "items": [
+            {
+              "id": 104,
+              "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+              "productName": "Relógio Parede Antigo Madeira Nobre",
+              "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+              "quantity": 10,
+              "price": 299.90
+            }
+          ]
+        },
+        {
+          "id": "ORD-RJ001",
+          "orderDate": "2024-10-19T08:30:00",
+          "statusStep": 0,
+          "statusText": "订单已拒绝",
+          "statusDetailText": "库存不足",
+          "status": "Rejected",
+          "statusClass": "status-rejected",
+          "customer_name": "孙磊",
+          "total_amount": 1799.40,
+          "shipping": {
+            "street": "武汉市洪山区珞喻路1037号",
+            "city": "武汉",
+            "zipcode": "430074"
+          },
+          "payment_method": "银行转账",
+          "notes": "拒绝原因：库存不足",
+          "items": [
+            {
+              "id": 105,
+              "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+              "productName": "Relógio Parede Antigo Madeira Nobre",
+              "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+              "quantity": 6,
+              "price": 299.90
+            }
+          ]
+        }
+      ]
     }
+  },
+  "productTagsData": {
+    "tags": [
+      {
+        "id": "tag-001",
+        "name": "New Arrival",
+        "display_name": "新品上市",
+        "color": "#10b981",
+        "description": "最新上架的产品"
+      },
+      {
+        "id": "tag-002",
+        "name": "On Sale",
+        "display_name": "特价促销",
+        "color": "#ef4444",
+        "description": "正在促销的产品"
+      },
+      {
+        "id": "tag-003",
+        "name": "Best Seller",
+        "display_name": "热销商品",
+        "color": "#f59e0b",
+        "description": "销量最好的产品"
+      },
+      {
+        "id": "tag-004",
+        "name": "Featured",
+        "display_name": "精选推荐",
+        "color": "#8b5cf6",
+        "description": "精选推荐的产品"
+      },
+      {
+        "id": "tag-005",
+        "name": "Limited Edition",
+        "display_name": "限量版",
+        "color": "#ec4899",
+        "description": "限量版产品"
+      },
+      {
+        "id": "tag-006",
+        "name": "Premium",
+        "display_name": "高端产品",
+        "color": "#6366f1",
+        "description": "高端品质产品"
+      },
+      {
+        "id": "tag-007",
+        "name": "Eco Friendly",
+        "display_name": "环保产品",
+        "color": "#22c55e",
+        "description": "环保友好产品"
+      },
+      {
+        "id": "tag-008",
+        "name": "Fast Shipping",
+        "display_name": "快速发货",
+        "color": "#06b6d4",
+        "description": "支持快速发货"
+      }
+    ]
   }
 }
