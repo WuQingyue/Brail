@@ -170,7 +170,8 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { getProductDetail } from '../../utils/api.js'
+import { getProductDetail, addToCart as addToCartApi, getCartId } from '../../utils/api.js'
+import { useUserStore } from '../../stores/user.js'
 
 // Props
 const props = defineProps({
@@ -333,14 +334,52 @@ const getSelectedQuantity = () => {
   return product.value?.moq || 50
 }
 
-const addToCart = () => {
-  if (selectedVariation.value) {
-    const cartItem = {
-      product: product.value,
-      variation: selectedVariation.value,
-      quantity: getVariationQuantity(selectedVariation.value.id)
+const addToCart = async () => {
+  try {
+    // 获取用户信息
+    const userStore = useUserStore()
+    const userId = userStore.getUserId() // 使用 userStore 的 getUserId() 方法
+    
+    console.log('🔍 当前用户ID:', userId)
+    console.log('🔍 用户登录状态:', userStore.isLoggedIn)
+    console.log('🔍 用户信息:', userStore.user)
+    
+    if (!userId) {
+      alert('请先登录')
+      return
     }
-    emit('add-to-cart', cartItem)
+    
+    if (!product.value) {
+      alert('产品信息不存在')
+      return
+    }
+    
+    // 获取购物车ID
+    const cartId = await getCartId(userId)
+    
+    // 计算要添加的数量
+    let quantity = product.value.moq || 50
+    
+    // 如果有选中的变体，使用变体的数量
+    if (selectedVariation.value) {
+      quantity = getVariationQuantity(selectedVariation.value.id)
+    }
+    
+    // 调用后端API加入购物车
+    const response = await addToCartApi(cartId, props.productId, quantity)
+    
+    if (response.success) {
+      alert('商品已成功加入购物车！')
+      // 触发事件通知父组件
+      emit('add-to-cart', {
+        product: product.value,
+        variation: selectedVariation.value,
+        quantity: quantity
+      })
+    }
+  } catch (error) {
+    console.error('❌ 加入购物车失败:', error)
+    alert('加入购物车失败，请重试')
   }
 }
 

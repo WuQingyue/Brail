@@ -1,7 +1,7 @@
 """
 购物车项目表模型定义
 """
-from sqlalchemy import Column, Integer, DateTime, ForeignKey, Numeric
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Numeric
 from sqlalchemy.sql import func
 from utils.database import Base
 
@@ -16,7 +16,7 @@ class CartItem(Base):
     cart_id = Column(Integer, ForeignKey("carts.id"), nullable=False, comment="购物车ID")
     
     # 商品信息
-    product_id = Column(Integer, nullable=False, comment="商品ID")
+    product_id = Column(String(50), nullable=False, comment="商品ID")
     
     # 数量和价格
     quantity = Column(Integer, nullable=False, comment="数量")

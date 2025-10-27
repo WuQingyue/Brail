@@ -1,4 +1,61 @@
 {
+  "users": [
+    {
+      "id": 1,
+      "name": "广东测试科技有限公司",
+      "email": "test@example.com",
+      "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "cnpj": "12345678000195",
+      "employee_count": "50",
+      "monthly_revenue": "100000",
+      "phone": "11999999999",
+      "role": "user"
+    },
+    {
+      "id": 2,
+      "name": "上海星辉贸易有限公司",
+      "email": "admin@example.com",
+      "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "cnpj": "98765432000123",
+      "employee_count": "100",
+      "monthly_revenue": "500000",
+      "phone": "13888888888",
+      "role": "admin"
+    },
+    {
+      "id": 3,
+      "name": "浙江华联电子有限公司",
+      "email": "user1@example.com",
+      "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "cnpj": "45678912000156",
+      "employee_count": "200",
+      "monthly_revenue": "1000000",
+      "phone": "15777777777",
+      "role": "user"
+    },
+    {
+      "id": 4,
+      "name": "北京创新商贸有限公司",
+      "email": "user2@example.com",
+      "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "cnpj": "78912345000178",
+      "employee_count": "75",
+      "monthly_revenue": "300000",
+      "phone": "13666666666",
+      "role": "user"
+    },
+    {
+      "id": 5,
+      "name": "深圳恒达物流有限公司",
+      "email": "user3@example.com",
+      "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "cnpj": "23456789000134",
+      "employee_count": "150",
+      "monthly_revenue": "800000",
+      "phone": "15555555555",
+      "role": "user"
+    }
+  ],
   "categories": [
     {
       "id": "MLB5672",

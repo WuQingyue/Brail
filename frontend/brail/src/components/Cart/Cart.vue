@@ -273,7 +273,7 @@ const calculateCartSummary = () => {
 
 const removeItem = async (item) => {
   try {
-    await removeCartItem(cartId.value, item.id)
+    await removeCartItem(item.id)
     cartItems.value = cartItems.value.filter(i => i.id !== item.id)
     
     // 重新计算购物车摘要

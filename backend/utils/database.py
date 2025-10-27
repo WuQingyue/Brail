@@ -105,6 +105,69 @@ def create_database(database_name="brail_db", charset="utf8mb4", collate="utf8mb
         return False
 
 
+def init_users_data():
+    """初始化 users 表数据（如果 mock-data.json 中有数据）"""
+    try:
+        import json
+        import os
+        from models.user import User
+        
+        # 检查 mock-data.json 文件是否存在
+        mock_data_path = 'fixtures/mock-data.json'
+        if not os.path.exists(mock_data_path):
+            print("⚠️  未找到 fixtures/mock-data.json 文件，跳过用户数据初始化")
+            return
+        
+        # 读取 mock 数据
+        with open(mock_data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        users_data = data.get('users', [])
+        
+        if not users_data:
+            print("⚠️  mock-data.json 中没有 users 数据，跳过初始化")
+            return
+        
+        # 获取数据库会话
+        db = SessionLocal()
+        
+        try:
+            # 检查是否已有用户数据
+            existing_count = db.query(User).count()
+            
+            if existing_count > 0:
+                print(f"✅ 用户数据已存在 ({existing_count} 个用户)，跳过初始化")
+                return
+            
+            # 插入用户数据
+            print(f"💾 正在初始化 {len(users_data)} 个用户...")
+            for user_data in users_data:
+                user = User(
+                    id=user_data['id'],
+                    name=user_data['name'],
+                    email=user_data['email'],
+                    password=user_data['password'],
+                    cnpj=user_data.get('cnpj'),
+                    employee_count=user_data.get('employee_count'),
+                    monthly_revenue=user_data.get('monthly_revenue'),
+                    phone=user_data.get('phone'),
+                    role=user_data.get('role', 'user')
+                )
+                db.add(user)
+            
+            db.commit()
+            print(f"✅ 成功初始化 {len(users_data)} 个用户")
+            
+        except Exception as e:
+            print(f"❌ 初始化用户数据失败: {str(e)}")
+            db.rollback()
+        finally:
+            db.close()
+            
+    except Exception as e:
+        print(f"❌ 读取用户数据失败: {str(e)}")
+
+
 def init_categories_data():
     """初始化 categories 表数据（如果 mock-data.json 中有数据）"""
     try:
@@ -284,7 +347,7 @@ def init_products_data():
                 db.add(product)
             
             db.commit()
-            print(f"✅ 成功初始化 {len(products_data)} 个产品")
+            print(f"✅ 成功初始化 {len(products_data)} 个产品") 
             
         except Exception as e:
             print(f"❌ 初始化产品数据失败: {str(e)}")
@@ -297,7 +360,7 @@ def init_products_data():
 
 
 def create_tables():
-    """创建所有数据库表"""
+    """创建所有数据库表""" 
     try:
         # 导入所有模型以确保它们被注册到 Base.metadata
         from models import User, Category, Cart, CartItem, Supplier, Product  # 导入所有模型
@@ -305,6 +368,9 @@ def create_tables():
         # 创建所有表
         Base.metadata.create_all(bind=engine)
         print("✅ 数据库表创建成功")
+        
+        # 初始化 users 数据（如果有）
+        init_users_data()
         
         # 初始化 categories 数据（如果有）
         init_categories_data()

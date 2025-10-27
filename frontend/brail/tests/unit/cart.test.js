@@ -455,7 +455,7 @@ describe('购物车组件测试', () => {
       expect(wrapper.vm.cartItems.length).toBe(initialItemCount - 1)
       expect(wrapper.vm.cartItems.find(item => item.id === itemToRemove.id)).toBeUndefined()
       // 验证API被调用
-      expect(removeCartItem).toHaveBeenCalledWith(1, itemToRemove.id)
+      expect(removeCartItem).toHaveBeenCalledWith(itemToRemove.id)
     })
 
     it('应该能够提交订单', async () => {

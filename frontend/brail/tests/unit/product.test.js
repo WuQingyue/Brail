@@ -1,7 +1,26 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi, beforeAll } from 'vitest'
 import { mount } from '@vue/test-utils'
 import ProductDetail from '../../src/components/Product/ProductDetail.vue'
 import mockData from '../fixtures/mock-data.json'
+
+// Mock useUserStore
+vi.mock('../../src/stores/user.js', () => ({
+  useUserStore: () => ({
+    getUserId: () => 1,
+    isLoggedIn: true,
+    user: { id: 1, name: '测试用户', email: 'test@example.com' }
+  })
+}))
+
+// Mock API functions
+vi.mock('../../src/utils/api.js', async () => {
+  const actual = await vi.importActual('../../src/utils/api.js')
+  return {
+    ...actual,
+    getCartId: vi.fn().mockResolvedValue(1),
+    addToCart: vi.fn().mockResolvedValue({ success: true })
+  }
+})
 
 describe('产品详情页测试', () => {
   let wrapper
@@ -513,6 +532,9 @@ describe('产品详情页测试', () => {
     })
 
     it('应该能够添加到购物车', async () => {
+      // Mock window.alert
+      const mockAlert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+      
       wrapper = mount(ProductDetail, {
         props: {
           productId: 1
@@ -531,11 +553,20 @@ describe('产品详情页测试', () => {
       const addToCartButton = wrapper.find('.add-to-cart-btn')
       await addToCartButton.trigger('click')
       
-      // 检查是否触发了添加到购物车事件
-      expect(wrapper.emitted('add-to-cart')).toBeTruthy()
+      // 等待异步操作完成
+      await wrapper.vm.$nextTick()
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // 检查是否触发了alert（说明成功加入购物车）
+      expect(mockAlert).toHaveBeenCalledWith('商品已成功加入购物车！')
+      
+      mockAlert.mockRestore()
     })
 
     it('应该使用选中变体的数量添加到购物车', async () => {
+      // Mock window.alert
+      const mockAlert = vi.spyOn(window, 'alert').mockImplementation(() => {})
+      
       wrapper = mount(ProductDetail, {
         props: {
           productId: 1
@@ -545,14 +576,27 @@ describe('产品详情页测试', () => {
       wrapper.vm.product = mockProductDetail
       wrapper.vm.selectedVariation = mockProductDetail.variations[0]
       wrapper.vm.variationQuantities = { [mockProductDetail.variations[0].id]: 75 }
+      wrapper.vm.loading = false
+      wrapper.vm.error = null
       await wrapper.vm.$nextTick()
       
-      wrapper.vm.addToCart()
+      // 调用 addToCart 方法并等待完成
+      await wrapper.vm.addToCart()
+      await wrapper.vm.$nextTick()
       
+      // 等待异步操作完成
+      await new Promise(resolve => setTimeout(resolve, 100))
+      
+      // 检查alert是否被调用（说明成功加入购物车）
+      expect(mockAlert).toHaveBeenCalledWith('商品已成功加入购物车！')
+      
+      // 验证触发的事件
       expect(wrapper.emitted('add-to-cart')).toBeTruthy()
       const cartItem = wrapper.emitted('add-to-cart')[0][0]
       expect(cartItem.quantity).toBe(75)
       expect(cartItem.variation).toStrictEqual(mockProductDetail.variations[0])
+      
+      mockAlert.mockRestore()
     })
 
     it('没有选中变体时，不应该能够添加到购物车', async () => {

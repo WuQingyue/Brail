@@ -371,7 +371,20 @@ export const registerUser = async (userData) => {
 // 购物车相关API
 export const getCartId = async (userId) => {
   try {
-    const response = await request(`/cart/getCartId/${userId}`)
+    // 开发环境：返回模拟数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 返回固定的购物车ID
+      return 1
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/cart/getCartId', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
     return response.cartId
   } catch (error) {
     console.error('Failed to fetch cart ID:', error)
@@ -382,53 +395,68 @@ export const getCartId = async (userId) => {
 
 export const getCartData = async (cartId) => {
   try {
+    // 开发环境：返回模拟数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 返回模拟购物车数据
+      return {
+        items: [
+          {
+            id: 1,
+            name: '数字电视天线 4K 1080P',
+            description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+            specification: '3米线缆',
+            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=天线',
+            unitPrice: 13.63,
+            totalPrice: 681.50,
+            quantity: 50,
+            moq: 50
+          },
+          {
+            id: 2,
+            name: '无线蓝牙耳机',
+            description: '高品质无线蓝牙耳机，支持降噪功能',
+            specification: '黑色',
+            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=耳机',
+            unitPrice: 25.99,
+            totalPrice: 1299.50,
+            quantity: 50,
+            moq: 50
+          },
+          {
+            id: 3,
+            name: '智能手表',
+            description: '多功能智能手表，支持健康监测',
+            specification: '银色',
+            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=手表',
+            unitPrice: 89.99,
+            totalPrice: 4499.50,
+            quantity: 50,
+            moq: 50
+          }
+        ],
+        summary: {
+          totalAmount: 6480.50,
+          minInvestment: 10000.00,
+          remainingAmount: 3519.50,
+          progressPercentage: 64.8,
+          shippingNote: '免费配送'
+        }
+      }
+    }
+    
+    // 生产环境：调用真实API
     const response = await request(`/cart/get_cart_data/${cartId}`)
     return response
   } catch (error) {
     console.error('Failed to fetch cart data:', error)
     // 如果API调用失败，返回默认数据
     return {
-      items: [
-        {
-          id: 1,
-          name: '数字电视天线 4K 1080P',
-          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
-          specification: '3米线缆',
-          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=天线',
-          unitPrice: 13.63,
-          totalPrice: 681.50,
-          quantity: 50,
-          moq: 50
-        },
-        {
-          id: 2,
-          name: '无线蓝牙耳机',
-          description: '高品质无线蓝牙耳机，支持降噪功能',
-          specification: '黑色',
-          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=耳机',
-          unitPrice: 25.99,
-          totalPrice: 1299.50,
-          quantity: 50,
-          moq: 50
-        },
-        {
-          id: 3,
-          name: '智能手表',
-          description: '多功能智能手表，支持健康监测',
-          specification: '银色',
-          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=手表',
-          unitPrice: 89.99,
-          totalPrice: 4499.50,
-          quantity: 50,
-          moq: 50
-        }
-      ],
+      items: [],
       summary: {
-        totalAmount: 6480.50,
-        minInvestment: 10000.00,
-        remainingAmount: 3519.50,
-        progressPercentage: 64.8,
-        shippingNote: '免费配送'
+        totalAmount: 0
       }
     }
   }
@@ -436,6 +464,20 @@ export const getCartData = async (cartId) => {
 
 export const updateCartItem = async (cartId, itemId, quantity) => {
   try {
+    // 开发环境：直接返回成功
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        message: '数量更新成功',
+        item: {
+          id: itemId,
+          quantity: quantity
+        }
+      }
+    }
+    
+    // 生产环境：调用真实API
     const response = await request(`/cart/update_item/${cartId}/${itemId}`, {
       method: 'PUT',
       body: JSON.stringify({ quantity })
@@ -447,15 +489,57 @@ export const updateCartItem = async (cartId, itemId, quantity) => {
   }
 }
 
-export const removeCartItem = async (cartId, itemId) => {
+export const removeCartItem = async (itemId) => {
   try {
-    const response = await request(`/cart/${cartId}`, {
+    // 开发环境：直接返回成功
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        message: '商品删除成功'
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/cart/item', {
       method: 'DELETE',
-      body: JSON.stringify({ itemId })
+      body: JSON.stringify({ item_id: itemId })
     })
     return response
   } catch (error) {
     console.error('Failed to remove cart item:', error)
+    throw error
+  }
+}
+
+export const addToCart = async (cartId, productId, quantity) => {
+  try {
+    // 开发环境：返回模拟成功响应 
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        message: '商品已加入购物车',
+        item: {
+          id: Date.now(), // 模拟新的item ID
+          product_id: productId,
+          quantity: quantity
+        }
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/cart/add_item', {
+      method: 'POST',
+      body: JSON.stringify({
+        cart_id: cartId,
+        product_id: productId,
+        quantity: quantity
+      })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to add to cart:', error)
     throw error
   }
 }
@@ -545,6 +629,7 @@ export default {
   registerUser,
   getCartId,
   getCartData,
+  addToCart,
   updateCartItem,
   removeCartItem,
   getOrderId,
