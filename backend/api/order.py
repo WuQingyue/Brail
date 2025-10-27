@@ -168,3 +168,187 @@ async def get_order_list(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"获取订单列表失败: {str(e)}")
 
+
+@router.post("/admin/pending")
+async def get_pending_orders(
+    request: Request,
+    db: Session = Depends(get_db)
+    ):
+    """
+    获取待审核的订单列表（管理员使用）
+    
+    请求体参数:
+        user_id (int): 用户ID（必填，用于验证管理员权限）
+    
+    Returns:
+        dict: 包含待审核订单列表
+    """
+    try:
+        # 从请求中获取JSON数据
+        request_data = await request.json()
+        
+        # 验证必填参数
+        if not request_data.get('user_id'):
+            raise HTTPException(status_code=400, detail="user_id 参数不能为空")
+        
+        # 查询状态为 "Pending" 且状态步骤为 1 的订单
+        orders = db.query(Order).filter(
+            Order.status == "Pending",
+            Order.status_step == 1
+        ).order_by(Order.order_date.desc()).all()
+        
+        result = []
+        for order in orders:
+            # 获取订单商品
+            items = db.query(OrderItem).filter(OrderItem.order_id == order.id).all()
+            
+            order_data = {
+                "id": order.id,
+                "status": order.status,
+                "status_step": order.status_step,
+                "status_text": order.status_text,
+                "status_detail_text": order.status_detail_text,
+                "customer_name": order.customer_name,
+                "total_amount": float(order.total_amount),
+                "shipping": {
+                    "street": order.shipping_street,
+                    "city": order.shipping_city,
+                    "zipcode": order.shipping_zipcode
+                },
+                "payment_method": order.payment_method,
+                "notes": order.notes,
+                "orderDate": order.order_date.isoformat() if order.order_date else None,
+                "statusStep": order.status_step,
+                "statusText": order.status_text,
+                "statusDetailText": order.status_detail_text,
+                "statusClass": f"status-{order.status.lower()}",
+                "items": [
+                    {
+                        "id": item.id,
+                        "product_id": item.product_id,
+                        "productName": item.product_name,
+                        "image": item.product_image,
+                        "quantity": item.quantity,
+                        "price": float(item.price)
+                    }
+                    for item in items
+                ]
+            }
+            result.append(order_data)
+        
+        return {
+            "success": True,
+            "orders": result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取待审核订单列表失败: {str(e)}")
+
+
+@router.post("/admin/approve")
+async def approve_order(
+    request: Request,
+    db: Session = Depends(get_db)
+    ):
+    """
+    批准订单（管理员使用）
+    
+    请求体参数:
+        order_id (str): 订单ID（必填）
+        user_id (int): 用户ID（必填，用于验证管理员权限）
+    
+    Returns:
+        dict: 包含成功状态
+    """
+    try:
+        # 从请求中获取JSON数据
+        request_data = await request.json()
+        
+        # 验证必填参数
+        if not request_data.get('order_id'):
+            raise HTTPException(status_code=400, detail="order_id 参数不能为空")
+        if not request_data.get('user_id'):
+            raise HTTPException(status_code=400, detail="user_id 参数不能为空")
+        
+        order_id = request_data.get('order_id')
+        
+        # 查询订单
+        order = db.query(Order).filter(Order.id == order_id).first()
+        
+        if not order:
+            raise HTTPException(status_code=404, detail="订单不存在")
+        
+        # 更新订单状态为已批准
+        order.status = "Approved"
+        order.status_step = 2
+        order.status_text = "生产和准备发货"
+        order.status_detail_text = "订单已批准，准备生产"
+        
+        db.commit()
+        
+        return {
+            "success": True,
+            "message": "订单已批准"
+        }
+        
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"批准订单失败: {str(e)}")
+
+
+@router.post("/admin/reject")
+async def reject_order(
+    request: Request,
+    db: Session = Depends(get_db)
+    ):
+    """
+    拒绝订单（管理员使用）
+    
+    请求体参数:
+        order_id (str): 订单ID（必填）
+        user_id (int): 用户ID（必填，用于验证管理员权限）
+        reason (str): 拒绝原因（可选）
+    
+    Returns:
+        dict: 包含成功状态
+    """
+    try:
+        # 从请求中获取JSON数据
+        request_data = await request.json()
+        
+        # 验证必填参数
+        if not request_data.get('order_id'):
+            raise HTTPException(status_code=400, detail="order_id 参数不能为空")
+        if not request_data.get('user_id'):
+            raise HTTPException(status_code=400, detail="user_id 参数不能为空")
+        
+        order_id = request_data.get('order_id')
+        reason = request_data.get('reason', '未提供拒绝原因')
+        
+        # 查询订单
+        order = db.query(Order).filter(Order.id == order_id).first()
+        
+        if not order:
+            raise HTTPException(status_code=404, detail="订单不存在")
+        
+        # 更新订单状态为已拒绝
+        order.status = "Rejected"
+        order.status_step = 0
+        order.status_text = "订单已拒绝"
+        order.status_detail_text = f"拒绝原因: {reason}"
+        
+        db.commit()
+        
+        return {
+            "success": True,
+            "message": "订单已拒绝"
+        }
+        
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"拒绝订单失败: {str(e)}")
+

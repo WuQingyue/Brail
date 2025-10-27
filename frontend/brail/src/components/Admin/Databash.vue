@@ -18,17 +18,23 @@
 
     <!-- 右侧主内容区域 -->
     <div class="main-content">
-      <!-- 页面标题 -->
-      <div class="page-header">
-        <h1 class="page-title">{{ currentTabData.title }}</h1>
-      </div>
+      <!-- 待审核订单页面 -->
+      <OrderReview v-if="currentTab === 'pending'" />
+      
+      <!-- 其他页面 - 暂无数据 -->
+      <div v-else class="content-wrapper">
+        <!-- 页面标题 -->
+        <div class="page-header">
+          <h1 class="page-title">{{ currentTabData.title }}</h1>
+        </div>
 
-      <!-- 主内容区域 - 所有页面都显示暂无数据 -->
-      <div class="admin-container">
-        <div class="no-data">
-          <div class="no-data-icon">{{ currentTabData.icon }}</div>
-          <div class="no-data-title">暂无数据</div>
-          <div class="no-data-description">页面正在完善中，敬请期待</div>
+        <!-- 主内容区域 - 显示暂无数据 -->
+        <div class="admin-container">
+          <div class="no-data">
+            <div class="no-data-icon">{{ currentTabData.icon }}</div>
+            <div class="no-data-title">暂无数据</div>
+            <div class="no-data-description">页面正在完善中，敬请期待</div>
+          </div>
         </div>
       </div>
     </div>
@@ -37,6 +43,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import OrderReview from './OrderReview.vue'
 
 // 响应式数据
 const currentTab = ref('pending')

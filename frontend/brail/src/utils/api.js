@@ -690,6 +690,91 @@ export const getOrderList = async (userId) => {
   }
 }
 
+// 管理员订单相关API
+export const getPendingOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('🔍 [开发模式] 使用模拟数据获取待审核订单')
+      
+      // 从 mock-data.json 导入管理员订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockResponse = orderTestData.adminPendingOrdersResponse
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      return mockResponse
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/admin/pending', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get pending orders:', error)
+    throw error
+  }
+}
+
+export const approveOrder = async (orderId, userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('✅ [开发模式] 使用模拟数据批准订单', orderId)
+      
+      // 从 mock-data.json 导入管理员订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockResponse = orderTestData.adminApproveOrderResponse
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return mockResponse
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/admin/approve', {
+      method: 'POST',
+      body: JSON.stringify({ order_id: orderId, user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to approve order:', error)
+    throw error
+  }
+}
+
+export const rejectOrder = async (orderId, userId, reason = '') => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('❌ [开发模式] 使用模拟数据拒绝订单', orderId, '原因:', reason)
+      
+      // 从 mock-data.json 导入管理员订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockResponse = orderTestData.adminRejectOrderResponse
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return mockResponse
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/admin/reject', {
+      method: 'POST',
+      body: JSON.stringify({ order_id: orderId, user_id: userId, reason })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to reject order:', error)
+    throw error
+  }
+}
+
 // 错误处理
 export const handleApiError = (error) => {
   console.error('API Error:', error)
@@ -720,6 +805,9 @@ export default {
   getOrderId,
   createOrder,
   getOrderList,
+  getPendingOrders,
+  approveOrder,
+  rejectOrder,
   handleApiError
 }
 
