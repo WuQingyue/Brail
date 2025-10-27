@@ -892,6 +892,103 @@
           ]
         }
       ]
+    },
+    "adminPendingOrdersResponse": {
+      "success": true,
+      "orders": [
+        {
+          "id": "ORD-12345",
+          "orderDate": "2024-10-27T09:30:00",
+          "statusStep": 1,
+          "statusText": "订单和审批",
+          "statusDetailText": "订单已接收",
+          "status": "Pending",
+          "statusClass": "status-pending",
+          "customer_name": "张三",
+          "total_amount": 299.98,
+          "shipping": {
+            "street": "北京市朝阳区建国路88号",
+            "city": "北京",
+            "zipcode": "100020"
+          },
+          "payment_method": "信用卡",
+          "notes": "请尽快处理",
+          "items": [
+            {
+              "id": 1,
+              "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+              "productName": "Relógio Parede Antigo Madeira Nobre",
+              "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+              "quantity": 1,
+              "price": 299.90
+            }
+          ]
+        },
+        {
+          "id": "ORD-12346",
+          "orderDate": "2024-10-27T10:15:00",
+          "statusStep": 1,
+          "statusText": "订单和审批",
+          "statusDetailText": "订单已接收",
+          "status": "Pending",
+          "statusClass": "status-pending",
+          "customer_name": "李四",
+          "total_amount": 599.80,
+          "shipping": {
+            "street": "上海市浦东新区世纪大道123号",
+            "city": "上海",
+            "zipcode": "200120"
+          },
+          "payment_method": "支付宝",
+          "notes": "需要发票",
+          "items": [
+            {
+              "id": 2,
+              "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+              "productName": "Relógio Parede Antigo Madeira Nobre",
+              "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+              "quantity": 2,
+              "price": 299.90
+            }
+          ]
+        },
+        {
+          "id": "ORD-12347",
+          "orderDate": "2024-10-27T11:00:00",
+          "statusStep": 1,
+          "statusText": "订单和审批",
+          "statusDetailText": "订单已接收",
+          "status": "Pending",
+          "statusClass": "status-pending",
+          "customer_name": "王五",
+          "total_amount": 899.70,
+          "shipping": {
+            "street": "广州市天河区天河路456号",
+            "city": "广州",
+            "zipcode": "510620"
+          },
+          "payment_method": "微信支付",
+          "notes": "",
+          "items": [
+            {
+              "id": 3,
+              "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+              "productName": "Relógio Parede Antigo Madeira Nobre",
+              "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+              "quantity": 3,
+              "price": 299.90
+            }
+          ]
+        }
+      ]
+    },
+    "adminApproveOrderResponse": {
+      "success": true,
+      "message": "订单已批准"
+    },
+    "adminRejectOrderResponse": {
+      "success": true,
+      "message": "订单已拒绝"
     }
   }
 }
