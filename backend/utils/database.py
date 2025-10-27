@@ -278,7 +278,8 @@ def init_products_data():
                     selling_price=prod_data['selling_price'],
                     discount_price=prod_data.get('discount_price'),
                     product_mlb_price=prod_data.get('product_mlb_price'),
-                    roi=prod_data.get('roi')
+                    roi=prod_data.get('roi'),
+                    variations=prod_data.get('variations')  # 添加 variations 字段
                 )
                 db.add(product)
             

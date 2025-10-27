@@ -61,6 +61,9 @@ class Product(Base):
     product_mlb_price = Column(String(50), nullable=True, comment="MLB售价(BRL)")
     roi = Column(String(20), nullable=True, comment="投资回报率")
     
+    # 产品变体信息
+    variations = Column(JSON, nullable=True, comment="产品变体信息列表")
+    
     # 时间戳
     created_at = Column(DateTime(timezone=True), server_default=func.now(), comment="创建时间")
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), comment="更新时间")

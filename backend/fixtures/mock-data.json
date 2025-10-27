@@ -333,7 +333,25 @@
       "selling_price": 71.24,
       "discount_price": null,
       "product_mlb_price": "R$ 71,24",
-      "roi": "-2%"
+      "roi": "-2%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "蓝色版本",
+          "image": "http://http2.mlstatic.com/D_770247-MLU75919886031_042024-O.webp",
+          "price": 71.24,
+          "specification": "6英寸 100 RMS 蓝色版本",
+          "stock_quantity": 432
+        },
+        {
+          "id": "var-002",
+          "name": "黑色版本",
+          "image": "http://http2.mlstatic.com/D_770247-MLU75919886031_042024-O.webp",
+          "price": 73.5,
+          "specification": "6英寸 100 RMS 黑色版本",
+          "stock_quantity": 380
+        }
+      ]
     },
     {
       "id": "cc256df6-dd2f-4451-b779-bda57fe7433c",
@@ -366,7 +384,25 @@
       "selling_price": 25.35,
       "discount_price": null,
       "product_mlb_price": "R$ 25,35",
-      "roi": "1.838%"
+      "roi": "1.838%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Kit 2 黑色",
+          "image": "http://http2.mlstatic.com/D_701009-MLB88884335688_082025-O.webp",
+          "price": 25.35,
+          "specification": "Preto 黑色版本",
+          "stock_quantity": 327
+        },
+        {
+          "id": "var-002",
+          "name": "Kit 2 银色",
+          "image": "http://http2.mlstatic.com/D_701009-MLB88884335688_082025-O.webp",
+          "price": 26.5,
+          "specification": "Prata 银色版本",
+          "stock_quantity": 280
+        }
+      ]
     },
     {
       "id": "f0b283e9-ded9-4057-ac49-fb1d305ee125",
@@ -399,7 +435,25 @@
       "selling_price": 209.0,
       "discount_price": null,
       "product_mlb_price": "R$ 209,00",
-      "roi": "12%"
+      "roi": "12%",
+      "variations": [
+        {
+          "id": "var-003",
+          "name": "黑色套装",
+          "image": "http://http2.mlstatic.com/D_775265-MLU70070501151_062023-O.webp",
+          "price": 209.0,
+          "specification": "4件套 黑色版本",
+          "stock_quantity": 210
+        },
+        {
+          "id": "var-004",
+          "name": "黄色套装",
+          "image": "http://http2.mlstatic.com/D_775265-MLU70070501151_062023-O.webp",
+          "price": 215.0,
+          "specification": "4件套 黄色版本",
+          "stock_quantity": 180
+        }
+      ]
     },
     {
       "id": "fdcbf4c7-ee6b-4f7e-9787-321908b34b5c",
@@ -432,7 +486,25 @@
       "selling_price": 119.0,
       "discount_price": null,
       "product_mlb_price": "R$ 119,00",
-      "roi": "34%"
+      "roi": "34%",
+      "variations": [
+        {
+          "id": "var-005",
+          "name": "黑白配版本",
+          "image": "http://http2.mlstatic.com/D_891304-MLU72637031887_112023-O.webp",
+          "price": 119.0,
+          "specification": "6英寸 黑白配色版本",
+          "stock_quantity": 280
+        },
+        {
+          "id": "var-006",
+          "name": "全黑版本",
+          "image": "http://http2.mlstatic.com/D_891304-MLU72637031887_112023-O.webp",
+          "price": 122.0,
+          "specification": "6英寸 全黑版本",
+          "stock_quantity": 245
+        }
+      ]
     },
     {
       "id": "fb3c14ce-9546-47fe-96ad-3bca1bdbfc55",
@@ -465,7 +537,25 @@
       "selling_price": 15.0,
       "discount_price": null,
       "product_mlb_price": "R$ 15,00",
-      "roi": "150%"
+      "roi": "150%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Suporte Veicular Rot 黑色版本",
+          "image": "http://http2.mlstatic.com/D_805494-MLU75321756943_032024-O.webp",
+          "price": 15.0,
+          "specification": "黑色配色版本",
+          "stock_quantity": 408
+        },
+        {
+          "id": "var-002",
+          "name": "Suporte Veicular Rot 银色版本",
+          "image": "http://http2.mlstatic.com/D_805494-MLU75321756943_032024-O.webp",
+          "price": 17.0,
+          "specification": "银色配色版本",
+          "stock_quantity": 388
+        }
+      ]
     },
     {
       "id": "f55842a3-68e5-4a99-a52e-355bf56added",
@@ -498,7 +588,25 @@
       "selling_price": 259.37,
       "discount_price": null,
       "product_mlb_price": "R$ 259,37",
-      "roi": "146%"
+      "roi": "146%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Modulo Taramps Tl 15 黑色版本",
+          "image": "http://http2.mlstatic.com/D_880815-MLA82187078111_012025-O.webp",
+          "price": 259.37,
+          "specification": "黑色配色版本",
+          "stock_quantity": 86
+        },
+        {
+          "id": "var-002",
+          "name": "Modulo Taramps Tl 15 银色版本",
+          "image": "http://http2.mlstatic.com/D_880815-MLA82187078111_012025-O.webp",
+          "price": 261.37,
+          "specification": "银色配色版本",
+          "stock_quantity": 66
+        }
+      ]
     },
     {
       "id": "d509c859-b195-4693-b2ae-c55583b59dd0",
@@ -531,7 +639,25 @@
       "selling_price": 63.0,
       "discount_price": null,
       "product_mlb_price": "R$ 63,00",
-      "roi": "1.634%"
+      "roi": "1.634%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Tela Tapume Laranja  黑色版本",
+          "image": "http://http2.mlstatic.com/D_801257-MLA80987091968_122024-O.webp",
+          "price": 63.0,
+          "specification": "黑色配色版本",
+          "stock_quantity": 464
+        },
+        {
+          "id": "var-002",
+          "name": "Tela Tapume Laranja  银色版本",
+          "image": "http://http2.mlstatic.com/D_801257-MLA80987091968_122024-O.webp",
+          "price": 65.0,
+          "specification": "银色配色版本",
+          "stock_quantity": 444
+        }
+      ]
     },
     {
       "id": "c55a99c5-ea5c-4706-9fdb-5e4cee425386",
@@ -564,7 +690,25 @@
       "selling_price": 24.9,
       "discount_price": null,
       "product_mlb_price": "R$ 24,90",
-      "roi": "99%"
+      "roi": "99%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Tinta Spray P/ Pinta 黑色版本",
+          "image": "http://http2.mlstatic.com/D_975732-MLB83790396263_042025-O.webp",
+          "price": 24.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 280
+        },
+        {
+          "id": "var-002",
+          "name": "Tinta Spray P/ Pinta 银色版本",
+          "image": "http://http2.mlstatic.com/D_975732-MLB83790396263_042025-O.webp",
+          "price": 26.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 260
+        }
+      ]
     },
     {
       "id": "fa9026d0-1a07-413a-a250-34a8f64c3761",
@@ -597,7 +741,25 @@
       "selling_price": 55.69,
       "discount_price": null,
       "product_mlb_price": "R$ 55,69",
-      "roi": "104%"
+      "roi": "104%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "2 Cinta Fita Catraca 黑色版本",
+          "image": "http://http2.mlstatic.com/D_759561-MLU78529649282_082024-O.webp",
+          "price": 55.69,
+          "specification": "黑色配色版本",
+          "stock_quantity": 130
+        },
+        {
+          "id": "var-002",
+          "name": "2 Cinta Fita Catraca 银色版本",
+          "image": "http://http2.mlstatic.com/D_759561-MLU78529649282_082024-O.webp",
+          "price": 57.69,
+          "specification": "银色配色版本",
+          "stock_quantity": 110
+        }
+      ]
     },
     {
       "id": "9e31da01-66e9-49b6-a7e3-e2272548ba42",
@@ -630,7 +792,25 @@
       "selling_price": 23.49,
       "discount_price": null,
       "product_mlb_price": "R$ 23,49",
-      "roi": "187%"
+      "roi": "187%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Aditivo Para Combust 黑色版本",
+          "image": "http://http2.mlstatic.com/D_800918-MLU74073049434_012024-O.webp",
+          "price": 23.49,
+          "specification": "黑色配色版本",
+          "stock_quantity": 86
+        },
+        {
+          "id": "var-002",
+          "name": "Aditivo Para Combust 银色版本",
+          "image": "http://http2.mlstatic.com/D_800918-MLU74073049434_012024-O.webp",
+          "price": 25.49,
+          "specification": "银色配色版本",
+          "stock_quantity": 66
+        }
+      ]
     },
     {
       "id": "cacc27f7-a772-47de-bd9c-74c472e4c890",
@@ -663,7 +843,25 @@
       "selling_price": 469.22,
       "discount_price": null,
       "product_mlb_price": "R$ 469,22",
-      "roi": "135%"
+      "roi": "135%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Modulo Taramps Ts 80 黑色版本",
+          "image": "http://http2.mlstatic.com/D_894163-MLU75030204650_032024-O.webp",
+          "price": 469.22,
+          "specification": "黑色配色版本",
+          "stock_quantity": 161
+        },
+        {
+          "id": "var-002",
+          "name": "Modulo Taramps Ts 80 银色版本",
+          "image": "http://http2.mlstatic.com/D_894163-MLU75030204650_032024-O.webp",
+          "price": 471.22,
+          "specification": "银色配色版本",
+          "stock_quantity": 141
+        }
+      ]
     },
     {
       "id": "9e31dcfa-de17-4c4a-ac97-9324d52c6237",
@@ -696,7 +894,25 @@
       "selling_price": 135.9,
       "discount_price": null,
       "product_mlb_price": "R$ 135,90",
-      "roi": "50%"
+      "roi": "50%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Extrator De Rolament 黑色版本",
+          "image": "http://http2.mlstatic.com/D_759899-MLU75143651744_032024-O.webp",
+          "price": 135.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 276
+        },
+        {
+          "id": "var-002",
+          "name": "Extrator De Rolament 银色版本",
+          "image": "http://http2.mlstatic.com/D_759899-MLU75143651744_032024-O.webp",
+          "price": 137.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 256
+        }
+      ]
     },
     {
       "id": "dd28f5cb-f3e8-47aa-a74c-c09dd039e98c",
@@ -729,7 +945,25 @@
       "selling_price": 208.0,
       "discount_price": null,
       "product_mlb_price": "R$ 208,00",
-      "roi": "179%"
+      "roi": "179%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Par Alto Falante Bra 黑色版本",
+          "image": "http://http2.mlstatic.com/D_724830-MLU72903699373_112023-O.webp",
+          "price": 208.0,
+          "specification": "黑色配色版本",
+          "stock_quantity": 394
+        },
+        {
+          "id": "var-002",
+          "name": "Par Alto Falante Bra 银色版本",
+          "image": "http://http2.mlstatic.com/D_724830-MLU72903699373_112023-O.webp",
+          "price": 210.0,
+          "specification": "银色配色版本",
+          "stock_quantity": 374
+        }
+      ]
     },
     {
       "id": "d9e114af-b34d-4e33-bea8-71cefccaa491",
@@ -762,7 +996,25 @@
       "selling_price": 169.97,
       "discount_price": null,
       "product_mlb_price": "R$ 169,97",
-      "roi": "2.239%"
+      "roi": "2.239%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Parafuso De Pneu, 10 黑色版本",
+          "image": "http://http2.mlstatic.com/D_796906-MLB91404891083_092025-O.webp",
+          "price": 169.97,
+          "specification": "黑色配色版本",
+          "stock_quantity": 288
+        },
+        {
+          "id": "var-002",
+          "name": "Parafuso De Pneu, 10 银色版本",
+          "image": "http://http2.mlstatic.com/D_796906-MLB91404891083_092025-O.webp",
+          "price": 171.97,
+          "specification": "银色配色版本",
+          "stock_quantity": 268
+        }
+      ]
     },
     {
       "id": "dca38723-ba84-493e-9417-ef2acbef6361",
@@ -795,7 +1047,25 @@
       "selling_price": 215.0,
       "discount_price": null,
       "product_mlb_price": "R$ 215,00",
-      "roi": "2.896%"
+      "roi": "2.896%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Capa De Proteção Par 黑色版本",
+          "image": "http://http2.mlstatic.com/D_965697-MLA74554949355_022024-O.webp",
+          "price": 215.0,
+          "specification": "黑色配色版本",
+          "stock_quantity": 332
+        },
+        {
+          "id": "var-002",
+          "name": "Capa De Proteção Par 银色版本",
+          "image": "http://http2.mlstatic.com/D_965697-MLA74554949355_022024-O.webp",
+          "price": 217.0,
+          "specification": "银色配色版本",
+          "stock_quantity": 312
+        }
+      ]
     },
     {
       "id": "c70178b1-ba62-4d3a-92c7-6b3938ef9f5e",
@@ -828,7 +1098,25 @@
       "selling_price": 249.9,
       "discount_price": null,
       "product_mlb_price": "R$ 249,90",
-      "roi": "235%"
+      "roi": "235%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Par Alto Falante Jbl 黑色版本",
+          "image": "http://http2.mlstatic.com/D_930502-MLU72847341567_112023-O.webp",
+          "price": 249.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 323
+        },
+        {
+          "id": "var-002",
+          "name": "Par Alto Falante Jbl 银色版本",
+          "image": "http://http2.mlstatic.com/D_930502-MLU72847341567_112023-O.webp",
+          "price": 251.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 303
+        }
+      ]
     },
     {
       "id": "fa197fe3-e8c5-4a8d-97e5-2ec3939d24e3",
@@ -861,7 +1149,25 @@
       "selling_price": 20.96,
       "discount_price": null,
       "product_mlb_price": "R$ 20,96",
-      "roi": "5%"
+      "roi": "5%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Colete Refletivo Ver 黑色版本",
+          "image": "http://http2.mlstatic.com/D_724544-MLB91432690833_092025-O.webp",
+          "price": 20.96,
+          "specification": "黑色配色版本",
+          "stock_quantity": 184
+        },
+        {
+          "id": "var-002",
+          "name": "Colete Refletivo Ver 银色版本",
+          "image": "http://http2.mlstatic.com/D_724544-MLB91432690833_092025-O.webp",
+          "price": 22.96,
+          "specification": "银色配色版本",
+          "stock_quantity": 164
+        }
+      ]
     },
     {
       "id": "e85c3f0e-65a8-4854-919a-12d3c517ea87",
@@ -894,7 +1200,25 @@
       "selling_price": 299.0,
       "discount_price": null,
       "product_mlb_price": "R$ 299,00",
-      "roi": "2.892%"
+      "roi": "2.892%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Processador De Audio 黑色版本",
+          "image": "http://http2.mlstatic.com/D_820174-MLA77268120182_072024-O.webp",
+          "price": 299.0,
+          "specification": "黑色配色版本",
+          "stock_quantity": 162
+        },
+        {
+          "id": "var-002",
+          "name": "Processador De Audio 银色版本",
+          "image": "http://http2.mlstatic.com/D_820174-MLA77268120182_072024-O.webp",
+          "price": 301.0,
+          "specification": "银色配色版本",
+          "stock_quantity": 142
+        }
+      ]
     },
     {
       "id": "e1a83226-14fa-4dd1-9904-71c301c10ef6",
@@ -927,7 +1251,25 @@
       "selling_price": 66.95,
       "discount_price": null,
       "product_mlb_price": "R$ 66,95",
-      "roi": "54%"
+      "roi": "54%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Colete Refletivo Led 黑色版本",
+          "image": "http://http2.mlstatic.com/D_854231-MLB89015188142_082025-O.webp",
+          "price": 66.95,
+          "specification": "黑色配色版本",
+          "stock_quantity": 266
+        },
+        {
+          "id": "var-002",
+          "name": "Colete Refletivo Led 银色版本",
+          "image": "http://http2.mlstatic.com/D_854231-MLB89015188142_082025-O.webp",
+          "price": 68.95,
+          "specification": "银色配色版本",
+          "stock_quantity": 246
+        }
+      ]
     },
     {
       "id": "ed2dc3e0-49de-419f-8679-e3bff8e417bd",
@@ -960,21 +1302,49 @@
       "selling_price": 55.85,
       "discount_price": null,
       "product_mlb_price": "R$ 55,85",
-      "roi": "960%"
+      "roi": "960%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "10 X Tomadas Chicote 黑色版本",
+          "image": "http://http2.mlstatic.com/D_869298-MLA91932133075_092025-O.webp",
+          "price": 55.85,
+          "specification": "黑色配色版本",
+          "stock_quantity": 159
+        },
+        {
+          "id": "var-002",
+          "name": "10 X Tomadas Chicote 银色版本",
+          "image": "http://http2.mlstatic.com/D_869298-MLA91932133075_092025-O.webp",
+          "price": 57.85,
+          "specification": "银色配色版本",
+          "stock_quantity": 139
+        }
+      ]
     },
     {
       "id": "agri-001",
       "title": "Pulverizador Costal Manual 20 Litros Agrícola",
       "description": "Pulverizador manual para aplicação de defensivos agrícolas",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_123456-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_123456-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_123456-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB271599",
       "supplier_id": "SUP001",
       "shipping_from": "广东省广州市",
       "weight": 2.5,
-      "dimensions": {"length": 45, "width": 20, "height": 50},
+      "dimensions": {
+        "length": 45,
+        "width": 20,
+        "height": 50
+      },
       "moq": 5,
-      "tags": ["农业", "pulverizador", "agrícola"],
+      "tags": [
+        "农业",
+        "pulverizador",
+        "agrícola"
+      ],
       "stock_quantity": 150,
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
@@ -983,21 +1353,49 @@
       "selling_price": 89.9,
       "discount_price": null,
       "product_mlb_price": "R$ 89,90",
-      "roi": "112%"
+      "roi": "112%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Pulverizador Costal  黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_123456-MLB00000000000_012024-F.webp",
+          "price": 89.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 150
+        },
+        {
+          "id": "var-002",
+          "name": "Pulverizador Costal  银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_123456-MLB00000000000_012024-F.webp",
+          "price": 91.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 130
+        }
+      ]
     },
     {
       "id": "agri-002",
       "title": "Kit Ferramentas Jardinagem 5 Peças Aço Inox",
       "description": "Kit completo para jardinagem com cabo ergonômico",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_234567-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_234567-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_234567-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB271599",
       "supplier_id": "SUP002",
       "shipping_from": "浙江省杭州市",
       "weight": 1.8,
-      "dimensions": {"length": 40, "width": 25, "height": 5},
+      "dimensions": {
+        "length": 40,
+        "width": 25,
+        "height": 5
+      },
       "moq": 10,
-      "tags": ["jardinagem", "ferramentas", "inox"],
+      "tags": [
+        "jardinagem",
+        "ferramentas",
+        "inox"
+      ],
       "stock_quantity": 200,
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
@@ -1006,21 +1404,49 @@
       "selling_price": 65.5,
       "discount_price": 59.9,
       "product_mlb_price": "R$ 65,50",
-      "roi": "107%"
+      "roi": "107%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Kit Ferramentas Jard 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_234567-MLB00000000000_012024-F.webp",
+          "price": 65.5,
+          "specification": "黑色配色版本",
+          "stock_quantity": 200
+        },
+        {
+          "id": "var-002",
+          "name": "Kit Ferramentas Jard 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_234567-MLB00000000000_012024-F.webp",
+          "price": 67.5,
+          "specification": "银色配色版本",
+          "stock_quantity": 180
+        }
+      ]
     },
     {
       "id": "agri-003",
       "title": "Mangueira Irrigação 50 Metros Reforçada",
       "description": "Mangueira profissional para sistema de irrigação",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_345678-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_345678-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_345678-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB271599",
       "supplier_id": "SUP003",
       "shipping_from": "广东省深圳市",
       "weight": 5.5,
-      "dimensions": {"length": 30, "width": 30, "height": 15},
+      "dimensions": {
+        "length": 30,
+        "width": 30,
+        "height": 15
+      },
       "moq": 3,
-      "tags": ["mangueira", "irrigação", "agricultura"],
+      "tags": [
+        "mangueira",
+        "irrigação",
+        "agricultura"
+      ],
       "stock_quantity": 120,
       "reserved_quantity": 0,
       "low_stock_threshold": 15,
@@ -1029,21 +1455,49 @@
       "selling_price": 129.9,
       "discount_price": null,
       "product_mlb_price": "R$ 129,90",
-      "roi": "105%"
+      "roi": "105%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Mangueira Irrigação  黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_345678-MLB00000000000_012024-F.webp",
+          "price": 129.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 120
+        },
+        {
+          "id": "var-002",
+          "name": "Mangueira Irrigação  银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_345678-MLB00000000000_012024-F.webp",
+          "price": 131.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 100
+        }
+      ]
     },
     {
       "id": "agri-004",
       "title": "Tesoura Poda Profissional 8 Polegadas",
       "description": "Tesoura de poda com lâmina em aço carbono",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_456789-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_456789-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_456789-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB271599",
       "supplier_id": "SUP004",
       "shipping_from": "上海市",
       "weight": 0.45,
-      "dimensions": {"length": 25, "width": 10, "height": 3},
+      "dimensions": {
+        "length": 25,
+        "width": 10,
+        "height": 3
+      },
       "moq": 12,
-      "tags": ["tesoura", "poda", "jardinagem"],
+      "tags": [
+        "tesoura",
+        "poda",
+        "jardinagem"
+      ],
       "stock_quantity": 300,
       "reserved_quantity": 0,
       "low_stock_threshold": 30,
@@ -1052,21 +1506,49 @@
       "selling_price": 45.9,
       "discount_price": null,
       "product_mlb_price": "R$ 45,90",
-      "roi": "134%"
+      "roi": "134%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Tesoura Poda Profiss 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_456789-MLB00000000000_012024-F.webp",
+          "price": 45.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 300
+        },
+        {
+          "id": "var-002",
+          "name": "Tesoura Poda Profiss 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_456789-MLB00000000000_012024-F.webp",
+          "price": 47.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 280
+        }
+      ]
     },
     {
       "id": "agri-005",
       "title": "Semente Grama Esmeralda 1kg Premium",
       "description": "Sementes de grama de alta qualidade para jardim",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_567890-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_567890-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_567890-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB271599",
       "supplier_id": "SUP005",
       "shipping_from": "江苏省苏州市",
       "weight": 1.1,
-      "dimensions": {"length": 20, "width": 15, "height": 5},
+      "dimensions": {
+        "length": 20,
+        "width": 15,
+        "height": 5
+      },
       "moq": 20,
-      "tags": ["semente", "grama", "jardim"],
+      "tags": [
+        "semente",
+        "grama",
+        "jardim"
+      ],
       "stock_quantity": 180,
       "reserved_quantity": 0,
       "low_stock_threshold": 25,
@@ -1075,21 +1557,49 @@
       "selling_price": 32.9,
       "discount_price": 29.9,
       "product_mlb_price": "R$ 32,90",
-      "roi": "163%"
+      "roi": "163%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Semente Grama Esmera 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_567890-MLB00000000000_012024-F.webp",
+          "price": 32.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 180
+        },
+        {
+          "id": "var-002",
+          "name": "Semente Grama Esmera 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_567890-MLB00000000000_012024-F.webp",
+          "price": 34.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 160
+        }
+      ]
     },
     {
       "id": "agri-006",
       "title": "Adubo Orgânico NPK 10-10-10 5kg",
       "description": "Fertilizante completo para plantas e hortaliças",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_678901-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_678901-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_678901-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB271599",
       "supplier_id": "SUP006",
       "shipping_from": "浙江省义乌市",
       "weight": 5.2,
-      "dimensions": {"length": 35, "width": 25, "height": 8},
+      "dimensions": {
+        "length": 35,
+        "width": 25,
+        "height": 8
+      },
       "moq": 6,
-      "tags": ["adubo", "fertilizante", "orgânico"],
+      "tags": [
+        "adubo",
+        "fertilizante",
+        "orgânico"
+      ],
       "stock_quantity": 250,
       "reserved_quantity": 0,
       "low_stock_threshold": 30,
@@ -1098,21 +1608,49 @@
       "selling_price": 55.9,
       "discount_price": null,
       "product_mlb_price": "R$ 55,90",
-      "roi": "126%"
+      "roi": "126%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Adubo Orgânico NPK 1 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_678901-MLB00000000000_012024-F.webp",
+          "price": 55.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 250
+        },
+        {
+          "id": "var-002",
+          "name": "Adubo Orgânico NPK 1 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_678901-MLB00000000000_012024-F.webp",
+          "price": 57.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 230
+        }
+      ]
     },
     {
       "id": "food-001",
       "title": "Café Gourmet Torrado Moído 500g Arábica",
       "description": "Café premium 100% arábica torrado e moído",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_789012-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_789012-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_789012-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1403",
       "supplier_id": "SUP001",
       "shipping_from": "广东省广州市",
       "weight": 0.55,
-      "dimensions": {"length": 20, "width": 10, "height": 8},
+      "dimensions": {
+        "length": 20,
+        "width": 10,
+        "height": 8
+      },
       "moq": 24,
-      "tags": ["café", "gourmet", "arábica"],
+      "tags": [
+        "café",
+        "gourmet",
+        "arábica"
+      ],
       "stock_quantity": 400,
       "reserved_quantity": 0,
       "low_stock_threshold": 50,
@@ -1121,21 +1659,49 @@
       "selling_price": 38.9,
       "discount_price": 35.9,
       "product_mlb_price": "R$ 38,90",
-      "roi": "124%"
+      "roi": "124%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Café Gourmet Torrado 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_789012-MLB00000000000_012024-F.webp",
+          "price": 38.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 400
+        },
+        {
+          "id": "var-002",
+          "name": "Café Gourmet Torrado 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_789012-MLB00000000000_012024-F.webp",
+          "price": 40.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 380
+        }
+      ]
     },
     {
       "id": "food-002",
       "title": "Chocolate Belga 70% Cacau 200g",
       "description": "Chocolate belga premium com 70% de cacau",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_890123-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_890123-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_890123-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1403",
       "supplier_id": "SUP002",
       "shipping_from": "上海市",
       "weight": 0.22,
-      "dimensions": {"length": 15, "width": 8, "height": 2},
+      "dimensions": {
+        "length": 15,
+        "width": 8,
+        "height": 2
+      },
       "moq": 30,
-      "tags": ["chocolate", "belga", "premium"],
+      "tags": [
+        "chocolate",
+        "belga",
+        "premium"
+      ],
       "stock_quantity": 350,
       "reserved_quantity": 0,
       "low_stock_threshold": 40,
@@ -1144,21 +1710,49 @@
       "selling_price": 29.9,
       "discount_price": null,
       "product_mlb_price": "R$ 29,90",
-      "roi": "111%"
+      "roi": "111%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Chocolate Belga 70%  黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890123-MLB00000000000_012024-F.webp",
+          "price": 29.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 350
+        },
+        {
+          "id": "var-002",
+          "name": "Chocolate Belga 70%  银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890123-MLB00000000000_012024-F.webp",
+          "price": 31.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 330
+        }
+      ]
     },
     {
       "id": "food-003",
       "title": "Azeite Extra Virgem Português 500ml",
       "description": "Azeite de oliva extra virgem importado",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_901234-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_901234-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_901234-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1403",
       "supplier_id": "SUP003",
       "shipping_from": "浙江省杭州市",
       "weight": 0.95,
-      "dimensions": {"length": 25, "width": 8, "height": 8},
+      "dimensions": {
+        "length": 25,
+        "width": 8,
+        "height": 8
+      },
       "moq": 12,
-      "tags": ["azeite", "português", "extra virgem"],
+      "tags": [
+        "azeite",
+        "português",
+        "extra virgem"
+      ],
       "stock_quantity": 220,
       "reserved_quantity": 0,
       "low_stock_threshold": 30,
@@ -1167,21 +1761,49 @@
       "selling_price": 75.9,
       "discount_price": 69.9,
       "product_mlb_price": "R$ 75,90",
-      "roi": "107%"
+      "roi": "107%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Azeite Extra Virgem  黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_901234-MLB00000000000_012024-F.webp",
+          "price": 75.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 220
+        },
+        {
+          "id": "var-002",
+          "name": "Azeite Extra Virgem  银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_901234-MLB00000000000_012024-F.webp",
+          "price": 77.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 200
+        }
+      ]
     },
     {
       "id": "food-004",
       "title": "Mel Puro 100% Natural 1kg",
       "description": "Mel de abelhas puro sem aditivos",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_012345-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_012345-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_012345-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1403",
       "supplier_id": "SUP004",
       "shipping_from": "广东省深圳市",
       "weight": 1.15,
-      "dimensions": {"length": 15, "width": 10, "height": 12},
+      "dimensions": {
+        "length": 15,
+        "width": 10,
+        "height": 12
+      },
       "moq": 18,
-      "tags": ["mel", "natural", "puro"],
+      "tags": [
+        "mel",
+        "natural",
+        "puro"
+      ],
       "stock_quantity": 180,
       "reserved_quantity": 0,
       "low_stock_threshold": 25,
@@ -1190,21 +1812,49 @@
       "selling_price": 59.9,
       "discount_price": null,
       "product_mlb_price": "R$ 59,90",
-      "roi": "122%"
+      "roi": "122%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Mel Puro 100% Natura 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_012345-MLB00000000000_012024-F.webp",
+          "price": 59.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 180
+        },
+        {
+          "id": "var-002",
+          "name": "Mel Puro 100% Natura 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_012345-MLB00000000000_012024-F.webp",
+          "price": 61.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 160
+        }
+      ]
     },
     {
       "id": "food-005",
       "title": "Chá Verde Premium 100 Saquinhos",
       "description": "Chá verde importado de alta qualidade",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_123450-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_123450-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_123450-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1403",
       "supplier_id": "SUP005",
       "shipping_from": "江苏省苏州市",
       "weight": 0.25,
-      "dimensions": {"length": 18, "width": 12, "height": 6},
+      "dimensions": {
+        "length": 18,
+        "width": 12,
+        "height": 6
+      },
       "moq": 24,
-      "tags": ["chá", "verde", "premium"],
+      "tags": [
+        "chá",
+        "verde",
+        "premium"
+      ],
       "stock_quantity": 320,
       "reserved_quantity": 0,
       "low_stock_threshold": 35,
@@ -1213,21 +1863,49 @@
       "selling_price": 32.9,
       "discount_price": 29.9,
       "product_mlb_price": "R$ 32,90",
-      "roi": "131%"
+      "roi": "131%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Chá Verde Premium 10 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_123450-MLB00000000000_012024-F.webp",
+          "price": 32.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 320
+        },
+        {
+          "id": "var-002",
+          "name": "Chá Verde Premium 10 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_123450-MLB00000000000_012024-F.webp",
+          "price": 34.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 300
+        }
+      ]
     },
     {
       "id": "food-006",
       "title": "Biscoito Integral Mix Cereais 300g",
       "description": "Biscoito integral com mix de cereais e fibras",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_234501-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_234501-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_234501-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1403",
       "supplier_id": "SUP006",
       "shipping_from": "浙江省义乌市",
       "weight": 0.35,
-      "dimensions": {"length": 22, "width": 15, "height": 5},
+      "dimensions": {
+        "length": 22,
+        "width": 15,
+        "height": 5
+      },
       "moq": 36,
-      "tags": ["biscoito", "integral", "cereais"],
+      "tags": [
+        "biscoito",
+        "integral",
+        "cereais"
+      ],
       "stock_quantity": 450,
       "reserved_quantity": 0,
       "low_stock_threshold": 50,
@@ -1236,21 +1914,49 @@
       "selling_price": 19.9,
       "discount_price": null,
       "product_mlb_price": "R$ 19,90",
-      "roi": "118%"
+      "roi": "118%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Biscoito Integral Mi 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_234501-MLB00000000000_012024-F.webp",
+          "price": 19.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 450
+        },
+        {
+          "id": "var-002",
+          "name": "Biscoito Integral Mi 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_234501-MLB00000000000_012024-F.webp",
+          "price": 21.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 430
+        }
+      ]
     },
     {
       "id": "pet-002",
       "title": "Ração Premium Cães Adultos 15kg",
       "description": "Ração completa para cães adultos de todas as raças",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_345012-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_345012-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_345012-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1071",
       "supplier_id": "SUP007",
       "shipping_from": "广东省广州市",
       "weight": 15.5,
-      "dimensions": {"length": 60, "width": 40, "height": 15},
+      "dimensions": {
+        "length": 60,
+        "width": 40,
+        "height": 15
+      },
       "moq": 2,
-      "tags": ["ração", "cachorro", "premium"],
+      "tags": [
+        "ração",
+        "cachorro",
+        "premium"
+      ],
       "stock_quantity": 150,
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
@@ -1259,21 +1965,49 @@
       "selling_price": 149.9,
       "discount_price": 139.9,
       "product_mlb_price": "R$ 149,90",
-      "roi": "122%"
+      "roi": "122%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Ração Premium Cães A 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_345012-MLB00000000000_012024-F.webp",
+          "price": 149.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 150
+        },
+        {
+          "id": "var-002",
+          "name": "Ração Premium Cães A 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_345012-MLB00000000000_012024-F.webp",
+          "price": 151.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 130
+        }
+      ]
     },
     {
       "id": "pet-003",
       "title": "Cama Pet Macia Tamanho Médio Azul",
       "description": "Cama confortável para pets de porte médio",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_456023-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_456023-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_456023-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1071",
       "supplier_id": "SUP008",
       "shipping_from": "浙江省宁波市",
       "weight": 1.8,
-      "dimensions": {"length": 60, "width": 50, "height": 10},
+      "dimensions": {
+        "length": 60,
+        "width": 50,
+        "height": 10
+      },
       "moq": 6,
-      "tags": ["cama", "pet", "confortável"],
+      "tags": [
+        "cama",
+        "pet",
+        "confortável"
+      ],
       "stock_quantity": 200,
       "reserved_quantity": 0,
       "low_stock_threshold": 25,
@@ -1282,21 +2016,49 @@
       "selling_price": 99.9,
       "discount_price": null,
       "product_mlb_price": "R$ 99,90",
-      "roi": "113%"
+      "roi": "113%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Cama Pet Macia Taman 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_456023-MLB00000000000_012024-F.webp",
+          "price": 99.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 200
+        },
+        {
+          "id": "var-002",
+          "name": "Cama Pet Macia Taman 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_456023-MLB00000000000_012024-F.webp",
+          "price": 101.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 180
+        }
+      ]
     },
     {
       "id": "pet-004",
       "title": "Brinquedo Mordedor Corda 3 Nós Grande",
       "description": "Brinquedo resistente para cães brincarem e exercitarem",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_567034-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_567034-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_567034-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1071",
       "supplier_id": "SUP009",
       "shipping_from": "上海市",
       "weight": 0.35,
-      "dimensions": {"length": 40, "width": 8, "height": 8},
+      "dimensions": {
+        "length": 40,
+        "width": 8,
+        "height": 8
+      },
       "moq": 24,
-      "tags": ["brinquedo", "mordedor", "corda"],
+      "tags": [
+        "brinquedo",
+        "mordedor",
+        "corda"
+      ],
       "stock_quantity": 350,
       "reserved_quantity": 0,
       "low_stock_threshold": 40,
@@ -1305,21 +2067,49 @@
       "selling_price": 24.9,
       "discount_price": 22.9,
       "product_mlb_price": "R$ 24,90",
-      "roi": "140%"
+      "roi": "140%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Brinquedo Mordedor C 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_567034-MLB00000000000_012024-F.webp",
+          "price": 24.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 350
+        },
+        {
+          "id": "var-002",
+          "name": "Brinquedo Mordedor C 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_567034-MLB00000000000_012024-F.webp",
+          "price": 26.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 330
+        }
+      ]
     },
     {
       "id": "pet-005",
       "title": "Coleira Ajustável Gatos com Guizo",
       "description": "Coleira segura e confortável para gatos",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_678045-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_678045-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_678045-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1071",
       "supplier_id": "SUP010",
       "shipping_from": "广东省深圳市",
       "weight": 0.08,
-      "dimensions": {"length": 30, "width": 2, "height": 1},
+      "dimensions": {
+        "length": 30,
+        "width": 2,
+        "height": 1
+      },
       "moq": 50,
-      "tags": ["coleira", "gato", "ajustável"],
+      "tags": [
+        "coleira",
+        "gato",
+        "ajustável"
+      ],
       "stock_quantity": 500,
       "reserved_quantity": 0,
       "low_stock_threshold": 60,
@@ -1328,21 +2118,49 @@
       "selling_price": 15.9,
       "discount_price": null,
       "product_mlb_price": "R$ 15,90",
-      "roi": "154%"
+      "roi": "154%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Coleira Ajustável Ga 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_678045-MLB00000000000_012024-F.webp",
+          "price": 15.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 500
+        },
+        {
+          "id": "var-002",
+          "name": "Coleira Ajustável Ga 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_678045-MLB00000000000_012024-F.webp",
+          "price": 17.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 480
+        }
+      ]
     },
     {
       "id": "pet-006",
       "title": "Shampoo Antipulgas Pet 500ml",
       "description": "Shampoo veterinário para controle de pulgas e carrapatos",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_789056-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_789056-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_789056-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1071",
       "supplier_id": "SUP001",
       "shipping_from": "江苏省苏州市",
       "weight": 0.55,
-      "dimensions": {"length": 20, "width": 8, "height": 8},
+      "dimensions": {
+        "length": 20,
+        "width": 8,
+        "height": 8
+      },
       "moq": 18,
-      "tags": ["shampoo", "antipulgas", "veterinário"],
+      "tags": [
+        "shampoo",
+        "antipulgas",
+        "veterinário"
+      ],
       "stock_quantity": 280,
       "reserved_quantity": 0,
       "low_stock_threshold": 35,
@@ -1351,21 +2169,49 @@
       "selling_price": 42.9,
       "discount_price": 39.9,
       "product_mlb_price": "R$ 42,90",
-      "roi": "135%"
+      "roi": "135%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Shampoo Antipulgas P 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_789056-MLB00000000000_012024-F.webp",
+          "price": 42.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 280
+        },
+        {
+          "id": "var-002",
+          "name": "Shampoo Antipulgas P 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_789056-MLB00000000000_012024-F.webp",
+          "price": 44.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 260
+        }
+      ]
     },
     {
       "id": "antique-001",
       "title": "Relógio Parede Antigo Madeira Nobre",
       "description": "Relógio de parede antigo em madeira maciça",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1367",
       "supplier_id": "SUP002",
       "shipping_from": "上海市",
       "weight": 3.5,
-      "dimensions": {"length": 50, "width": 40, "height": 10},
+      "dimensions": {
+        "length": 50,
+        "width": 40,
+        "height": 10
+      },
       "moq": 1,
-      "tags": ["relógio", "antigo", "madeira"],
+      "tags": [
+        "relógio",
+        "antigo",
+        "madeira"
+      ],
       "stock_quantity": 45,
       "reserved_quantity": 0,
       "low_stock_threshold": 5,
@@ -1374,21 +2220,49 @@
       "selling_price": 299.9,
       "discount_price": null,
       "product_mlb_price": "R$ 299,90",
-      "roi": "112%"
+      "roi": "112%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Relógio Parede Antig 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+          "price": 299.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 45
+        },
+        {
+          "id": "var-002",
+          "name": "Relógio Parede Antig 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890067-MLB00000000000_012024-F.webp",
+          "price": 301.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 25
+        }
+      ]
     },
     {
       "id": "antique-002",
       "title": "Candelabro Bronze 3 Velas Vintage",
       "description": "Candelabro vintage em bronze com acabamento envelhecido",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_901078-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_901078-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_901078-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1367",
       "supplier_id": "SUP003",
       "shipping_from": "浙江省杭州市",
       "weight": 2.8,
-      "dimensions": {"length": 35, "width": 20, "height": 25},
+      "dimensions": {
+        "length": 35,
+        "width": 20,
+        "height": 25
+      },
       "moq": 2,
-      "tags": ["candelabro", "bronze", "vintage"],
+      "tags": [
+        "candelabro",
+        "bronze",
+        "vintage"
+      ],
       "stock_quantity": 60,
       "reserved_quantity": 0,
       "low_stock_threshold": 8,
@@ -1397,21 +2271,49 @@
       "selling_price": 189.9,
       "discount_price": 179.9,
       "product_mlb_price": "R$ 189,90",
-      "roi": "109%"
+      "roi": "109%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Candelabro Bronze 3  黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_901078-MLB00000000000_012024-F.webp",
+          "price": 189.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 60
+        },
+        {
+          "id": "var-002",
+          "name": "Candelabro Bronze 3  银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_901078-MLB00000000000_012024-F.webp",
+          "price": 191.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 40
+        }
+      ]
     },
     {
       "id": "antique-003",
       "title": "Porta-Retratos Antigo Dourado 20x30cm",
       "description": "Porta-retratos com detalhes em dourado estilo barroco",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_012089-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_012089-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_012089-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1367",
       "supplier_id": "SUP004",
       "shipping_from": "广东省深圳市",
       "weight": 1.2,
-      "dimensions": {"length": 35, "width": 25, "height": 5},
+      "dimensions": {
+        "length": 35,
+        "width": 25,
+        "height": 5
+      },
       "moq": 6,
-      "tags": ["porta-retratos", "dourado", "barroco"],
+      "tags": [
+        "porta-retratos",
+        "dourado",
+        "barroco"
+      ],
       "stock_quantity": 120,
       "reserved_quantity": 0,
       "low_stock_threshold": 15,
@@ -1420,21 +2322,49 @@
       "selling_price": 95.9,
       "discount_price": null,
       "product_mlb_price": "R$ 95,90",
-      "roi": "106%"
+      "roi": "106%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Porta-Retratos Antig 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_012089-MLB00000000000_012024-F.webp",
+          "price": 95.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 120
+        },
+        {
+          "id": "var-002",
+          "name": "Porta-Retratos Antig 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_012089-MLB00000000000_012024-F.webp",
+          "price": 97.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 100
+        }
+      ]
     },
     {
       "id": "antique-004",
       "title": "Caixa Música Bailarina Vintage",
       "description": "Caixa de música com bailarina giratória e melodia",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_123090-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_123090-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_123090-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1367",
       "supplier_id": "SUP005",
       "shipping_from": "江苏省苏州市",
       "weight": 0.85,
-      "dimensions": {"length": 15, "width": 12, "height": 10},
+      "dimensions": {
+        "length": 15,
+        "width": 12,
+        "height": 10
+      },
       "moq": 12,
-      "tags": ["caixa música", "bailarina", "vintage"],
+      "tags": [
+        "caixa música",
+        "bailarina",
+        "vintage"
+      ],
       "stock_quantity": 180,
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
@@ -1443,21 +2373,49 @@
       "selling_price": 79.9,
       "discount_price": 74.9,
       "product_mlb_price": "R$ 79,90",
-      "roi": "127%"
+      "roi": "127%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Caixa Música Bailari 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_123090-MLB00000000000_012024-F.webp",
+          "price": 79.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 180
+        },
+        {
+          "id": "var-002",
+          "name": "Caixa Música Bailari 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_123090-MLB00000000000_012024-F.webp",
+          "price": 81.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 160
+        }
+      ]
     },
     {
       "id": "antique-005",
       "title": "Espelho Moldura Provençal 60x80cm",
       "description": "Espelho com moldura em estilo provençal branco",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_234091-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_234091-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_234091-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1367",
       "supplier_id": "SUP006",
       "shipping_from": "浙江省义乌市",
       "weight": 5.5,
-      "dimensions": {"length": 85, "width": 65, "height": 8},
+      "dimensions": {
+        "length": 85,
+        "width": 65,
+        "height": 8
+      },
       "moq": 1,
-      "tags": ["espelho", "provençal", "decoração"],
+      "tags": [
+        "espelho",
+        "provençal",
+        "decoração"
+      ],
       "stock_quantity": 55,
       "reserved_quantity": 0,
       "low_stock_threshold": 8,
@@ -1466,21 +2424,49 @@
       "selling_price": 329.9,
       "discount_price": null,
       "product_mlb_price": "R$ 329,90",
-      "roi": "110%"
+      "roi": "110%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Espelho Moldura Prov 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_234091-MLB00000000000_012024-F.webp",
+          "price": 329.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 55
+        },
+        {
+          "id": "var-002",
+          "name": "Espelho Moldura Prov 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_234091-MLB00000000000_012024-F.webp",
+          "price": 331.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 35
+        }
+      ]
     },
     {
       "id": "antique-006",
       "title": "Globo Terrestre Antigo Base Madeira 30cm",
       "description": "Globo terrestre decorativo com base em madeira",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_345092-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_345092-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_345092-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1367",
       "supplier_id": "SUP007",
       "shipping_from": "广东省广州市",
       "weight": 2.2,
-      "dimensions": {"length": 35, "width": 35, "height": 45},
+      "dimensions": {
+        "length": 35,
+        "width": 35,
+        "height": 45
+      },
       "moq": 3,
-      "tags": ["globo", "terrestre", "decorativo"],
+      "tags": [
+        "globo",
+        "terrestre",
+        "decorativo"
+      ],
       "stock_quantity": 90,
       "reserved_quantity": 0,
       "low_stock_threshold": 12,
@@ -1489,21 +2475,49 @@
       "selling_price": 169.9,
       "discount_price": 159.9,
       "product_mlb_price": "R$ 169,90",
-      "roi": "122%"
+      "roi": "122%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Globo Terrestre Anti 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_345092-MLB00000000000_012024-F.webp",
+          "price": 169.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 90
+        },
+        {
+          "id": "var-002",
+          "name": "Globo Terrestre Anti 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_345092-MLB00000000000_012024-F.webp",
+          "price": 171.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 70
+        }
+      ]
     },
     {
       "id": "art-001",
       "title": "Conjunto Pincéis Profissionais 12 Peças",
       "description": "Kit completo de pincéis para pintura em tela",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_456093-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_456093-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_456093-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1368",
       "supplier_id": "SUP001",
       "shipping_from": "上海市",
       "weight": 0.35,
-      "dimensions": {"length": 30, "width": 15, "height": 3},
+      "dimensions": {
+        "length": 30,
+        "width": 15,
+        "height": 3
+      },
       "moq": 10,
-      "tags": ["pincéis", "arte", "profissional"],
+      "tags": [
+        "pincéis",
+        "arte",
+        "profissional"
+      ],
       "stock_quantity": 250,
       "reserved_quantity": 0,
       "low_stock_threshold": 30,
@@ -1512,21 +2526,49 @@
       "selling_price": 65.9,
       "discount_price": null,
       "product_mlb_price": "R$ 65,90",
-      "roi": "132%"
+      "roi": "132%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Conjunto Pincéis Pro 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_456093-MLB00000000000_012024-F.webp",
+          "price": 65.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 250
+        },
+        {
+          "id": "var-002",
+          "name": "Conjunto Pincéis Pro 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_456093-MLB00000000000_012024-F.webp",
+          "price": 67.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 230
+        }
+      ]
     },
     {
       "id": "art-002",
       "title": "Tinta Acrílica 12 Cores 18ml Profissional",
       "description": "Set de tintas acrílicas de alta qualidade para artistas",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_567094-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_567094-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_567094-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1368",
       "supplier_id": "SUP002",
       "shipping_from": "浙江省杭州市",
       "weight": 0.65,
-      "dimensions": {"length": 25, "width": 20, "height": 5},
+      "dimensions": {
+        "length": 25,
+        "width": 20,
+        "height": 5
+      },
       "moq": 15,
-      "tags": ["tinta", "acrílica", "arte"],
+      "tags": [
+        "tinta",
+        "acrílica",
+        "arte"
+      ],
       "stock_quantity": 300,
       "reserved_quantity": 0,
       "low_stock_threshold": 35,
@@ -1535,21 +2577,49 @@
       "selling_price": 79.9,
       "discount_price": 74.9,
       "product_mlb_price": "R$ 79,90",
-      "roi": "120%"
+      "roi": "120%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Tinta Acrílica 12 Co 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_567094-MLB00000000000_012024-F.webp",
+          "price": 79.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 300
+        },
+        {
+          "id": "var-002",
+          "name": "Tinta Acrílica 12 Co 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_567094-MLB00000000000_012024-F.webp",
+          "price": 81.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 280
+        }
+      ]
     },
     {
       "id": "art-003",
       "title": "Caderno Desenho A4 200g 50 Folhas",
       "description": "Caderno para desenho com papel de alta gramatura",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_678095-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_678095-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_678095-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1368",
       "supplier_id": "SUP003",
       "shipping_from": "广东省深圳市",
       "weight": 0.55,
-      "dimensions": {"length": 30, "width": 22, "height": 2},
+      "dimensions": {
+        "length": 30,
+        "width": 22,
+        "height": 2
+      },
       "moq": 20,
-      "tags": ["caderno", "desenho", "papel"],
+      "tags": [
+        "caderno",
+        "desenho",
+        "papel"
+      ],
       "stock_quantity": 400,
       "reserved_quantity": 0,
       "low_stock_threshold": 50,
@@ -1558,21 +2628,49 @@
       "selling_price": 42.9,
       "discount_price": null,
       "product_mlb_price": "R$ 42,90",
-      "roi": "115%"
+      "roi": "115%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Caderno Desenho A4 2 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_678095-MLB00000000000_012024-F.webp",
+          "price": 42.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 400
+        },
+        {
+          "id": "var-002",
+          "name": "Caderno Desenho A4 2 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_678095-MLB00000000000_012024-F.webp",
+          "price": 44.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 380
+        }
+      ]
     },
     {
       "id": "art-004",
       "title": "Lápis Cor Aquarelável 36 Cores",
       "description": "Lápis de cor aquarelável profissional",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_789096-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_789096-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_789096-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1368",
       "supplier_id": "SUP004",
       "shipping_from": "江苏省苏州市",
       "weight": 0.45,
-      "dimensions": {"length": 20, "width": 15, "height": 3},
+      "dimensions": {
+        "length": 20,
+        "width": 15,
+        "height": 3
+      },
       "moq": 12,
-      "tags": ["lápis", "aquarela", "cor"],
+      "tags": [
+        "lápis",
+        "aquarela",
+        "cor"
+      ],
       "stock_quantity": 220,
       "reserved_quantity": 0,
       "low_stock_threshold": 25,
@@ -1581,21 +2679,49 @@
       "selling_price": 129.9,
       "discount_price": 119.9,
       "product_mlb_price": "R$ 129,90",
-      "roi": "108%"
+      "roi": "108%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Lápis Cor Aquareláve 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_789096-MLB00000000000_012024-F.webp",
+          "price": 129.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 220
+        },
+        {
+          "id": "var-002",
+          "name": "Lápis Cor Aquareláve 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_789096-MLB00000000000_012024-F.webp",
+          "price": 131.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 200
+        }
+      ]
     },
     {
       "id": "art-005",
       "title": "Cavalete Portátil Alumínio Regulável",
       "description": "Cavalete leve e portátil para pintura",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_890097-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_890097-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_890097-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1368",
       "supplier_id": "SUP005",
       "shipping_from": "浙江省义乌市",
       "weight": 2.8,
-      "dimensions": {"length": 65, "width": 15, "height": 10},
+      "dimensions": {
+        "length": 65,
+        "width": 15,
+        "height": 10
+      },
       "moq": 3,
-      "tags": ["cavalete", "alumínio", "portátil"],
+      "tags": [
+        "cavalete",
+        "alumínio",
+        "portátil"
+      ],
       "stock_quantity": 85,
       "reserved_quantity": 0,
       "low_stock_threshold": 10,
@@ -1604,21 +2730,49 @@
       "selling_price": 199.9,
       "discount_price": null,
       "product_mlb_price": "R$ 199,90",
-      "roi": "111%"
+      "roi": "111%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Cavalete Portátil Al 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890097-MLB00000000000_012024-F.webp",
+          "price": 199.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 85
+        },
+        {
+          "id": "var-002",
+          "name": "Cavalete Portátil Al 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_890097-MLB00000000000_012024-F.webp",
+          "price": 201.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 65
+        }
+      ]
     },
     {
       "id": "art-006",
       "title": "Estojo Escolar 3 Compartimentos Grande",
       "description": "Estojo organizador com múltiplos compartimentos",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_901098-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_901098-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_901098-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1368",
       "supplier_id": "SUP006",
       "shipping_from": "广东省广州市",
       "weight": 0.28,
-      "dimensions": {"length": 22, "width": 10, "height": 8},
+      "dimensions": {
+        "length": 22,
+        "width": 10,
+        "height": 8
+      },
       "moq": 24,
-      "tags": ["estojo", "escolar", "organizador"],
+      "tags": [
+        "estojo",
+        "escolar",
+        "organizador"
+      ],
       "stock_quantity": 450,
       "reserved_quantity": 0,
       "low_stock_threshold": 50,
@@ -1627,21 +2781,49 @@
       "selling_price": 32.9,
       "discount_price": 29.9,
       "product_mlb_price": "R$ 32,90",
-      "roi": "138%"
+      "roi": "138%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Estojo Escolar 3 Com 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_901098-MLB00000000000_012024-F.webp",
+          "price": 32.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 450
+        },
+        {
+          "id": "var-002",
+          "name": "Estojo Escolar 3 Com 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_901098-MLB00000000000_012024-F.webp",
+          "price": 34.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 430
+        }
+      ]
     },
     {
       "id": "baby-001",
       "title": "Carrinho Bebê 3 Rodas Reversível Premium",
       "description": "Carrinho de bebê com assento reversível e suspensão",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_012099-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_012099-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_012099-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1384",
       "supplier_id": "SUP007",
       "shipping_from": "上海市",
       "weight": 12.5,
-      "dimensions": {"length": 85, "width": 60, "height": 45},
+      "dimensions": {
+        "length": 85,
+        "width": 60,
+        "height": 45
+      },
       "moq": 1,
-      "tags": ["carrinho", "bebê", "premium"],
+      "tags": [
+        "carrinho",
+        "bebê",
+        "premium"
+      ],
       "stock_quantity": 65,
       "reserved_quantity": 0,
       "low_stock_threshold": 8,
@@ -1650,21 +2832,49 @@
       "selling_price": 899.9,
       "discount_price": 849.9,
       "product_mlb_price": "R$ 899,90",
-      "roi": "108%"
+      "roi": "108%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Carrinho Bebê 3 Roda 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_012099-MLB00000000000_012024-F.webp",
+          "price": 899.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 65
+        },
+        {
+          "id": "var-002",
+          "name": "Carrinho Bebê 3 Roda 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_012099-MLB00000000000_012024-F.webp",
+          "price": 901.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 45
+        }
+      ]
     },
     {
       "id": "baby-002",
       "title": "Kit Mamadeiras Anti-Cólica 3 Unidades",
       "description": "Mamadeiras com sistema anti-cólica e bico ortodôntico",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_123100-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_123100-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_123100-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1384",
       "supplier_id": "SUP008",
       "shipping_from": "浙江省杭州市",
       "weight": 0.65,
-      "dimensions": {"length": 25, "width": 20, "height": 15},
+      "dimensions": {
+        "length": 25,
+        "width": 20,
+        "height": 15
+      },
       "moq": 12,
-      "tags": ["mamadeira", "anti-cólica", "bebê"],
+      "tags": [
+        "mamadeira",
+        "anti-cólica",
+        "bebê"
+      ],
       "stock_quantity": 320,
       "reserved_quantity": 0,
       "low_stock_threshold": 35,
@@ -1673,21 +2883,49 @@
       "selling_price": 99.9,
       "discount_price": null,
       "product_mlb_price": "R$ 99,90",
-      "roi": "115%"
+      "roi": "115%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Kit Mamadeiras Anti- 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_123100-MLB00000000000_012024-F.webp",
+          "price": 99.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 320
+        },
+        {
+          "id": "var-002",
+          "name": "Kit Mamadeiras Anti- 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_123100-MLB00000000000_012024-F.webp",
+          "price": 101.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 300
+        }
+      ]
     },
     {
       "id": "baby-003",
       "title": "Fralda Descartável RN 120 Unidades",
       "description": "Fraldas super absorventes para recém-nascidos",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_234101-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_234101-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_234101-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1384",
       "supplier_id": "SUP009",
       "shipping_from": "广东省深圳市",
       "weight": 3.8,
-      "dimensions": {"length": 45, "width": 35, "height": 20},
+      "dimensions": {
+        "length": 45,
+        "width": 35,
+        "height": 20
+      },
       "moq": 6,
-      "tags": ["fralda", "descartável", "bebê"],
+      "tags": [
+        "fralda",
+        "descartável",
+        "bebê"
+      ],
       "stock_quantity": 280,
       "reserved_quantity": 0,
       "low_stock_threshold": 30,
@@ -1696,21 +2934,49 @@
       "selling_price": 119.9,
       "discount_price": 109.9,
       "product_mlb_price": "R$ 119,90",
-      "roi": "125%"
+      "roi": "125%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Fralda Descartável R 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_234101-MLB00000000000_012024-F.webp",
+          "price": 119.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 280
+        },
+        {
+          "id": "var-002",
+          "name": "Fralda Descartável R 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_234101-MLB00000000000_012024-F.webp",
+          "price": 121.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 260
+        }
+      ]
     },
     {
       "id": "baby-004",
       "title": "Berço Portátil Dobrável com Mosquiteiro",
       "description": "Berço portátil leve e fácil de transportar",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_345102-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_345102-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_345102-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1384",
       "supplier_id": "SUP010",
       "shipping_from": "江苏省苏州市",
       "weight": 8.5,
-      "dimensions": {"length": 120, "width": 70, "height": 15},
+      "dimensions": {
+        "length": 120,
+        "width": 70,
+        "height": 15
+      },
       "moq": 2,
-      "tags": ["berço", "portátil", "dobrável"],
+      "tags": [
+        "berço",
+        "portátil",
+        "dobrável"
+      ],
       "stock_quantity": 95,
       "reserved_quantity": 0,
       "low_stock_threshold": 12,
@@ -1719,21 +2985,49 @@
       "selling_price": 429.9,
       "discount_price": null,
       "product_mlb_price": "R$ 429,90",
-      "roi": "110%"
+      "roi": "110%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Berço Portátil Dobrá 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_345102-MLB00000000000_012024-F.webp",
+          "price": 429.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 95
+        },
+        {
+          "id": "var-002",
+          "name": "Berço Portátil Dobrá 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_345102-MLB00000000000_012024-F.webp",
+          "price": 431.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 75
+        }
+      ]
     },
     {
       "id": "baby-005",
       "title": "Bolsa Maternidade Grande Com Trocador",
       "description": "Bolsa espaçosa com múltiplos compartimentos e trocador",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_456103-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_456103-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_456103-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1384",
       "supplier_id": "SUP001",
       "shipping_from": "浙江省义乌市",
       "weight": 1.2,
-      "dimensions": {"length": 42, "width": 35, "height": 18},
+      "dimensions": {
+        "length": 42,
+        "width": 35,
+        "height": 18
+      },
       "moq": 6,
-      "tags": ["bolsa", "maternidade", "trocador"],
+      "tags": [
+        "bolsa",
+        "maternidade",
+        "trocador"
+      ],
       "stock_quantity": 180,
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
@@ -1742,21 +3036,49 @@
       "selling_price": 159.9,
       "discount_price": 149.9,
       "product_mlb_price": "R$ 159,90",
-      "roi": "118%"
+      "roi": "118%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Bolsa Maternidade Gr 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_456103-MLB00000000000_012024-F.webp",
+          "price": 159.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 180
+        },
+        {
+          "id": "var-002",
+          "name": "Bolsa Maternidade Gr 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_456103-MLB00000000000_012024-F.webp",
+          "price": 161.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 160
+        }
+      ]
     },
     {
       "id": "baby-006",
       "title": "Monitor Bebê Câmera Visão Noturna",
       "description": "Babá eletrônica com câmera e áudio bidirecional",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_567104-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_567104-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_567104-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB1384",
       "supplier_id": "SUP002",
       "shipping_from": "广东省广州市",
       "weight": 0.95,
-      "dimensions": {"length": 25, "width": 20, "height": 12},
+      "dimensions": {
+        "length": 25,
+        "width": 20,
+        "height": 12
+      },
       "moq": 4,
-      "tags": ["monitor", "câmera", "babá eletrônica"],
+      "tags": [
+        "monitor",
+        "câmera",
+        "babá eletrônica"
+      ],
       "stock_quantity": 145,
       "reserved_quantity": 0,
       "low_stock_threshold": 18,
@@ -1765,21 +3087,49 @@
       "selling_price": 329.9,
       "discount_price": null,
       "product_mlb_price": "R$ 329,90",
-      "roi": "112%"
+      "roi": "112%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Monitor Bebê Câmera  黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_567104-MLB00000000000_012024-F.webp",
+          "price": 329.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 145
+        },
+        {
+          "id": "var-002",
+          "name": "Monitor Bebê Câmera  银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_567104-MLB00000000000_012024-F.webp",
+          "price": 331.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 125
+        }
+      ]
     },
     {
       "id": "auto-001",
       "title": "Carregador Wireless Veicular Qi 15W",
       "description": "Carregador sem fio para carros com suporte magnético",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO001-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO001-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO001-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP003",
       "shipping_from": "上海市",
       "weight": 0.25,
-      "dimensions": {"length": 15, "width": 10, "height": 5},
+      "dimensions": {
+        "length": 15,
+        "width": 10,
+        "height": 5
+      },
       "moq": 50,
-      "tags": ["carregador", "wireless", "veicular"],
+      "tags": [
+        "carregador",
+        "wireless",
+        "veicular"
+      ],
       "stock_quantity": 420,
       "reserved_quantity": 0,
       "low_stock_threshold": 40,
@@ -1788,21 +3138,49 @@
       "selling_price": 45.9,
       "discount_price": 42.9,
       "product_mlb_price": "R$ 45,90",
-      "roi": "165%"
+      "roi": "165%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Carregador Wireless  黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO001-MLB00000000000_012024-F.webp",
+          "price": 45.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 420
+        },
+        {
+          "id": "var-002",
+          "name": "Carregador Wireless  银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO001-MLB00000000000_012024-F.webp",
+          "price": 47.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 400
+        }
+      ]
     },
     {
       "id": "auto-002",
       "title": "Kit Limpador Farol Cristal 3M Headlight",
       "description": "Kit profissional para restaurar faróis opacos e amarelados",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO002-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO002-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO002-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP004",
       "shipping_from": "浙江省义乌市",
       "weight": 1.8,
-      "dimensions": {"length": 25, "width": 20, "height": 8},
+      "dimensions": {
+        "length": 25,
+        "width": 20,
+        "height": 8
+      },
       "moq": 12,
-      "tags": ["limpador", "farol", "restauração"],
+      "tags": [
+        "limpador",
+        "farol",
+        "restauração"
+      ],
       "stock_quantity": 380,
       "reserved_quantity": 0,
       "low_stock_threshold": 35,
@@ -1811,21 +3189,49 @@
       "selling_price": 89.9,
       "discount_price": null,
       "product_mlb_price": "R$ 89,90",
-      "roi": "154%"
+      "roi": "154%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Kit Limpador Farol C 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO002-MLB00000000000_012024-F.webp",
+          "price": 89.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 380
+        },
+        {
+          "id": "var-002",
+          "name": "Kit Limpador Farol C 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO002-MLB00000000000_012024-F.webp",
+          "price": 91.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 360
+        }
+      ]
     },
     {
       "id": "auto-003",
       "title": "Escova para Pneu e Roda Elétrica 12V",
       "description": "Escova rotativa para lavagem de rodas e pneus",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO003-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO003-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO003-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP005",
       "shipping_from": "广东省东莞市",
       "weight": 2.2,
-      "dimensions": {"length": 35, "width": 15, "height": 15},
+      "dimensions": {
+        "length": 35,
+        "width": 15,
+        "height": 15
+      },
       "moq": 8,
-      "tags": ["escova", "pneu", "roda"],
+      "tags": [
+        "escova",
+        "pneu",
+        "roda"
+      ],
       "stock_quantity": 260,
       "reserved_quantity": 0,
       "low_stock_threshold": 25,
@@ -1834,21 +3240,49 @@
       "selling_price": 139.9,
       "discount_price": 129.9,
       "product_mlb_price": "R$ 139,90",
-      "roi": "125%"
+      "roi": "125%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Escova para Pneu e R 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO003-MLB00000000000_012024-F.webp",
+          "price": 139.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 260
+        },
+        {
+          "id": "var-002",
+          "name": "Escova para Pneu e R 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO003-MLB00000000000_012024-F.webp",
+          "price": 141.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 240
+        }
+      ]
     },
     {
       "id": "auto-004",
       "title": "Kit Cabos Auxiliar USB Cárter para Motor 5V",
       "description": "Cabos auxiliares em vários comprimentos para motores",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO004-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO004-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO004-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP006",
       "shipping_from": "江苏省苏州市",
       "weight": 0.45,
-      "dimensions": {"length": 30, "width": 20, "height": 3},
+      "dimensions": {
+        "length": 30,
+        "width": 20,
+        "height": 3
+      },
       "moq": 24,
-      "tags": ["cabos", "auxiliar", "USB"],
+      "tags": [
+        "cabos",
+        "auxiliar",
+        "USB"
+      ],
       "stock_quantity": 520,
       "reserved_quantity": 0,
       "low_stock_threshold": 50,
@@ -1857,21 +3291,49 @@
       "selling_price": 28.9,
       "discount_price": 25.9,
       "product_mlb_price": "R$ 28,90",
-      "roi": "144%"
+      "roi": "144%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Kit Cabos Auxiliar U 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO004-MLB00000000000_012024-F.webp",
+          "price": 28.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 520
+        },
+        {
+          "id": "var-002",
+          "name": "Kit Cabos Auxiliar U 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO004-MLB00000000000_012024-F.webp",
+          "price": 30.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 500
+        }
+      ]
     },
     {
       "id": "auto-005",
       "title": "Protetor Pintura Carro Cerâmica 9H Brilho Profundo",
       "description": "Pasta de polimento cerâmico para proteção da pintura",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO005-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO005-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO005-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP007",
       "shipping_from": "浙江省杭州市",
       "weight": 1.5,
-      "dimensions": {"length": 18, "width": 18, "height": 8},
+      "dimensions": {
+        "length": 18,
+        "width": 18,
+        "height": 8
+      },
       "moq": 10,
-      "tags": ["protetor", "cerâmica", "pintura"],
+      "tags": [
+        "protetor",
+        "cerâmica",
+        "pintura"
+      ],
       "stock_quantity": 340,
       "reserved_quantity": 0,
       "low_stock_threshold": 30,
@@ -1880,21 +3342,49 @@
       "selling_price": 109.9,
       "discount_price": 99.9,
       "product_mlb_price": "R$ 109,90",
-      "roi": "118%"
+      "roi": "118%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Protetor Pintura Car 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO005-MLB00000000000_012024-F.webp",
+          "price": 109.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 340
+        },
+        {
+          "id": "var-002",
+          "name": "Protetor Pintura Car 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO005-MLB00000000000_012024-F.webp",
+          "price": 111.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 320
+        }
+      ]
     },
     {
       "id": "auto-006",
       "title": "Filtro Ar Condicionado Automotivo Original",
       "description": "Filtro de ar condicionado premium para veículos",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO006-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO006-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO006-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP008",
       "shipping_from": "广东省深圳市",
       "weight": 0.35,
-      "dimensions": {"length": 22, "width": 20, "height": 3},
+      "dimensions": {
+        "length": 22,
+        "width": 20,
+        "height": 3
+      },
       "moq": 36,
-      "tags": ["filtro", "ar condicionado", "automotivo"],
+      "tags": [
+        "filtro",
+        "ar condicionado",
+        "automotivo"
+      ],
       "stock_quantity": 680,
       "reserved_quantity": 0,
       "low_stock_threshold": 60,
@@ -1903,21 +3393,49 @@
       "selling_price": 55.9,
       "discount_price": null,
       "product_mlb_price": "R$ 55,90",
-      "roi": "138%"
+      "roi": "138%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Filtro Ar Condiciona 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO006-MLB00000000000_012024-F.webp",
+          "price": 55.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 680
+        },
+        {
+          "id": "var-002",
+          "name": "Filtro Ar Condiciona 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO006-MLB00000000000_012024-F.webp",
+          "price": 57.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 660
+        }
+      ]
     },
     {
       "id": "auto-007",
       "title": "Tapete Carro 5 Peças Borracha Premium",
       "description": "Jogo completo de tapetes em borracha resistente à água",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO007-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO007-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO007-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP009",
       "shipping_from": "上海市",
       "weight": 3.8,
-      "dimensions": {"length": 120, "width": 80, "height": 5},
+      "dimensions": {
+        "length": 120,
+        "width": 80,
+        "height": 5
+      },
       "moq": 6,
-      "tags": ["tapete", "borracha", "premium"],
+      "tags": [
+        "tapete",
+        "borracha",
+        "premium"
+      ],
       "stock_quantity": 220,
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
@@ -1926,21 +3444,49 @@
       "selling_price": 169.9,
       "discount_price": 159.9,
       "product_mlb_price": "R$ 169,90",
-      "roi": "123%"
+      "roi": "123%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Tapete Carro 5 Peças 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO007-MLB00000000000_012024-F.webp",
+          "price": 169.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 220
+        },
+        {
+          "id": "var-002",
+          "name": "Tapete Carro 5 Peças 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO007-MLB00000000000_012024-F.webp",
+          "price": 171.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 200
+        }
+      ]
     },
     {
       "id": "auto-008",
       "title": "Capuz Nylon Camuflado Carro com Zíper",
       "description": "Capa protetora para carros com zíper lateral e corda de fixação",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO008-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO008-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO008-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP010",
       "shipping_from": "浙江省宁波市",
       "weight": 2.5,
-      "dimensions": {"length": 50, "width": 50, "height": 10},
+      "dimensions": {
+        "length": 50,
+        "width": 50,
+        "height": 10
+      },
       "moq": 4,
-      "tags": ["capuz", "nylon", "proteção"],
+      "tags": [
+        "capuz",
+        "nylon",
+        "proteção"
+      ],
       "stock_quantity": 180,
       "reserved_quantity": 0,
       "low_stock_threshold": 15,
@@ -1949,21 +3495,49 @@
       "selling_price": 159.9,
       "discount_price": null,
       "product_mlb_price": "R$ 159,90",
-      "roi": "120%"
+      "roi": "120%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Capuz Nylon Camuflad 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO008-MLB00000000000_012024-F.webp",
+          "price": 159.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 180
+        },
+        {
+          "id": "var-002",
+          "name": "Capuz Nylon Camuflad 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO008-MLB00000000000_012024-F.webp",
+          "price": 161.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 160
+        }
+      ]
     },
     {
       "id": "auto-009",
       "title": "Kit Polidor Espuma Aplicador para Carro",
       "description": "Kit completo de polimento com espuma e aplicador",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO009-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO009-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO009-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP001",
       "shipping_from": "广东省广州市",
       "weight": 1.2,
-      "dimensions": {"length": 35, "width": 25, "height": 8},
+      "dimensions": {
+        "length": 35,
+        "width": 25,
+        "height": 8
+      },
       "moq": 15,
-      "tags": ["polidor", "espuma", "kit"],
+      "tags": [
+        "polidor",
+        "espuma",
+        "kit"
+      ],
       "stock_quantity": 410,
       "reserved_quantity": 0,
       "low_stock_threshold": 40,
@@ -1972,21 +3546,49 @@
       "selling_price": 75.9,
       "discount_price": 69.9,
       "product_mlb_price": "R$ 75,90",
-      "roi": "122%"
+      "roi": "122%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Kit Polidor Espuma A 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO009-MLB00000000000_012024-F.webp",
+          "price": 75.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 410
+        },
+        {
+          "id": "var-002",
+          "name": "Kit Polidor Espuma A 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO009-MLB00000000000_012024-F.webp",
+          "price": 77.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 390
+        }
+      ]
     },
     {
       "id": "auto-010",
       "title": "Extintor Incêndio Veicular 1kg ABC Pó ABC",
       "description": "Extintor de incêndio portátil para veículos",
       "img": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO010-MLB00000000000_012024-F.webp",
-      "product_mlb_thumbnail": ["http://http2.mlstatic.com/D_NQ_NP_2X_AUTO010-MLB00000000000_012024-F.webp"],
+      "product_mlb_thumbnail": [
+        "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO010-MLB00000000000_012024-F.webp"
+      ],
       "category_id": "MLB5672",
       "supplier_id": "SUP002",
       "shipping_from": "浙江省义乌市",
       "weight": 1.8,
-      "dimensions": {"length": 28, "width": 12, "height": 12},
+      "dimensions": {
+        "length": 28,
+        "width": 12,
+        "height": 12
+      },
       "moq": 12,
-      "tags": ["extintor", "segurança", "veicular"],
+      "tags": [
+        "extintor",
+        "segurança",
+        "veicular"
+      ],
       "stock_quantity": 290,
       "reserved_quantity": 0,
       "low_stock_threshold": 25,
@@ -1995,8 +3597,25 @@
       "selling_price": 89.9,
       "discount_price": 84.9,
       "product_mlb_price": "R$ 89,90",
-      "roi": "134%"
+      "roi": "134%",
+      "variations": [
+        {
+          "id": "var-001",
+          "name": "Extintor Incêndio Ve 黑色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO010-MLB00000000000_012024-F.webp",
+          "price": 89.9,
+          "specification": "黑色配色版本",
+          "stock_quantity": 290
+        },
+        {
+          "id": "var-002",
+          "name": "Extintor Incêndio Ve 银色版本",
+          "image": "http://http2.mlstatic.com/D_NQ_NP_2X_AUTO010-MLB00000000000_012024-F.webp",
+          "price": 91.9,
+          "specification": "银色配色版本",
+          "stock_quantity": 270
+        }
+      ]
     }
   ]
 }
-

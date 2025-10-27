@@ -59,60 +59,92 @@ export const getCategories = async () => {
 
 export const getProductDetail = async (productId) => {
   try {
-    const response = await request(`/product/get_product/${productId}`)
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return {
+        success: true,
+        code: 200,
+        product: {
+          id: productId,
+          name: '数字电视天线 4K 1080P',
+          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+          category: '电子产品',
+          price: 13.63,
+          originalPrice: 15.99,
+          images: [
+            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片1',
+            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片2',
+            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片3'
+          ],
+          variations: [
+            {
+              id: 'var-001',
+              name: '3米线缆版本',
+              image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=3米',
+              price: 13.63,
+              specification: '3米线缆长度版本',
+              stock_quantity: 150
+            },
+            {
+              id: 'var-002',
+              name: '5米线缆版本',
+              image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=5米',
+              price: 14.99,
+              specification: '5米线缆长度版本',
+              stock_quantity: 120
+            }
+          ],
+          moq: 50,
+          priceRanges: [
+            { min: 50, max: 499, price: 13.63 },
+            { min: 500, max: 4999, price: 12.11 },
+            { min: 5000, max: null, price: 9.09 }
+          ],
+          supplier: {
+            id: '3066544290efeec',
+            name: '供应商名称',
+            rating: 4.8,
+            reviews: 1250
+          },
+          sales: 600,
+          rating: 4.5,
+          reviews: 89,
+          specifications: {
+            '类型': '数字电视天线',
+            '频率': 'VHF/UHF',
+            '增益': '32dB',
+            '功率': '5V DC',
+            '线缆长度': '3米/5米'
+          }
+        }
+      }
+    }
+    
+    // 生产环境：调用真实API，使用 POST 方法，将 product_id 放在请求体中
+    const response = await request('/product/get_product', {
+      method: 'POST',
+      body: JSON.stringify({ product_id: productId })
+    })
     return response
   } catch (error) {
     console.error('Failed to fetch product detail:', error)
-    // 如果API调用失败，返回默认数据
-    return {
-      id: productId,
-      name: '数字电视天线 4K 1080P',
-      description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
-      category: '电子产品',
-      price: 13.63,
-      originalPrice: 15.99,
-      images: [
-        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片1',
-        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片2',
-        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片3'
-      ],
-      variations: [
-        {
-          id: 1,
-          name: '3米线缆',
-          price: 13.63,
-          image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=3米',
-          inStock: true
-        },
-        {
-          id: 2,
-          name: '5米线缆',
-          price: 13.63,
-          image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=5米',
-          inStock: true
-        }
-      ],
-      moq: 50,
-      priceRanges: [
-        { min: 50, max: 499, price: 13.63 },
-        { min: 500, max: 4999, price: 12.11 },
-        { min: 5000, max: null, price: 9.09 }
-      ],
-      supplier: {
-        id: '3066544290efeec',
-        name: '供应商名称',
-        rating: 4.8,
-        reviews: 1250
-      },
-      sales: 600,
-      rating: 4.5,
-      reviews: 89,
-      specifications: {
-        '类型': '数字电视天线',
-        '频率': 'VHF/UHF',
-        '增益': '32dB',
-        '功率': '5V DC',
-        '线缆长度': '3米/5米'
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '获取产品详情失败'
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '获取产品详情失败，请稍后重试'
       }
     }
   }
