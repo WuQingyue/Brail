@@ -2,15 +2,30 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import Cart from '../../src/components/Cart/Cart.vue'
 import mockData from '../fixtures/mock-data.json'
-import { getCartId, getCartData, updateCartItem, removeCartItem } from '../../src/utils/api.js'
 
 // Mock API functions
 vi.mock('../../src/utils/api.js', () => ({
   getCartId: vi.fn(),
   getCartData: vi.fn(),
   updateCartItem: vi.fn(),
-  removeCartItem: vi.fn()
+  removeCartItem: vi.fn(),
+  createOrder: vi.fn()
 }))
+
+// Mock useUserStore
+vi.mock('../../src/stores/user.js', () => ({
+  useUserStore: vi.fn(() => ({
+    user: {
+      id: 1,
+      name: '测试用户',
+      email: 'test@example.com'
+    },
+    getUserId: () => 1
+  }))
+}))
+
+// Import mocked functions
+const { getCartId, getCartData, updateCartItem, removeCartItem, createOrder } = await import('../../src/utils/api.js')
 
 describe('购物车组件测试', () => {
   let wrapper
@@ -455,18 +470,36 @@ describe('购物车组件测试', () => {
       expect(wrapper.vm.cartItems.length).toBe(initialItemCount - 1)
       expect(wrapper.vm.cartItems.find(item => item.id === itemToRemove.id)).toBeUndefined()
       // 验证API被调用
-      expect(removeCartItem).toHaveBeenCalledWith(1, itemToRemove.id)
+      expect(removeCartItem).toHaveBeenCalledWith(itemToRemove.id)
     })
 
     it('应该能够提交订单', async () => {
       // Mock window.alert
       const mockAlert = vi.spyOn(window, 'alert').mockImplementation(() => {})
       
+      // Mock createOrder API
+      vi.mocked(createOrder).mockResolvedValue({
+        success: true,
+        order_id: 'ORD-123456'
+      })
+      
+      // 模拟选择商品
+      wrapper.vm.cartItems.forEach(item => {
+        item.selected = true
+      })
+      
       const submitBtn = wrapper.find('.submit-btn')
       await submitBtn.trigger('click')
       
+      // 等待异步操作完成
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+      
+      // 验证 createOrder 被调用
+      expect(createOrder).toHaveBeenCalled()
+      
       // 验证alert被调用
-      expect(mockAlert).toHaveBeenCalledWith('订单提交功能待实现')
+      expect(mockAlert).toHaveBeenCalled()
       
       // 恢复alert
       mockAlert.mockRestore()

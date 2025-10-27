@@ -282,102 +282,144 @@
     ],
     "mockProducts": [
       {
-        "id": 1,
-        "name": "Sporty Running Sneaker",
-        "category": "Men's Shoes",
-        "price": 89.99,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Running+Sneaker"
+        "id": "1",
+        "title": "Sporty Running Sneaker",
+        "description": "高品质运动鞋，适合跑步和日常穿着",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Running+Sneaker",
+        "category_id": "4",
+        "category_name": "Men's Shoes",
+        "selling_price": 89.99,
+        "stock_quantity": 150
       },
       {
-        "id": 2,
-        "name": "Classic Wrist Watch",
-        "category": "Accessories",
-        "price": 120.50,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Wrist+Watch"
+        "id": "2",
+        "title": "Classic Wrist Watch",
+        "description": "经典腕表，优雅时尚",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Wrist+Watch",
+        "category_id": "1",
+        "category_name": "Accessories",
+        "selling_price": 120.50,
+        "stock_quantity": 80
       },
       {
-        "id": 3,
-        "name": "Wireless Headphones",
-        "category": "Electronics",
-        "price": 199.00,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Headphones"
+        "id": "3",
+        "title": "Wireless Headphones",
+        "description": "高品质无线蓝牙耳机",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Headphones",
+        "category_id": "1",
+        "category_name": "Electronics",
+        "selling_price": 199.00,
+        "stock_quantity": 120
       },
       {
-        "id": 4,
-        "name": "Smart Watch Pro",
-        "category": "Electronics",
-        "price": 250.00,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Smart+Watch"
+        "id": "4",
+        "title": "Smart Watch Pro",
+        "description": "智能手表Pro版，支持健康监测",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Smart+Watch",
+        "category_id": "1",
+        "category_name": "Electronics",
+        "selling_price": 250.00,
+        "stock_quantity": 95
       },
       {
-        "id": 5,
-        "name": "Stylish Sunglasses",
-        "category": "Accessories",
-        "price": 45.00,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Sunglasses"
+        "id": "5",
+        "title": "Stylish Sunglasses",
+        "description": "时尚太阳镜，防紫外线",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Sunglasses",
+        "category_id": "1",
+        "category_name": "Accessories",
+        "selling_price": 45.00,
+        "stock_quantity": 200
       },
       {
-        "id": 6,
-        "name": "Leather Backpack",
-        "category": "Bags & Luggage",
-        "price": 150.00,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Backpack"
+        "id": "6",
+        "title": "Leather Backpack",
+        "description": "真皮背包，旅行必备",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Backpack",
+        "category_id": "2",
+        "category_name": "Bags & Luggage",
+        "selling_price": 150.00,
+        "stock_quantity": 60
       },
       {
-        "id": 7,
-        "name": "Gaming Keyboard",
-        "category": "Electronics",
-        "price": 89.99,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Gaming+Keyboard"
+        "id": "7",
+        "title": "Gaming Keyboard",
+        "description": "机械游戏键盘，RGB背光",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Gaming+Keyboard",
+        "category_id": "1",
+        "category_name": "Electronics",
+        "selling_price": 89.99,
+        "stock_quantity": 140
       },
       {
-        "id": 8,
-        "name": "Yoga Mat",
-        "category": "Sports & Outdoors",
-        "price": 35.00,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Yoga+Mat"
+        "id": "8",
+        "title": "Yoga Mat",
+        "description": "防滑瑜伽垫，加厚设计",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Yoga+Mat",
+        "category_id": "4",
+        "category_name": "Sports & Outdoors",
+        "selling_price": 35.00,
+        "stock_quantity": 180
       },
       {
-        "id": 9,
-        "name": "Bluetooth Speaker",
-        "category": "Electronics",
-        "price": 79.99,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Bluetooth+Speaker"
+        "id": "9",
+        "title": "Bluetooth Speaker",
+        "description": "便携蓝牙音箱，高音质",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Bluetooth+Speaker",
+        "category_id": "1",
+        "category_name": "Electronics",
+        "selling_price": 79.99,
+        "stock_quantity": 160
       },
       {
-        "id": 10,
-        "name": "Fitness Tracker",
-        "category": "Electronics",
-        "price": 129.99,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Fitness+Tracker"
+        "id": "10",
+        "title": "Fitness Tracker",
+        "description": "运动手环，健康监测",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Fitness+Tracker",
+        "category_id": "1",
+        "category_name": "Electronics",
+        "selling_price": 129.99,
+        "stock_quantity": 110
       },
       {
-        "id": 11,
-        "name": "Running Shoes",
-        "category": "Men's Shoes",
-        "price": 149.99,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Running+Shoes"
+        "id": "11",
+        "title": "Running Shoes",
+        "description": "专业跑鞋，缓震透气",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Running+Shoes",
+        "category_id": "4",
+        "category_name": "Men's Shoes",
+        "selling_price": 149.99,
+        "stock_quantity": 90
       },
       {
-        "id": 12,
-        "name": "Laptop Stand",
-        "category": "Electronics",
-        "price": 59.99,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Laptop+Stand"
+        "id": "12",
+        "title": "Laptop Stand",
+        "description": "笔记本支架，铝合金材质",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Laptop+Stand",
+        "category_id": "1",
+        "category_name": "Electronics",
+        "selling_price": 59.99,
+        "stock_quantity": 170
       },
       {
-        "id": 13,
-        "name": "Travel Mug",
-        "category": "Accessories",
-        "price": 24.99,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Travel+Mug"
+        "id": "13",
+        "title": "Travel Mug",
+        "description": "旅行杯，保温保冷",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Travel+Mug",
+        "category_id": "1",
+        "category_name": "Accessories",
+        "selling_price": 24.99,
+        "stock_quantity": 220
       },
       {
-        "id": 14,
-        "name": "Wireless Mouse",
-        "category": "Electronics",
-        "price": 39.99,
-        "image": "https://via.placeholder.com/300x200/10b981/ffffff?text=Wireless+Mouse"
+        "id": "14",
+        "title": "Wireless Mouse",
+        "description": "无线鼠标，人体工学设计",
+        "img": "https://via.placeholder.com/300x200/10b981/ffffff?text=Wireless+Mouse",
+        "category_id": "1",
+        "category_name": "Electronics",
+        "selling_price": 39.99,
+        "stock_quantity": 190
       }
     ],
     "mockProductDetail": {
@@ -481,6 +523,7 @@
       "singleItem": [
         {
           "id": 1,
+          "product_id": "test-prod-001",
           "name": "测试商品",
           "description": "测试描述",
           "specification": "测试规格",
@@ -806,6 +849,49 @@
         "success": true,
         "orderIds": []
       }
+    },
+    "orderListApiResponse": {
+      "success": true,
+      "orders": [
+        {
+          "id": "ORD-001",
+          "orderDate": "2024-01-15T10:30:00",
+          "statusStep": 1,
+          "statusText": "订单和审批",
+          "statusDetailText": "订单已接收",
+          "status": "Pending",
+          "statusClass": "status-pending",
+          "items": [
+            {
+              "id": 1,
+              "product_id": "prod-001",
+              "productName": "产品A",
+              "image": "https://via.placeholder.com/100x100",
+              "quantity": 2,
+              "price": 99.99
+            }
+          ]
+        },
+        {
+          "id": "ORD-002",
+          "orderDate": "2024-01-16T10:30:00",
+          "statusStep": 2,
+          "statusText": "生产和准备发货",
+          "statusDetailText": "正在处理",
+          "status": "Processing",
+          "statusClass": "status-processing",
+          "items": [
+            {
+              "id": 2,
+              "product_id": "prod-002",
+              "productName": "产品B",
+              "image": "https://via.placeholder.com/100x100",
+              "quantity": 1,
+              "price": 199.99
+            }
+          ]
+        }
+      ]
     }
   }
 }

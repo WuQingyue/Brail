@@ -22,7 +22,7 @@
             <img 
               v-if="currentImage"
               :src="currentImage" 
-              :alt="product.name"
+              :alt="productName"
               class="product-image"
               @error="handleImageError"
             />
@@ -36,16 +36,16 @@
           </div>
 
           <!-- 缩略图画廊 -->
-          <div class="thumbnail-gallery">
+          <div v-if="productImages.length > 0" class="thumbnail-gallery">
             <button class="nav-btn prev" @click="prevImage">‹</button>
             <div class="thumbnails">
               <div 
-                v-for="(image, index) in product.images" 
+                v-for="(image, index) in productImages" 
                 :key="index"
                 :class="['thumbnail', { active: index === currentImageIndex }]"
                 @click="selectImage(index)"
               >
-                <img :src="image" :alt="`${product.name} ${index + 1}`" />
+                <img :src="image" :alt="`${productName} ${index + 1}`" />
                 <div v-if="isVideo" class="play-icon">▶</div>
               </div>
             </div>
@@ -56,29 +56,35 @@
         <!-- 右侧产品详情区域 -->
         <div class="product-info">
           <!-- 产品标题 -->
-          <h1 class="product-title">{{ product.name }}</h1>
+          <h1 class="product-title">{{ productName }}</h1>
           
-          <!-- 销售信息 -->
-          <div class="sales-info">
-            <span class="sales-count">已售出 {{ product.sales }} 件</span>
+          <!-- 描述 -->
+          <div class="product-description" v-if="product.description">
+            <p>{{ product.description }}</p>
+          </div>
+
+          <!-- 价格信息 -->
+          <div class="price-info">
+            <span class="selling-price">R$ {{ product.selling_price?.toFixed(2) || '0.00' }}</span>
+            <span class="stock-info">库存: {{ product.stock_quantity || 0 }} 件</span>
           </div>
 
           <!-- 分类和供应商 -->
           <div class="product-meta">
-            <p class="category">分类: {{ product.category }}</p>
-            <p class="supplier">供应商: <a href="#" class="supplier-link">{{ product.supplier.id }}</a></p>
+            <p class="category" v-if="product.category_id">类别ID: {{ product.category_id }}</p>
+            <p class="supplier" v-if="product.supplier_id">供应商ID: {{ product.supplier_id }}</p>
+            <p class="shipping" v-if="product.shipping_from">发货地: {{ product.shipping_from }}</p>
           </div>
 
-          <!-- 产品变体 -->
-          <div class="variations-section">
-            <h3>可选规格</h3>
+          <!-- 产品变体（如果存在） -->
+          <div class="variations-section" v-if="product.variations && product.variations.length > 0">
+            <h3>可用变体</h3>
             <div class="variations-table">
               <div class="table-header">
-                <span>#</span>
                 <span>图片</span>
-                <span>规格/型号</span>
+                <span>颜色/变体</span>
+                <span>规格</span>
                 <span>单价</span>
-                <span>总价</span>
                 <span>数量</span>
               </div>
               <div 
@@ -87,19 +93,12 @@
                 :class="['variation-item', { selected: selectedVariation?.id === variation.id }]"
                 @click="selectVariation(variation)"
               >
-                <div class="variation-checkbox">
-                  <input 
-                    type="checkbox" 
-                    :checked="selectedVariation?.id === variation.id"
-                    @change="selectVariation(variation)"
-                  />
-                </div>
                 <div class="variation-image">
                   <img :src="variation.image" :alt="variation.name" />
                 </div>
                 <div class="variation-name">{{ variation.name }}</div>
+                <div class="variation-spec">{{ variation.specification || '标准版本' }}</div>
                 <div class="variation-price">R$ {{ variation.price.toFixed(2) }}</div>
-                <div class="variation-total">R$ {{ (variation.price * getVariationQuantity(variation.id)).toFixed(2) }}</div>
                 <div class="quantity-controls">
                   <button 
                     class="quantity-btn decrease" 
@@ -125,13 +124,13 @@
           </div>
 
           <!-- MOQ信息 -->
-          <div class="moq-info">
+          <div class="moq-info" v-if="product.moq">
             <span class="moq-icon">📦</span>
             <span>最小订购量 (MOQ) {{ product.moq }} 件</span>
           </div>
 
-          <!-- 价格区间 -->
-          <div class="price-ranges">
+          <!-- 价格信息 -->
+          <div class="price-ranges" v-if="product.priceRanges && product.priceRanges.length > 0">
             <div class="price-ranges-header">
               <span class="price-icon">💰</span>
               <span>批量价格表</span>
@@ -142,18 +141,18 @@
           </div>
 
           <!-- 成本摘要 -->
-          <div class="cost-summary">
+          <div class="cost-summary" v-if="product.cost_price">
             <div class="cost-item">
-              <span class="cost-label">中国成本</span>
+              <span class="cost-label">成本价</span>
               <div class="cost-details">
-                <span class="cost-total">¥{{ (selectedVariation?.price || product.price * getSelectedQuantity()).toFixed(2) }}</span>
-                <span class="cost-unit">单价: ¥{{ (selectedVariation?.price || product.price).toFixed(2) }}</span>
+                <span class="cost-total">¥{{ product.cost_price.toFixed(2) }}</span>
+                <span class="cost-unit">售价: R$ {{ product.selling_price?.toFixed(2) || '0.00' }}</span>
               </div>
             </div>
             <div class="cost-item">
-              <span class="cost-label">巴西成本</span>
+              <span class="cost-label">产品MLB价格</span>
               <div class="cost-details">
-                <span class="cost-unit">单价: R$ {{ ((selectedVariation?.price || product.price) * 2.4).toFixed(2) }}</span>
+                <span class="cost-unit">{{ product.product_mlb_price || 'N/A' }}</span>
                 <span class="cost-eye">👁</span>
               </div>
             </div>
@@ -171,7 +170,8 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { getProductDetail } from '../../utils/api.js'
+import { getProductDetail, addToCart as addToCartApi, getCartId } from '../../utils/api.js'
+import { useUserStore } from '../../stores/user.js'
 
 // Props
 const props = defineProps({
@@ -194,48 +194,96 @@ const quantity = ref(50)
 const variationQuantities = ref({}) // 为每个变体维护独立的数量
 const isVideo = ref(false)
 
-// 计算属性
-const currentImage = computed(() => {
-  if (product.value && product.value.images) {
-    return product.value.images[currentImageIndex.value]
-  }
-  return null
-})
+ // 计算属性
+ const currentImage = computed(() => {
+   if (!product.value) return null
+   
+   // 后端返回的字段可能是 img（单个图片URL）或 product_mlb_thumbnail（数组）
+   // 前端模板期望的是 images（数组）
+   if (product.value.images && Array.isArray(product.value.images)) {
+     return product.value.images[currentImageIndex.value]
+   } else if (product.value.img) {
+     // 如果只有单个图片，返回它
+     return product.value.img
+   } else if (product.value.product_mlb_thumbnail && Array.isArray(product.value.product_mlb_thumbnail)) {
+     // 如果后端返回了 product_mlb_thumbnail 数组，使用它
+     return product.value.product_mlb_thumbnail[currentImageIndex.value] || product.value.product_mlb_thumbnail[0]
+   }
+   
+   return null
+ })
 
-// 方法
-const loadProduct = async () => {
-  try {
-    loading.value = true
-    error.value = null
-    const data = await getProductDetail(props.productId)
-    product.value = data
-    
-    // 默认选择第一个变体
-    if (data.variations && data.variations.length > 0) {
-      selectedVariation.value = data.variations[0]
-    }
-  } catch (err) {
-    error.value = '加载产品详情失败，请重试'
-    console.error('Failed to load product:', err)
-  } finally {
-    loading.value = false
-  }
-}
+ // 产品名称（兼容 name 和 title）
+ const productName = computed(() => {
+   if (!product.value) return ''
+   return product.value.name || product.value.title || ''
+ })
+
+ // 产品图片数组（兼容不同的字段名）
+ const productImages = computed(() => {
+   if (!product.value) return []
+   if (product.value.images && Array.isArray(product.value.images)) {
+     return product.value.images
+   } else if (product.value.product_mlb_thumbnail && Array.isArray(product.value.product_mlb_thumbnail)) {
+     return product.value.product_mlb_thumbnail
+   } else if (product.value.img) {
+     return [product.value.img]
+   }
+   return []
+ })
+
+ // 方法
+ const loadProduct = async () => {
+   try {
+     loading.value = true
+     error.value = null
+     const response = await getProductDetail(props.productId)
+     
+     console.log('🔍 后端返回的响应:', response)
+     
+     // 后端返回格式: { success: true, code: 200, product: {...} }
+     if (response.product) {
+       product.value = response.product
+       console.log('✅ 产品数据已加载:', product.value)
+     } else if (response.success === false) {
+       // 处理错误响应
+       error.value = response.message || '加载产品详情失败，请重试'
+       console.error('❌ 后端返回错误:', response)
+     } else {
+       // 如果返回格式不符合预期，使用原始数据
+       console.warn('⚠️ 返回格式异常，直接使用:', response)
+       product.value = response
+     }
+     
+     // 默认选择第一个变体（如果存在）
+     if (product.value && product.value.variations && product.value.variations.length > 0) {
+       selectedVariation.value = product.value.variations[0]
+     } else {
+       // 如果没有 variations，设置为 null
+       selectedVariation.value = null
+     }
+   } catch (err) {
+     console.error('❌ 加载产品详情异常:', err)
+     error.value = '加载产品详情失败，请重试'
+   } finally {
+     loading.value = false
+   }
+ }
 
 const selectImage = (index) => {
   currentImageIndex.value = index
 }
 
 const nextImage = () => {
-  if (product.value && product.value.images) {
-    currentImageIndex.value = (currentImageIndex.value + 1) % product.value.images.length
+  if (productImages.value.length > 0) {
+    currentImageIndex.value = (currentImageIndex.value + 1) % productImages.value.length
   }
 }
 
 const prevImage = () => {
-  if (product.value && product.value.images) {
+  if (productImages.value.length > 0) {
     currentImageIndex.value = currentImageIndex.value === 0 
-      ? product.value.images.length - 1 
+      ? productImages.value.length - 1 
       : currentImageIndex.value - 1
   }
 }
@@ -286,14 +334,52 @@ const getSelectedQuantity = () => {
   return product.value?.moq || 50
 }
 
-const addToCart = () => {
-  if (selectedVariation.value) {
-    const cartItem = {
-      product: product.value,
-      variation: selectedVariation.value,
-      quantity: getVariationQuantity(selectedVariation.value.id)
+const addToCart = async () => {
+  try {
+    // 获取用户信息
+    const userStore = useUserStore()
+    const userId = userStore.getUserId() // 使用 userStore 的 getUserId() 方法
+    
+    console.log('🔍 当前用户ID:', userId)
+    console.log('🔍 用户登录状态:', userStore.isLoggedIn)
+    console.log('🔍 用户信息:', userStore.user)
+    
+    if (!userId) {
+      alert('请先登录')
+      return
     }
-    emit('add-to-cart', cartItem)
+    
+    if (!product.value) {
+      alert('产品信息不存在')
+      return
+    }
+    
+    // 获取购物车ID
+    const cartId = await getCartId(userId)
+    
+    // 计算要添加的数量
+    let quantity = product.value.moq || 50
+    
+    // 如果有选中的变体，使用变体的数量
+    if (selectedVariation.value) {
+      quantity = getVariationQuantity(selectedVariation.value.id)
+    }
+    
+    // 调用后端API加入购物车
+    const response = await addToCartApi(cartId, props.productId, quantity)
+    
+    if (response.success) {
+      alert('商品已成功加入购物车！')
+      // 触发事件通知父组件
+      emit('add-to-cart', {
+        product: product.value,
+        variation: selectedVariation.value,
+        quantity: quantity
+      })
+    }
+  } catch (error) {
+    console.error('❌ 加入购物车失败:', error)
+    alert('加入购物车失败，请重试')
   }
 }
 
@@ -533,32 +619,29 @@ watch(quantity, (newQuantity) => {
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   overflow: hidden;
-  overflow-x: auto;
   min-width: 100%;
 }
 
 .table-header {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1.5fr 1fr 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: 0.8fr 2fr 1.2fr 0.8fr 1.2fr;
+  gap: 0.75rem;
   padding: 0.75rem;
   background: #f9fafb;
   font-weight: 600;
   font-size: 0.9rem;
   color: #374151;
-  min-width: 600px;
 }
 
 .variation-item {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 1.5fr 1fr 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: 0.8fr 2fr 1.2fr 0.8fr 1.2fr;
+  gap: 0.75rem;
   padding: 0.75rem;
   border-bottom: 1px solid #e5e7eb;
   cursor: pointer;
   transition: all 0.2s;
   align-items: center;
-  min-width: 600px;
 }
 
 .variation-item:hover {
@@ -568,12 +651,6 @@ watch(quantity, (newQuantity) => {
 .variation-item.selected {
   background: #fef3c7;
   border-color: #fbbf24;
-}
-
-.variation-checkbox input {
-  width: 1rem;
-  height: 1rem;
-  accent-color: #fbbf24;
 }
 
 .variation-image img {
@@ -586,6 +663,11 @@ watch(quantity, (newQuantity) => {
 .variation-name {
   font-weight: 500;
   color: #374151;
+}
+
+.variation-spec {
+  font-size: 0.85rem;
+  color: #6b7280;
 }
 
 .variation-price,
@@ -807,19 +889,89 @@ watch(quantity, (newQuantity) => {
   }
   
   .variations-table {
-    overflow-x: auto;
+    overflow-x: visible;
   }
   
-  .table-header,
+  .table-header {
+    display: none; /* 隐藏表头在小屏幕上 */
+  }
+  
   .variation-item {
-    grid-template-columns: 0.5fr 1fr 1.5fr 1fr 1fr 1fr;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    min-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+  }
+  
+  .variation-image {
+    order: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .variation-image img {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .variation-name {
+    order: 2;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .variation-spec {
+    order: 3;
+    font-size: 0.85rem;
+    color: #6b7280;
+  }
+  
+  .variation-price {
+    order: 4;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #10b981;
+  }
+  
+  .quantity-controls {
+    order: 5;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .quantity-input {
+    width: 60px;
+  }
+  
+  .quantity-btn {
+    width: 2.5rem;
+    height: 2.5rem;
   }
   
   .product-title {
     font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .variations-table {
+    overflow-x: visible;
+  }
+  
+  .table-header,
+  .variation-item {
+    grid-template-columns: 0.8fr 1.8fr 1.2fr 0.8fr 1.2fr;
+    gap: 0.75rem;
+    font-size: 0.85rem;
+  }
+  
+  .variation-image img {
+    width: 35px;
+    height: 35px;
   }
 }
 </style>

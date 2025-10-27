@@ -132,7 +132,8 @@
 
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
-import { getCartId, getCartData, updateCartItem, removeCartItem } from '../../utils/api.js'
+import { getCartId, getCartData, updateCartItem, removeCartItem, createOrder } from '../../utils/api.js'
+import { useUserStore } from '../../stores/user.js'
 
 // Props
 const props = defineProps({
@@ -273,7 +274,7 @@ const calculateCartSummary = () => {
 
 const removeItem = async (item) => {
   try {
-    await removeCartItem(cartId.value, item.id)
+    await removeCartItem(item.id)
     cartItems.value = cartItems.value.filter(i => i.id !== item.id)
     
     // 重新计算购物车摘要
@@ -283,10 +284,50 @@ const removeItem = async (item) => {
   }
 }
 
-const submitOrder = () => {
-  // 这里可以添加提交订单的逻辑
-  console.log('提交订单:', cartItems.value)
-  alert('订单提交功能待实现')
+const submitOrder = async () => {
+  // 获取选中的商品
+  const selectedItems = cartItems.value.filter(item => item.selected)
+  
+  if (selectedItems.length === 0) {
+    alert('请至少选择一个商品')
+    return
+  }
+  
+  try {
+    // 获取用户信息
+    const userStore = useUserStore()
+    
+    // 构建订单数据
+    const orderData = {
+      user_id: props.userId,
+      customer_name: userStore.user?.name || '客户',
+      shipping_street: '待填写',
+      shipping_city: '待填写',
+      shipping_zipcode: '待填写',
+      payment_method: '待选择',
+      notes: '来自购物车',
+      items: selectedItems.map(item => ({
+        product_id: item.product_id,  // 直接使用 product_id
+        product_name: item.name,
+        product_image: item.image,
+        quantity: item.quantity,
+        price: item.unitPrice
+      }))
+    }
+    
+    // 调用创建订单API
+    const response = await createOrder(orderData)
+    
+    if (response.success) {
+      alert(`订单创建成功！订单号: ${response.order_id}`)
+      // 关闭购物车
+      closeCart()
+      // 可以在这里触发刷新订单列表等操作
+    }
+  } catch (error) {
+    console.error('Failed to submit order:', error)
+    alert('订单提交失败，请重试')
+  }
 }
 
 const closeCart = () => {

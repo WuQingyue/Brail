@@ -59,60 +59,92 @@ export const getCategories = async () => {
 
 export const getProductDetail = async (productId) => {
   try {
-    const response = await request(`/product/get_product/${productId}`)
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return {
+        success: true,
+        code: 200,
+        product: {
+          id: productId,
+          name: '数字电视天线 4K 1080P',
+          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+          category: '电子产品',
+          price: 13.63,
+          originalPrice: 15.99,
+          images: [
+            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片1',
+            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片2',
+            'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片3'
+          ],
+          variations: [
+            {
+              id: 'var-001',
+              name: '3米线缆版本',
+              image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=3米',
+              price: 13.63,
+              specification: '3米线缆长度版本',
+              stock_quantity: 150
+            },
+            {
+              id: 'var-002',
+              name: '5米线缆版本',
+              image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=5米',
+              price: 14.99,
+              specification: '5米线缆长度版本',
+              stock_quantity: 120
+            }
+          ],
+          moq: 50,
+          priceRanges: [
+            { min: 50, max: 499, price: 13.63 },
+            { min: 500, max: 4999, price: 12.11 },
+            { min: 5000, max: null, price: 9.09 }
+          ],
+          supplier: {
+            id: '3066544290efeec',
+            name: '供应商名称',
+            rating: 4.8,
+            reviews: 1250
+          },
+          sales: 600,
+          rating: 4.5,
+          reviews: 89,
+          specifications: {
+            '类型': '数字电视天线',
+            '频率': 'VHF/UHF',
+            '增益': '32dB',
+            '功率': '5V DC',
+            '线缆长度': '3米/5米'
+          }
+        }
+      }
+    }
+    
+    // 生产环境：调用真实API，使用 POST 方法，将 product_id 放在请求体中
+    const response = await request('/product/get_product', {
+      method: 'POST',
+      body: JSON.stringify({ product_id: productId })
+    })
     return response
   } catch (error) {
     console.error('Failed to fetch product detail:', error)
-    // 如果API调用失败，返回默认数据
-    return {
-      id: productId,
-      name: '数字电视天线 4K 1080P',
-      description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
-      category: '电子产品',
-      price: 13.63,
-      originalPrice: 15.99,
-      images: [
-        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片1',
-        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片2',
-        'https://via.placeholder.com/600x400/10b981/ffffff?text=产品图片3'
-      ],
-      variations: [
-        {
-          id: 1,
-          name: '3米线缆',
-          price: 13.63,
-          image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=3米',
-          inStock: true
-        },
-        {
-          id: 2,
-          name: '5米线缆',
-          price: 13.63,
-          image: 'https://via.placeholder.com/100x100/10b981/ffffff?text=5米',
-          inStock: true
-        }
-      ],
-      moq: 50,
-      priceRanges: [
-        { min: 50, max: 499, price: 13.63 },
-        { min: 500, max: 4999, price: 12.11 },
-        { min: 5000, max: null, price: 9.09 }
-      ],
-      supplier: {
-        id: '3066544290efeec',
-        name: '供应商名称',
-        rating: 4.8,
-        reviews: 1250
-      },
-      sales: 600,
-      rating: 4.5,
-      reviews: 89,
-      specifications: {
-        '类型': '数字电视天线',
-        '频率': 'VHF/UHF',
-        '增益': '32dB',
-        '功率': '5V DC',
-        '线缆长度': '3米/5米'
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '获取产品详情失败'
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '获取产品详情失败，请稍后重试'
       }
     }
   }
@@ -122,124 +154,86 @@ export const getProductsByCategory = async (categoryId = null) => {
   try {
     const url = categoryId ? `/product/categories/${categoryId}` : '/product/categories'
     const response = await request(url)
-    return response
+    
+    // 如果后端返回格式是 { success: true, products: [...] }
+    if (response.products && Array.isArray(response.products)) {
+      return response.products
+    }
+    
+    // 如果直接返回数组
+    if (Array.isArray(response)) {
+      return response
+    }
+    
+    // 默认返回空数组
+    return []
   } catch (error) {
     console.error('Failed to fetch products:', error)
-    // 如果API调用失败，返回默认数据
-    return [
-      {
-        id: 1,
-        name: 'Sporty Running Sneaker',
-        category: "Men's Shoes",
-        categoryId: 4,
-        price: 89.99,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Running+Sneaker'
-      },
-      {
-        id: 2,
-        name: 'Classic Wrist Watch',
-        category: 'Accessories',
-        categoryId: 1,
-        price: 120.50,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Wrist+Watch'
-      },
-      {
-        id: 3,
-        name: 'Wireless Headphones',
-        category: 'Electronics',
-        categoryId: 1,
-        price: 199.00,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Headphones'
-      },
-      {
-        id: 4,
-        name: 'Smart Watch Pro',
-        category: 'Electronics',
-        categoryId: 1,
-        price: 250.00,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Smart+Watch'
-      },
-      {
-        id: 5,
-        name: 'Stylish Sunglasses',
-        category: 'Accessories',
-        categoryId: 1,
-        price: 45.00,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Sunglasses'
-      },
-      {
-        id: 6,
-        name: 'Leather Backpack',
-        category: 'Bags & Luggage',
-        categoryId: 2,
-        price: 150.00,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Backpack'
-      },
-      {
-        id: 7,
-        name: 'Gaming Keyboard',
-        category: 'Electronics',
-        categoryId: 1,
-        price: 89.99,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Gaming+Keyboard'
-      },
-      {
-        id: 8,
-        name: 'Yoga Mat',
-        category: 'Sports & Outdoors',
-        categoryId: 4,
-        price: 35.00,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Yoga+Mat'
-      },
-      {
-        id: 9,
-        name: 'Bluetooth Speaker',
-        category: 'Electronics',
-        categoryId: 1,
-        price: 79.99,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Bluetooth+Speaker'
-      },
-      {
-        id: 10,
-        name: 'Fitness Tracker',
-        category: 'Electronics',
-        categoryId: 1,
-        price: 129.99,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Fitness+Tracker'
-      },
-      {
-        id: 11,
-        name: 'Running Shoes',
-        category: "Men's Shoes",
-        categoryId: 4,
-        price: 149.99,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Running+Shoes'
-      },
-      {
-        id: 12,
-        name: 'Laptop Stand',
-        category: 'Electronics',
-        categoryId: 1,
-        price: 59.99,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Laptop+Stand'
-      },
-      {
-        id: 13,
-        name: 'Travel Mug',
-        category: 'Accessories',
-        categoryId: 1,
-        price: 24.99,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Travel+Mug'
-      },
-      {
-        id: 14,
-        name: 'Wireless Mouse',
-        category: 'Electronics',
-        categoryId: 1,
-        price: 39.99,
-        image: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Wireless+Mouse'
+    // 如果API调用失败，返回空数组而不是默认数据
+    return []
+  }
+}
+
+export const searchProducts = async (keyword) => {
+  try {
+    // 开发环境：返回模拟搜索结果
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 模拟搜索结果数据
+      const mockSearchResults = [
+        {
+          id: 'search-001',
+          title: `数字电视天线 4K 1080P - ${keyword}`,
+          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+          img: 'https://via.placeholder.com/300x200/10b981/ffffff?text=搜索结果',
+          category_id: 'MLB5672',
+          category_name: '电子产品',
+          selling_price: 13.63,
+          stock_quantity: 150,
+          moq: 50
+        }
+      ]
+      
+      return {
+        success: true,
+        code: 200,
+        count: mockSearchResults.length,
+        keyword: keyword,
+        products: mockSearchResults
       }
-    ]
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/product/search/keyword', {
+      method: 'POST',
+      body: JSON.stringify({ keyword })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to search products:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '搜索产品失败',
+        count: 0,
+        keyword: keyword,
+        products: []
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '搜索产品失败，请稍后重试',
+        count: 0,
+        keyword: keyword,
+        products: []
+      }
+    }
   }
 }
 
@@ -440,7 +434,20 @@ export const registerUser = async (userData) => {
 // 购物车相关API
 export const getCartId = async (userId) => {
   try {
-    const response = await request(`/cart/getCartId/${userId}`)
+    // 开发环境：返回模拟数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 返回固定的购物车ID
+      return 1
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/cart/getCartId', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
     return response.cartId
   } catch (error) {
     console.error('Failed to fetch cart ID:', error)
@@ -451,53 +458,68 @@ export const getCartId = async (userId) => {
 
 export const getCartData = async (cartId) => {
   try {
+    // 开发环境：返回模拟数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 返回模拟购物车数据
+      return {
+        items: [
+          {
+            id: 1,
+            name: '数字电视天线 4K 1080P',
+            description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
+            specification: '3米线缆',
+            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=天线',
+            unitPrice: 13.63,
+            totalPrice: 681.50,
+            quantity: 50,
+            moq: 50
+          },
+          {
+            id: 2,
+            name: '无线蓝牙耳机',
+            description: '高品质无线蓝牙耳机，支持降噪功能',
+            specification: '黑色',
+            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=耳机',
+            unitPrice: 25.99,
+            totalPrice: 1299.50,
+            quantity: 50,
+            moq: 50
+          },
+          {
+            id: 3,
+            name: '智能手表',
+            description: '多功能智能手表，支持健康监测',
+            specification: '银色',
+            image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=手表',
+            unitPrice: 89.99,
+            totalPrice: 4499.50,
+            quantity: 50,
+            moq: 50
+          }
+        ],
+        summary: {
+          totalAmount: 6480.50,
+          minInvestment: 10000.00,
+          remainingAmount: 3519.50,
+          progressPercentage: 64.8,
+          shippingNote: '免费配送'
+        }
+      }
+    }
+    
+    // 生产环境：调用真实API
     const response = await request(`/cart/get_cart_data/${cartId}`)
     return response
   } catch (error) {
     console.error('Failed to fetch cart data:', error)
     // 如果API调用失败，返回默认数据
     return {
-      items: [
-        {
-          id: 1,
-          name: '数字电视天线 4K 1080P',
-          description: '地面数字电视信号放大器 内置DVB-T2高清智能电视天线',
-          specification: '3米线缆',
-          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=天线',
-          unitPrice: 13.63,
-          totalPrice: 681.50,
-          quantity: 50,
-          moq: 50
-        },
-        {
-          id: 2,
-          name: '无线蓝牙耳机',
-          description: '高品质无线蓝牙耳机，支持降噪功能',
-          specification: '黑色',
-          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=耳机',
-          unitPrice: 25.99,
-          totalPrice: 1299.50,
-          quantity: 50,
-          moq: 50
-        },
-        {
-          id: 3,
-          name: '智能手表',
-          description: '多功能智能手表，支持健康监测',
-          specification: '银色',
-          image: 'https://via.placeholder.com/120x120/10b981/ffffff?text=手表',
-          unitPrice: 89.99,
-          totalPrice: 4499.50,
-          quantity: 50,
-          moq: 50
-        }
-      ],
+      items: [],
       summary: {
-        totalAmount: 6480.50,
-        minInvestment: 10000.00,
-        remainingAmount: 3519.50,
-        progressPercentage: 64.8,
-        shippingNote: '免费配送'
+        totalAmount: 0
       }
     }
   }
@@ -505,6 +527,20 @@ export const getCartData = async (cartId) => {
 
 export const updateCartItem = async (cartId, itemId, quantity) => {
   try {
+    // 开发环境：直接返回成功
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        message: '数量更新成功',
+        item: {
+          id: itemId,
+          quantity: quantity
+        }
+      }
+    }
+    
+    // 生产环境：调用真实API
     const response = await request(`/cart/update_item/${cartId}/${itemId}`, {
       method: 'PUT',
       body: JSON.stringify({ quantity })
@@ -516,15 +552,57 @@ export const updateCartItem = async (cartId, itemId, quantity) => {
   }
 }
 
-export const removeCartItem = async (cartId, itemId) => {
+export const removeCartItem = async (itemId) => {
   try {
-    const response = await request(`/cart/${cartId}`, {
+    // 开发环境：直接返回成功
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        message: '商品删除成功'
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/cart/item', {
       method: 'DELETE',
-      body: JSON.stringify({ itemId })
+      body: JSON.stringify({ item_id: itemId })
     })
     return response
   } catch (error) {
     console.error('Failed to remove cart item:', error)
+    throw error
+  }
+}
+
+export const addToCart = async (cartId, productId, quantity) => {
+  try {
+    // 开发环境：返回模拟成功响应 
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        message: '商品已加入购物车',
+        item: {
+          id: Date.now(), // 模拟新的item ID
+          product_id: productId,
+          quantity: quantity
+        }
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/cart/add_item', {
+      method: 'POST',
+      body: JSON.stringify({
+        cart_id: cartId,
+        product_id: productId,
+        quantity: quantity
+      })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to add to cart:', error)
     throw error
   }
 }
@@ -559,34 +637,55 @@ export const getOrderId = async () => {
   }
 }
 
-export const getOrderDetails = async (orderId) => {
+// 订单相关API
+export const createOrder = async (orderData) => {
   try {
-    // 在开发环境中返回模拟数据
+    // 开发环境：返回模拟成功响应
     if (isDevelopment()) {
-      // 模拟网络延迟
-      await new Promise(resolve => setTimeout(resolve, 200))
-      
-      // 从 mock-data.json 导入订单数据
-      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
-      const mockOrders = orderTestData.mockOrders
-      
-      // 根据订单ID返回对应的订单详情
-      const order = mockOrders.find(o => o.id === orderId)
-      if (order) {
-        return order
-      } else {
-        // 如果找不到对应的订单，返回默认订单
-        return mockOrders[0]
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        order_id: `ORD-${Date.now()}`,
+        message: "订单创建成功"
       }
     }
     
-    // 生产环境调用真实API
-    const response = await request(`/order/get_order_detail/${orderId}`, {
-      method: 'GET'
+    // 生产环境：调用真实API
+    const response = await request('/order/create', {
+      method: 'POST',
+      body: JSON.stringify(orderData)
     })
     return response
   } catch (error) {
-    console.error('Failed to get order details:', error)
+    console.error('Failed to create order:', error)
+    throw error
+  }
+}
+
+export const getOrderList = async (userId) => {
+  try {
+    // 开发环境：返回模拟订单列表
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders || []
+      
+      return {
+        success: true,
+        orders: mockOrders
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/list', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get order list:', error)
     throw error
   }
 }
@@ -610,14 +709,17 @@ export default {
   getCategories,
   getProductsByCategory,
   getProductDetail,
+  searchProducts,
   loginUser,
   registerUser,
   getCartId,
   getCartData,
+  addToCart,
   updateCartItem,
   removeCartItem,
   getOrderId,
-  getOrderDetails,
+  createOrder,
+  getOrderList,
   handleApiError
 }
 

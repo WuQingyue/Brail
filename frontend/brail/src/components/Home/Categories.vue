@@ -16,10 +16,6 @@
             <span class="category-name">{{ category.name }}</span>
             <span class="category-arrow">→</span>
           </li>
-          <li class="all-categories" @click="selectAllCategories">
-            <span class="category-name">所有类别</span>
-            <span class="category-arrow">→</span>
-          </li>
         </ul>
       </aside>
 
@@ -54,6 +50,15 @@
           <button @click="loadProducts(selectedCategory)" class="retry-btn">重试</button>
         </div>
 
+        <!-- 没有产品时的提示 -->
+        <div v-else-if="!loading && filteredProducts.length === 0" class="no-products">
+          <div class="no-products-content">
+            <div class="no-products-icon">📦</div>
+            <h3>暂无数据</h3>
+            <p>当前类别下没有产品，请尝试选择其他类别。</p>
+          </div>
+        </div>
+
         <!-- 产品网格 -->
         <div v-else-if="filteredProducts.length > 0" class="products-grid">
           <div 
@@ -64,27 +69,18 @@
           >
             <div class="product-image-container">
               <img 
-                :src="product.image" 
-                :alt="product.name"
+                :src="product.img" 
+                :alt="product.title"
                 class="product-image"
                 @error="handleImageError"
               />
             </div>
             
             <div class="product-info">
-              <h3 class="product-name">{{ product.name }}</h3>
-              <p class="product-category">{{ product.category }}</p>
-              <div class="product-price">${{ product.price.toFixed(2) }}</div>
+              <h3 class="product-name">{{ product.title }}</h3>
+              <p class="product-category">{{ product.category_name || 'N/A' }}</p>
+              <div class="product-price">R$ {{ product.selling_price?.toFixed(2) || '0.00' }}</div>
             </div>
-          </div>
-        </div>
-
-        <!-- 没有产品时的提示 -->
-        <div v-else class="no-products">
-          <div class="no-products-content">
-            <div class="no-products-icon">📦</div>
-            <h3>暂无产品</h3>
-            <p>当前筛选条件下没有找到产品，请尝试其他搜索条件或类别。</p>
           </div>
         </div>
 
@@ -137,7 +133,7 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { getCategories, getProductsByCategory, handleApiError } from '../../utils/api.js'
+import { getCategories, getProductsByCategory, searchProducts, handleApiError } from '../../utils/api.js'
 import ProductDetail from '../Product/ProductDetail.vue'
 
 // 响应式数据
@@ -154,21 +150,8 @@ const selectedProductId = ref(null)
 
 // 计算属性
 const filteredProducts = computed(() => {
-  let filtered = products.value
-
-  // 按类别过滤
-  if (selectedCategory.value) {
-    filtered = filtered.filter(product => product.categoryId === selectedCategory.value)
-  }
-
-  // 按搜索查询过滤
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(product => 
-      product.name.toLowerCase().includes(query) ||
-      product.category.toLowerCase().includes(query)
-    )
-  }
+  // 由于搜索和过滤都在后端完成，直接对 products.value 进行分页即可
+  const filtered = products.value
 
   // 分页
   const start = (currentPage.value - 1) * itemsPerPage.value
@@ -177,22 +160,8 @@ const filteredProducts = computed(() => {
 })
 
 const totalPages = computed(() => {
-  // 获取过滤后的产品总数
-  let filtered = products.value
-
-  // 按类别过滤
-  if (selectedCategory.value) {
-    filtered = filtered.filter(product => product.categoryId === selectedCategory.value)
-  }
-
-  // 按搜索查询过滤
-  if (searchQuery.value) {
-    const query = searchQuery.value.toLowerCase()
-    filtered = filtered.filter(product => 
-      product.name.toLowerCase().includes(query) ||
-      product.category.toLowerCase().includes(query)
-    )
-  }
+  // 由于搜索和过滤都在后端完成，直接使用 products.value 的长度
+  const filtered = products.value
 
   // 如果没有产品，返回0页
   if (filtered.length === 0) {
@@ -225,9 +194,11 @@ const loadCategories = async () => {
     error.value = null
     const data = await getCategories()
     categories.value = data
+    return data  // 返回数据以便在其他地方使用
   } catch (err) {
     error.value = handleApiError(err)
     console.error('Failed to load categories:', err)
+    return []  // 返回空数组作为失败情况
   } finally {
     loading.value = false
   }
@@ -253,14 +224,40 @@ const selectCategory = async (categoryId) => {
   await loadProducts(categoryId)
 }
 
-const selectAllCategories = async () => {
-  selectedCategory.value = null
+const handleSearch = async () => {
   currentPage.value = 1
-  await loadProducts()
-}
-
-const handleSearch = () => {
-  currentPage.value = 1
+  
+  // 如果搜索框不为空，调用搜索API
+  if (searchQuery.value.trim()) {
+    try {
+      loading.value = true
+      error.value = null
+      
+      // 搜索时不限定类别，清除类别选择（不高亮任何类别）
+      selectedCategory.value = null
+      
+      const response = await searchProducts(searchQuery.value)
+      
+      if (response.success && response.products) {
+        products.value = response.products
+      } else {
+        products.value = []
+      }
+    } catch (err) {
+      error.value = handleApiError(err)
+      console.error('搜索失败:', err)
+      products.value = []
+    } finally {
+      loading.value = false
+    }
+  } else {
+    // 如果搜索框为空，重新加载当前类别的产品
+    if (selectedCategory.value) {
+      await loadProducts(selectedCategory.value)
+    } else {
+      await loadProducts()
+    }
+  }
 }
 
 const goToPage = (page) => {
@@ -293,8 +290,15 @@ const handleAddToCart = (cartItem) => {
 
 // 生命周期
 onMounted(async () => {
-  await loadCategories()
-  await loadProducts()
+  const loadedCategories = await loadCategories()
+  
+  // 默认选中第一个类别
+  if (loadedCategories && loadedCategories.length > 0) {
+    selectedCategory.value = loadedCategories[0].id
+    await loadProducts(loadedCategories[0].id)
+  } else {
+    await loadProducts()
+  }
 })
 
 // 监听搜索查询变化
@@ -356,8 +360,7 @@ watch(filteredProducts, (newProducts) => {
   justify-content: flex-start;
 }
 
-.category-item,
-.all-categories {
+.category-item {
   display: flex;
   align-items: center;
   padding: 0.75rem;
@@ -367,8 +370,7 @@ watch(filteredProducts, (newProducts) => {
   transition: all 0.2s;
 }
 
-.category-item:hover,
-.all-categories:hover {
+.category-item:hover {
   background: #f3f4f6;
 }
 
