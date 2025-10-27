@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from models.category import Category
 from models.product import Product
+from models.supplier import Supplier
 from utils.database import get_db
 from sqlalchemy import or_
 
@@ -67,7 +68,7 @@ async def categories(db: Session = Depends(get_db)):
 async def get_category_products(
     category_id: str,
     db: Session = Depends(get_db)
-    ):
+):
     """
     根据类别ID获取该类别下的所有产品
     
@@ -186,7 +187,7 @@ async def get_category_products(
 async def get_product_detail(
     request: Request,
     db: Session = Depends(get_db)
-):
+    ):
     """
     根据产品ID获取产品详细信息
     
@@ -275,7 +276,7 @@ async def get_product_detail(
             "dimensions": product.dimensions,
             "moq": product.moq,
             "tags": product.tags,
-            "stock_quantity": product.stock_quantity,
+                "stock_quantity": product.stock_quantity,
             "reserved_quantity": product.reserved_quantity,
             "low_stock_threshold": product.low_stock_threshold,
             "max_order_quantity": product.max_order_quantity,
@@ -426,5 +427,354 @@ async def search_products(
         raise HTTPException(
             status_code=500,
             detail=f"搜索产品失败: {str(e)}"
+        )
+
+
+@router.post("/create")
+async def create_product(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    创建新产品
+    
+    请求体参数:
+        name (str): 产品名称（必填）
+        description (str): 产品描述（必填）
+        price (float): 产品价格（必填）
+        category_id (str): 产品类别ID（必填）
+        supplier_id (str): 供应商ID（必填）
+        stock (int): 库存数量（必填）
+        main_image_url (str): 主图URL（可选）
+        thumbnail_urls (list): 缩略图URL列表（可选）
+        tags (list): 产品标签列表（可选）
+        variations (list): 产品变体信息（可选）
+    
+    Returns:
+        dict: 包含成功状态和新创建的产品信息
+    
+    Example:
+        POST /api/product/create
+        
+        Request Body:
+        {
+            "name": "数字电视天线 4K 1080P",
+            "description": "地面数字电视信号放大器 内置DVB-T2高清智能电视天线",
+            "price": 13.63,
+            "category_id": "MLB5672",
+            "supplier_id": "SUP001",
+            "stock": 150,
+            "main_image_url": "https://example.com/main.jpg",
+            "thumbnail_urls": ["https://example.com/thumb1.jpg", "https://example.com/thumb2.jpg"],
+            "tags": ["新品上市", "特价促销"],
+            "variations": [
+                {
+                    "id": "var-001",
+                    "name": "3米线缆版本",
+                    "imageUrl": "https://example.com/var1.jpg",
+                    "price": 13.63,
+                    "specification": "3米线缆长度版本",
+                    "stock": 150
+                }
+            ]
+        }
+        
+        Response:
+        {
+            "success": true,
+            "code": 200,
+            "message": "产品创建成功",
+            "product": {
+                "id": "MLB123456",
+                "name": "数字电视天线 4K 1080P",
+                "description": "地面数字电视信号放大器 内置DVB-T2高清智能电视天线",
+                "price": 13.63,
+                "category_id": "MLB5672",
+                "supplier_id": "SUP001",
+                "stock_quantity": 150,
+                "img": "https://example.com/main.jpg",
+                "product_mlb_thumbnail": ["https://example.com/thumb1.jpg", "https://example.com/thumb2.jpg"],
+                "tags": ["新品上市", "特价促销"],
+                "variations": [...],
+                "created_at": "2024-01-15T10:30:00"
+            }
+        }
+    """
+    try:
+        # 获取请求体数据
+        request_data = await request.json()
+        print(f"接收到的产品创建请求数据: {request_data}")
+        
+        # 验证必填字段
+        required_fields = ['name', 'description', 'price', 'category_id', 'supplier_id', 'stock']
+        for field in required_fields:
+            if field not in request_data or request_data[field] is None:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"缺少必填字段: {field}"
+                )
+        
+        # 验证类别是否存在
+        category = db.query(Category).filter(Category.id == request_data['category_id']).first()
+        if not category:
+            raise HTTPException(
+                status_code=404,
+                detail=f"类别 {request_data['category_id']} 不存在"
+            )
+        
+        # 生成产品ID（实际项目中可能需要更复杂的ID生成逻辑）
+        import uuid
+        product_id = f"MLB{uuid.uuid4().hex[:8].upper()}"
+        
+        # 创建产品对象
+        new_product = Product(
+            id=product_id,
+            title=request_data['name'],
+            description=request_data['description'],
+            selling_price=float(request_data['price']),
+            category_id=request_data['category_id'],
+            supplier_id=request_data['supplier_id'],
+            stock_quantity=int(request_data['stock']),
+            img=request_data.get('main_image_url', ''),
+            product_mlb_thumbnail=request_data.get('thumbnail_urls', []),
+            tags=request_data.get('tags', []),
+            variations=request_data.get('variations', []),
+            moq=1,  # 默认最小订购量
+            cost_price=float(request_data['price']) * 0.6,  # 假设成本价为售价的60%
+            discount_price=None,
+            product_mlb_price=f"R$ {request_data['price']:.2f}".replace('.', ','),
+            roi="112%",  # 默认ROI
+            shipping_from="广东省广州市",  # 默认发货地
+            weight=1.0,  # 默认重量
+            dimensions={"length": 30, "width": 20, "height": 10},  # 默认尺寸
+            reserved_quantity=0,
+            low_stock_threshold=10,
+            max_order_quantity=1000
+        )
+        
+        # 保存到数据库
+        db.add(new_product)
+        db.commit()
+        db.refresh(new_product)
+        
+        print(f"✅ 成功创建产品 {product_id}")
+        
+        # 返回创建的产品信息
+        result = {
+            "id": new_product.id,
+            "name": new_product.title,
+            "description": new_product.description,
+            "price": new_product.selling_price,
+            "category_id": new_product.category_id,
+            "supplier_id": new_product.supplier_id,
+            "stock_quantity": new_product.stock_quantity,
+            "img": new_product.img,
+            "product_mlb_thumbnail": new_product.product_mlb_thumbnail,
+            "tags": new_product.tags,
+            "variations": new_product.variations,
+            "created_at": new_product.created_at.isoformat() if new_product.created_at else None
+        }
+        
+        return {
+            "success": True,
+            "code": 200,
+            "message": "产品创建成功",
+            "product": result
+        }
+        
+    except HTTPException as he:
+        # 重新抛出HTTP异常
+        raise he
+    except Exception as e:
+        print(f"❌ 创建产品失败: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"创建产品失败: {str(e)}"
+        )
+
+
+@router.get("/tags")
+async def get_product_tags(db: Session = Depends(get_db)):
+    """
+    获取所有可用的产品标签
+    
+    Returns:
+        dict: 包含成功状态和标签列表
+    
+    Example:
+        GET /api/product/tags
+        
+        Response:
+        {
+            "success": true,
+            "code": 200,
+            "count": 8,
+            "tags": [
+                {
+                    "id": "tag-001",
+                    "name": "New Arrival",
+                    "display_name": "新品上市",
+                    "color": "#10b981",
+                    "description": "最新上架的产品"
+                },
+                {
+                    "id": "tag-002", 
+                    "name": "On Sale",
+                    "display_name": "特价促销",
+                    "color": "#ef4444",
+                    "description": "正在促销的产品"
+                },
+                ...
+            ]
+        }
+    """
+    try:
+        # 模拟标签数据（实际项目中应该从数据库获取）
+        tags = [
+            {
+                "id": "tag-001",
+                "name": "New Arrival",
+                "display_name": "新品上市",
+                "color": "#10b981",
+                "description": "最新上架的产品"
+            },
+            {
+                "id": "tag-002",
+                "name": "On Sale", 
+                "display_name": "特价促销",
+                "color": "#ef4444",
+                "description": "正在促销的产品"
+            },
+            {
+                "id": "tag-003",
+                "name": "Best Seller",
+                "display_name": "热销商品",
+                "color": "#f59e0b",
+                "description": "销量最好的产品"
+            },
+            {
+                "id": "tag-004",
+                "name": "Featured",
+                "display_name": "精选推荐",
+                "color": "#8b5cf6",
+                "description": "精选推荐的产品"
+            },
+            {
+                "id": "tag-005",
+                "name": "Limited Edition",
+                "display_name": "限量版",
+                "color": "#ec4899",
+                "description": "限量版产品"
+            },
+            {
+                "id": "tag-006",
+                "name": "Premium",
+                "display_name": "高端产品",
+                "color": "#6366f1",
+                "description": "高端品质产品"
+            },
+            {
+                "id": "tag-007",
+                "name": "Eco Friendly",
+                "display_name": "环保产品",
+                "color": "#22c55e",
+                "description": "环保友好产品"
+            },
+            {
+                "id": "tag-008",
+                "name": "Fast Shipping",
+                "display_name": "快速发货",
+                "color": "#06b6d4",
+                "description": "支持快速发货"
+            }
+        ]
+        
+        print(f"✅ 成功获取 {len(tags)} 个产品标签")
+        
+        return {
+            "success": True,
+            "code": 200,
+            "count": len(tags),
+            "tags": tags
+        }
+        
+    except Exception as e:
+        print(f"❌ 获取产品标签失败: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"获取产品标签失败: {str(e)}"
+        )
+
+
+@router.get("/supplier")
+async def get_suppliers(db: Session = Depends(get_db)):
+    """
+    获取所有供应商信息
+    
+    Returns:
+        dict: 包含成功状态和供应商列表
+    
+    Example:
+        GET /api/product/supplier
+        
+        Response:
+        {
+            "success": true,
+            "code": 200,
+            "count": 4,
+            "suppliers": [
+                {
+                    "id": "SUP001",
+                    "name": "广州市天河区鑫达电子商行",
+                    "location": "广东省广州市天河区",
+                    "created_at": "2024-01-15T10:30:00",
+                    "updated_at": "2024-01-15T10:30:00"
+                },
+                {
+                    "id": "SUP002",
+                    "name": "深圳市龙华区华强电子厂",
+                    "location": "广东省深圳市龙华区",
+                    "created_at": "2024-01-15T10:30:00",
+                    "updated_at": "2024-01-15T10:30:00"
+                },
+                ...
+            ]
+        }
+    """
+    try:
+        # 从数据库查询所有供应商
+        suppliers = db.query(Supplier).order_by(Supplier.name).all()
+        
+        # 转换为字典列表
+        result = []
+        for supplier in suppliers:
+            result.append({
+                "id": supplier.id,
+                "name": supplier.name,
+                "location": supplier.location,
+                "created_at": supplier.created_at.isoformat() if supplier.created_at else None,
+                "updated_at": supplier.updated_at.isoformat() if supplier.updated_at else None
+            })
+        
+        print(f"✅ 成功从数据库获取 {len(result)} 个供应商信息")
+        
+        return {
+            "success": True,
+            "code": 200,
+            "count": len(result),
+            "suppliers": result
+        }
+        
+    except Exception as e:
+        print(f"❌ 获取供应商信息失败: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"获取供应商信息失败: {str(e)}"
         )
 

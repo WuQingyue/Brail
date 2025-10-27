@@ -1135,5 +1135,65 @@
         }
       ]
     }
+  },
+  "productTagsData": {
+    "tags": [
+      {
+        "id": "tag-001",
+        "name": "New Arrival",
+        "display_name": "新品上市",
+        "color": "#10b981",
+        "description": "最新上架的产品"
+      },
+      {
+        "id": "tag-002",
+        "name": "On Sale",
+        "display_name": "特价促销",
+        "color": "#ef4444",
+        "description": "正在促销的产品"
+      },
+      {
+        "id": "tag-003",
+        "name": "Best Seller",
+        "display_name": "热销商品",
+        "color": "#f59e0b",
+        "description": "销量最好的产品"
+      },
+      {
+        "id": "tag-004",
+        "name": "Featured",
+        "display_name": "精选推荐",
+        "color": "#8b5cf6",
+        "description": "精选推荐的产品"
+      },
+      {
+        "id": "tag-005",
+        "name": "Limited Edition",
+        "display_name": "限量版",
+        "color": "#ec4899",
+        "description": "限量版产品"
+      },
+      {
+        "id": "tag-006",
+        "name": "Premium",
+        "display_name": "高端产品",
+        "color": "#6366f1",
+        "description": "高端品质产品"
+      },
+      {
+        "id": "tag-007",
+        "name": "Eco Friendly",
+        "display_name": "环保产品",
+        "color": "#22c55e",
+        "description": "环保友好产品"
+      },
+      {
+        "id": "tag-008",
+        "name": "Fast Shipping",
+        "display_name": "快速发货",
+        "color": "#06b6d4",
+        "description": "支持快速发货"
+      }
+    ]
   }
 }
