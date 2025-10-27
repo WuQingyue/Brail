@@ -16,10 +16,6 @@
             <span class="category-name">{{ category.name }}</span>
             <span class="category-arrow">→</span>
           </li>
-          <li class="all-categories" @click="selectAllCategories">
-            <span class="category-name">所有类别</span>
-            <span class="category-arrow">→</span>
-          </li>
         </ul>
       </aside>
 
@@ -54,6 +50,15 @@
           <button @click="loadProducts(selectedCategory)" class="retry-btn">重试</button>
         </div>
 
+        <!-- 没有产品时的提示 -->
+        <div v-else-if="!loading && filteredProducts.length === 0" class="no-products">
+          <div class="no-products-content">
+            <div class="no-products-icon">📦</div>
+            <h3>暂无数据</h3>
+            <p>当前类别下没有产品，请尝试选择其他类别。</p>
+          </div>
+        </div>
+
         <!-- 产品网格 -->
         <div v-else-if="filteredProducts.length > 0" class="products-grid">
           <div 
@@ -64,27 +69,18 @@
           >
             <div class="product-image-container">
               <img 
-                :src="product.image" 
-                :alt="product.name"
+                :src="product.img" 
+                :alt="product.title"
                 class="product-image"
                 @error="handleImageError"
               />
             </div>
             
             <div class="product-info">
-              <h3 class="product-name">{{ product.name }}</h3>
-              <p class="product-category">{{ product.category }}</p>
-              <div class="product-price">${{ product.price.toFixed(2) }}</div>
+              <h3 class="product-name">{{ product.title }}</h3>
+              <p class="product-category">{{ product.category_name || 'N/A' }}</p>
+              <div class="product-price">R$ {{ product.selling_price?.toFixed(2) || '0.00' }}</div>
             </div>
-          </div>
-        </div>
-
-        <!-- 没有产品时的提示 -->
-        <div v-else class="no-products">
-          <div class="no-products-content">
-            <div class="no-products-icon">📦</div>
-            <h3>暂无产品</h3>
-            <p>当前筛选条件下没有找到产品，请尝试其他搜索条件或类别。</p>
           </div>
         </div>
 
@@ -156,17 +152,18 @@ const selectedProductId = ref(null)
 const filteredProducts = computed(() => {
   let filtered = products.value
 
-  // 按类别过滤
-  if (selectedCategory.value) {
-    filtered = filtered.filter(product => product.categoryId === selectedCategory.value)
-  }
+  // 注意：由于我们已经通过API获取指定类别的产品，不需要再过滤类别
+  // 后端已经返回了指定类别的产品
+  // if (selectedCategory.value) {
+  //   filtered = filtered.filter(product => product.categoryId === selectedCategory.value)
+  // }
 
   // 按搜索查询过滤
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(product => 
-      product.name.toLowerCase().includes(query) ||
-      product.category.toLowerCase().includes(query)
+      product.title?.toLowerCase().includes(query) ||
+      product.description?.toLowerCase().includes(query)
     )
   }
 
@@ -180,17 +177,17 @@ const totalPages = computed(() => {
   // 获取过滤后的产品总数
   let filtered = products.value
 
-  // 按类别过滤
-  if (selectedCategory.value) {
-    filtered = filtered.filter(product => product.categoryId === selectedCategory.value)
-  }
+  // 注意：由于我们已经通过API获取指定类别的产品，不需要再过滤类别
+  // if (selectedCategory.value) {
+  //   filtered = filtered.filter(product => product.categoryId === selectedCategory.value)
+  // }
 
   // 按搜索查询过滤
   if (searchQuery.value) {
     const query = searchQuery.value.toLowerCase()
     filtered = filtered.filter(product => 
-      product.name.toLowerCase().includes(query) ||
-      product.category.toLowerCase().includes(query)
+      product.title?.toLowerCase().includes(query) ||
+      product.description?.toLowerCase().includes(query)
     )
   }
 
@@ -225,9 +222,11 @@ const loadCategories = async () => {
     error.value = null
     const data = await getCategories()
     categories.value = data
+    return data  // 返回数据以便在其他地方使用
   } catch (err) {
     error.value = handleApiError(err)
     console.error('Failed to load categories:', err)
+    return []  // 返回空数组作为失败情况
   } finally {
     loading.value = false
   }
@@ -251,12 +250,6 @@ const selectCategory = async (categoryId) => {
   selectedCategory.value = categoryId
   currentPage.value = 1
   await loadProducts(categoryId)
-}
-
-const selectAllCategories = async () => {
-  selectedCategory.value = null
-  currentPage.value = 1
-  await loadProducts()
 }
 
 const handleSearch = () => {
@@ -293,8 +286,15 @@ const handleAddToCart = (cartItem) => {
 
 // 生命周期
 onMounted(async () => {
-  await loadCategories()
-  await loadProducts()
+  const loadedCategories = await loadCategories()
+  
+  // 默认选中第一个类别
+  if (loadedCategories && loadedCategories.length > 0) {
+    selectedCategory.value = loadedCategories[0].id
+    await loadProducts(loadedCategories[0].id)
+  } else {
+    await loadProducts()
+  }
 })
 
 // 监听搜索查询变化
@@ -356,8 +356,7 @@ watch(filteredProducts, (newProducts) => {
   justify-content: flex-start;
 }
 
-.category-item,
-.all-categories {
+.category-item {
   display: flex;
   align-items: center;
   padding: 0.75rem;
@@ -367,8 +366,7 @@ watch(filteredProducts, (newProducts) => {
   transition: all 0.2s;
 }
 
-.category-item:hover,
-.all-categories:hover {
+.category-item:hover {
   background: #f3f4f6;
 }
 

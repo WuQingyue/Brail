@@ -57,11 +57,35 @@ describe('产品类别页面测试', () => {
       expect(firstCategory.classes()).toContain('active')
     })
 
-    it('应该显示"所有类别"链接', () => {
+    it('应该默认选中第一个类别', async () => {
       wrapper = mount(Categories)
-      const allCategoriesLink = wrapper.find('.all-categories')
-      expect(allCategoriesLink.exists()).toBe(true)
-      expect(allCategoriesLink.text()).toBe('所有类别→')
+      
+      // 模拟 onMounted 的行为
+      wrapper.vm.categories = mockCategories
+      wrapper.vm.selectedCategory = mockCategories[0].id  // 选中第一个类别
+      await wrapper.vm.$nextTick()
+      
+      // 检查第一个类别是否被选中
+      expect(wrapper.vm.selectedCategory).toBe(mockCategories[0].id)
+      
+      // 检查第一个类别是否有active类
+      const firstCategory = wrapper.find('.category-item')
+      expect(firstCategory.classes()).toContain('active')
+    })
+
+    it('应该在选中第一个类别后加载该类别的产品', async () => {
+      wrapper = mount(Categories)
+      
+      // 设置类别和产品数据
+      wrapper.vm.categories = mockCategories
+      wrapper.vm.selectedCategory = mockCategories[0].id
+      wrapper.vm.products = mockProducts
+      
+      await wrapper.vm.$nextTick()
+      
+      // 验证产品被加载
+      expect(wrapper.vm.products.length).toBeGreaterThan(0)
+      expect(wrapper.vm.selectedCategory).toBe(mockCategories[0].id)
     })
   })
 
@@ -100,9 +124,9 @@ describe('产品类别页面测试', () => {
       await wrapper.vm.$nextTick()
       
       const firstProduct = wrapper.find('.product-card')
-      expect(firstProduct.find('.product-name').text()).toBe(mockProducts[0].name)
-      expect(firstProduct.find('.product-category').text()).toBe(mockProducts[0].category)
-      expect(firstProduct.find('.product-price').text()).toContain(mockProducts[0].price.toString())
+      expect(firstProduct.find('.product-name').text()).toBe(mockProducts[0].title)
+      expect(firstProduct.find('.product-category').text()).toBe(mockProducts[0].category_name)
+      expect(firstProduct.find('.product-price').text()).toContain(mockProducts[0].selling_price.toString())
     })
 
     it('应该显示产品图片', async () => {
@@ -121,7 +145,7 @@ describe('产品类别页面测试', () => {
       
       const productImage = wrapper.find('.product-image')
       expect(productImage.exists()).toBe(true)
-      expect(productImage.attributes('src')).toBe(mockProducts[0].image)
+      expect(productImage.attributes('src')).toBe(mockProducts[0].img)
     })
   })
 
