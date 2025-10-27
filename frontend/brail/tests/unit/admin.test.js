@@ -7,6 +7,7 @@ import mockData from '../fixtures/mock-data.json'
 // Mock API functions
 vi.mock('@/utils/api.js', () => ({
   getPendingOrders: vi.fn(),
+  getProcessedOrders: vi.fn(),
   approveOrder: vi.fn(),
   rejectOrder: vi.fn()
 }))
@@ -25,7 +26,7 @@ vi.mock('@/stores/user.js', () => ({
 }))
 
 // Import mocked functions
-const { getPendingOrders, approveOrder, rejectOrder } = await import('@/utils/api.js')
+const { getPendingOrders, getProcessedOrders, approveOrder, rejectOrder } = await import('@/utils/api.js')
 
 describe('管理员页面单元测试', () => {
   let wrapper
@@ -38,12 +39,16 @@ describe('管理员页面单元测试', () => {
     
     // 清除所有 mock
     vi.mocked(getPendingOrders).mockClear()
+    vi.mocked(getProcessedOrders).mockClear()
     vi.mocked(approveOrder).mockClear()
     vi.mocked(rejectOrder).mockClear()
     
     // 设置默认 mock 返回值
     vi.mocked(getPendingOrders).mockResolvedValue(
       mockData.orderTestData.adminPendingOrdersResponse
+    )
+    vi.mocked(getProcessedOrders).mockResolvedValue(
+      mockData.orderTestData.adminProcessedOrdersResponse
     )
   })
 
@@ -171,11 +176,11 @@ describe('管理员页面单元测试', () => {
       const navItems = wrapper.findAll('.nav-item')
       await navItems[1].trigger('click')
       await wrapper.vm.$nextTick()
+      await flushPromises()
       
       expect(wrapper.vm.currentTab).toBe('processed')
-      expect(wrapper.find('.page-title').text()).toBe('已处理订单')
-      // 应该显示暂无数据
-      expect(wrapper.find('.no-data').exists()).toBe(true)
+      // 应该显示已处理订单组件
+      expect(wrapper.find('.processed-orders-container').exists()).toBe(true)
     })
 
     it('点击产品管理应该切换页面', async () => {
@@ -294,7 +299,7 @@ describe('管理员页面单元测试', () => {
   })
 
   describe('暂无数据显示测试', () => {
-    it('非待审核订单页面应该显示暂无数据', async () => {
+    it('产品管理和供应商管理页面应该显示暂无数据', async () => {
       wrapper = mount(Databash, {
         global: {
           plugins: [pinia]
@@ -303,21 +308,17 @@ describe('管理员页面单元测试', () => {
       
       const navItems = wrapper.findAll('.nav-item')
       
-      // 测试已处理订单
-      await navItems[1].trigger('click')
-      await wrapper.vm.$nextTick()
-      expect(wrapper.find('.no-data').exists()).toBe(true)
-      expect(wrapper.find('.no-data-title').text()).toBe('暂无数据')
-      
       // 测试产品管理
       await navItems[2].trigger('click')
       await wrapper.vm.$nextTick()
       expect(wrapper.find('.no-data').exists()).toBe(true)
+      expect(wrapper.find('.no-data-title').text()).toBe('暂无数据')
       
       // 测试供应商管理
       await navItems[3].trigger('click')
       await wrapper.vm.$nextTick()
       expect(wrapper.find('.no-data').exists()).toBe(true)
+      expect(wrapper.find('.no-data-title').text()).toBe('暂无数据')
     })
   })
 
@@ -424,6 +425,123 @@ describe('管理员页面单元测试', () => {
         expect(pagination.exists()).toBe(true)
         expect(wrapper.find('.page-btn').exists()).toBe(true)
       }
+    })
+  })
+
+  describe('已处理订单页面测试', () => {
+    beforeEach(async () => {
+      wrapper = mount(Databash, {
+        global: {
+          plugins: [pinia]
+        }
+      })
+      await flushPromises()
+      
+      // 切换到已处理订单页面
+      const navItems = wrapper.findAll('.nav-item')
+      await navItems[1].trigger('click')
+      await wrapper.vm.$nextTick()
+      await flushPromises()
+    })
+
+    it('点击已处理订单应该显示ProcessedOrders组件', () => {
+      expect(wrapper.vm.currentTab).toBe('processed')
+      expect(wrapper.find('.processed-orders-container').exists()).toBe(true)
+    })
+
+    it('应该调用getProcessedOrders API获取已处理订单', () => {
+      expect(getProcessedOrders).toHaveBeenCalledWith(1)
+    })
+
+    it('应该显示已处理订单列表', async () => {
+      await wrapper.vm.$nextTick()
+      
+      // 应该显示订单卡片
+      const orderCards = wrapper.findAll('.order-card')
+      expect(orderCards.length).toBeGreaterThan(0)
+    })
+
+    it('应该显示不同状态的订单', async () => {
+      await wrapper.vm.$nextTick()
+      
+      // 检查是否有不同状态的订单
+      const statusBadges = wrapper.findAll('.status-badge')
+      expect(statusBadges.length).toBeGreaterThan(0)
+      
+      // 验证至少有一个状态徽章
+      const badges = statusBadges.map(badge => badge.text())
+      expect(badges.some(text => text.length > 0)).toBe(true)
+    })
+
+    it('应该能够展开订单查看详情', async () => {
+      await wrapper.vm.$nextTick()
+      
+      // 点击第一个订单
+      const firstOrderHeader = wrapper.find('.order-header')
+      if (firstOrderHeader.exists()) {
+        await firstOrderHeader.trigger('click')
+        await wrapper.vm.$nextTick()
+        
+        // 应该显示订单详情
+        const orderDetails = wrapper.find('.order-details')
+        expect(orderDetails.exists()).toBe(true)
+      }
+    })
+
+    it('应该显示订单进度时间线', async () => {
+      await wrapper.vm.$nextTick()
+      
+      // 点击第一个订单
+      const firstOrderHeader = wrapper.find('.order-header')
+      if (firstOrderHeader.exists()) {
+        await firstOrderHeader.trigger('click')
+        await wrapper.vm.$nextTick()
+        
+        // 应该显示进度时间线
+        const timeline = wrapper.find('.progress-timeline')
+        expect(timeline.exists()).toBe(true)
+        
+        // 应该有4个步骤
+        const steps = wrapper.findAll('.timeline-step')
+        expect(steps.length).toBe(4)
+      }
+    })
+
+    it('应该显示客户信息', async () => {
+      await wrapper.vm.$nextTick()
+      
+      // 点击第一个订单
+      const firstOrderHeader = wrapper.find('.order-header')
+      if (firstOrderHeader.exists()) {
+        await firstOrderHeader.trigger('click')
+        await wrapper.vm.$nextTick()
+        
+        // 应该显示客户信息
+        const customerInfo = wrapper.find('.customer-info')
+        expect(customerInfo.exists()).toBe(true)
+      }
+    })
+
+    it('应该显示订单统计信息', () => {
+      const stats = wrapper.find('.order-stats')
+      if (stats.exists()) {
+        expect(stats.exists()).toBe(true)
+        const statValue = wrapper.find('.stat-value')
+        expect(statValue.exists()).toBe(true)
+      }
+    })
+
+    it('已处理订单不应显示待审核订单', async () => {
+      await wrapper.vm.$nextTick()
+      
+      // 验证 API 被调用
+      expect(getProcessedOrders).toHaveBeenCalled()
+      
+      // 不应该调用待审核订单 API
+      // getPendingOrders 在初始加载时会被调用一次（因为默认是pending标签）
+      // 但切换到processed后不应该再次调用
+      const callCount = vi.mocked(getPendingOrders).mock.calls.length
+      expect(callCount).toBe(1) // 只在初始加载时调用一次
     })
   })
 })

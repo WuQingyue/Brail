@@ -775,6 +775,34 @@ export const rejectOrder = async (orderId, userId, reason = '') => {
   }
 }
 
+export const getProcessedOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('📋 [开发模式] 使用模拟数据获取已处理订单')
+      
+      // 从 mock-data.json 导入管理员订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockResponse = orderTestData.adminProcessedOrdersResponse
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      return mockResponse
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/admin/processed', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get processed orders:', error)
+    throw error
+  }
+}
+
 // 错误处理
 export const handleApiError = (error) => {
   console.error('API Error:', error)
@@ -806,6 +834,7 @@ export default {
   createOrder,
   getOrderList,
   getPendingOrders,
+  getProcessedOrders,
   approveOrder,
   rejectOrder,
   handleApiError
