@@ -1263,6 +1263,26 @@
         ]
       },
       {
+        "id": "ORD-CL001",
+        "orderDate": "2024-10-27T18:00:00",
+        "statusStep": 5,
+        "statusText": "清关完成",
+        "statusDetailText": "货物已清关完成，准备运输",
+        "status": "Cleared",
+        "statusClass": "status-cleared",
+        "customer_name": "周九",
+        "total_amount": 1899.50,
+        "items": [
+          {
+            "id": "ITEM-005",
+            "productName": "Cleared Product",
+            "price": 1899.50,
+            "quantity": 1,
+            "image": "https://via.placeholder.com/100x100"
+          }
+        ]
+      },
+      {
         "id": "ORD-DE001",
         "orderDate": "2024-10-28T12:00:00",
         "statusStep": 6,
@@ -1315,6 +1335,144 @@
           "user_email": "logistics.admin2@example.com",
           "role": "logistics"
         }
+      }
+    }
+  },
+  "logistics2TestData": {
+    "customsOrders": [
+      {
+        "id": "ORD-CU001",
+        "status": "Customs",
+        "statusClass": "status-customs",
+        "customer_name": "张三",
+        "total_amount": 1599.99,
+        "orderDate": "2024-01-15T10:00:00Z",
+        "items": [
+          {
+            "id": "ITEM-001",
+            "productName": "测试产品1",
+            "price": 1599.99,
+            "quantity": 1,
+            "image": "https://via.placeholder.com/60x60"
+          }
+        ],
+        "shipping": {
+          "street": "测试街道123号",
+          "city": "测试城市",
+          "zipcode": "12345"
+        }
+      }
+    ],
+    "clearedOrders": [
+      {
+        "id": "ORD-CL001",
+        "status": "Cleared",
+        "statusClass": "status-cleared",
+        "customer_name": "李四",
+        "total_amount": 1899.50,
+        "orderDate": "2024-01-16T10:00:00Z",
+        "items": [
+          {
+            "id": "ITEM-002",
+            "productName": "测试产品2",
+            "price": 1899.50,
+            "quantity": 1,
+            "image": "https://via.placeholder.com/60x60"
+          }
+        ],
+        "shipping": {
+          "street": "测试街道456号",
+          "city": "测试城市",
+          "zipcode": "12345"
+        }
+      }
+    ],
+    "deliveredOrders": [
+      {
+        "id": "ORD-DE001",
+        "status": "Delivered",
+        "statusClass": "status-delivered",
+        "customer_name": "王五",
+        "total_amount": 2247.30,
+        "orderDate": "2024-01-17T10:00:00Z",
+        "items": [
+          {
+            "id": "ITEM-003",
+            "productName": "测试产品3",
+            "price": 2247.30,
+            "quantity": 1,
+            "image": "https://via.placeholder.com/60x60"
+          }
+        ],
+        "shipping": {
+          "street": "测试街道789号",
+          "city": "测试城市",
+          "zipcode": "12345"
+        }
+      }
+    ],
+    "apiResponses": {
+      "customsOrdersSuccess": {
+        "success": true,
+        "orders": []
+      },
+      "clearedOrdersSuccess": {
+        "success": true,
+        "orders": []
+      },
+      "deliveredOrdersSuccess": {
+        "success": true,
+        "orders": []
+      },
+      "updateOrderStatusSuccess": {
+        "success": true,
+        "message": "操作成功"
+      },
+      "apiError": {
+        "success": false,
+        "message": "API Error"
+      }
+    },
+    "userStoreMock": {
+      "logistics1Admin": {
+        "user_id": 3,
+        "user_email": "logistics.admin1@example.com",
+        "user_name": "物流管理员1",
+        "role": "logistics1"
+      },
+      "logistics2Admin": {
+        "user_id": 4,
+        "user_email": "logistics.admin2@example.com",
+        "user_name": "物流管理员2",
+        "role": "logistics2"
+      },
+      "regularUser": {
+        "user_id": 1,
+        "user_email": "test@example.com",
+        "user_name": "测试用户",
+        "role": "user"
+      }
+    },
+    "navigationTabs": [
+      { "id": "customs", "title": "到达巴西海关订单", "icon": "🏛️" },
+      { "id": "cleared", "title": "清关完成订单", "icon": "✅" },
+      { "id": "delivered", "title": "已交付订单", "icon": "🎉" }
+    ],
+    "emptyStates": {
+      "customs": {
+        "icon": "🏛️",
+        "title": "暂无海关订单",
+        "message": "当前没有到达巴西海关的订单"
+      },
+      "cleared": {
+        "icon": "✅",
+        "title": "暂无清关完成订单",
+        "message": "当前没有清关完成的订单"
+      },
+      "delivered": {
+        "icon": "🎉",
+        "title": "暂无已交付订单",
+        "message": "当前没有已交付的订单"
       }
     }
   }
