@@ -262,7 +262,7 @@ async def get_product_detail(
                 detail=f"产品 {product_id} 不存在"
             )
         
-        # 转换为字典 
+        # 转换为字典  
         result = {
             "id": product.id,
             "title": product.title,
@@ -276,7 +276,7 @@ async def get_product_detail(
             "dimensions": product.dimensions,
             "moq": product.moq,
             "tags": product.tags,
-                "stock_quantity": product.stock_quantity,
+            "stock_quantity": product.stock_quantity,
             "reserved_quantity": product.reserved_quantity,
             "low_stock_threshold": product.low_stock_threshold,
             "max_order_quantity": product.max_order_quantity,

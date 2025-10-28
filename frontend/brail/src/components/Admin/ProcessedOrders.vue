@@ -89,20 +89,28 @@
             <h3 class="section-title">订单进度</h3>
             <div class="progress-timeline">
               <div class="timeline-step" :class="{ active: order.statusStep >= 1 }">
-                <div class="step-icon">🛒</div>
-                <div class="step-text">订单和审批</div>
+                <div class="step-icon">📋</div>
+                <div class="step-text">订单审批</div>
               </div>
               <div class="timeline-step" :class="{ active: order.statusStep >= 2 }">
-                <div class="step-icon">⚙️</div>
-                <div class="step-text">生产和准备发货</div>
+                <div class="step-icon">📦</div>
+                <div class="step-text">准备发货</div>
               </div>
               <div class="timeline-step" :class="{ active: order.statusStep >= 3 }">
                 <div class="step-icon">🚚</div>
-                <div class="step-text">运输和到达</div>
+                <div class="step-text">运输中</div>
               </div>
               <div class="timeline-step" :class="{ active: order.statusStep >= 4 }">
-                <div class="step-icon">📦</div>
-                <div class="step-text">清关和交付</div>
+                <div class="step-icon">🏛️</div>
+                <div class="step-text">到达巴西清关</div>
+              </div>
+              <div class="timeline-step" :class="{ active: order.statusStep >= 5 }">
+                <div class="step-icon">✅</div>
+                <div class="step-text">清关完成-运输</div>
+              </div>
+              <div class="timeline-step" :class="{ active: order.statusStep >= 6 }">
+                <div class="step-icon">🎉</div>
+                <div class="step-text">已交付</div>
               </div>
             </div>
           </div>
@@ -200,6 +208,8 @@ const getStatusIcon = (status) => {
   const iconMap = {
     'Processing': '⚙️',
     'Shipped': '🚚',
+    'Customs': '🏛️',
+    'Cleared': '✅',
     'Delivered': '📦',
     'Rejected': '❌',
     'Cancelled': '🚫'
@@ -395,9 +405,14 @@ onMounted(() => {
   color: #991b1b;
 }
 
-.status-cancelled {
-  background: #f3f4f6;
-  color: #6b7280;
+.status-customs {
+  background: #fed7aa;
+  color: #c2410c;
+}
+
+.status-cleared {
+  background: #e9d5ff;
+  color: #6b21a8;
 }
 
 .expand-icon {
@@ -514,8 +529,10 @@ onMounted(() => {
 .order-tracking {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: #f9fafb;
+  background: linear-gradient(135deg, #fef3c7, #d1fae5);
   border-radius: 8px;
+  border: 1px solid #fbbf24;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.1);
 }
 
 .progress-timeline {
@@ -531,9 +548,10 @@ onMounted(() => {
   top: 20px;
   left: 0;
   right: 0;
-  height: 2px;
-  background: #e5e7eb;
+  height: 3px;
+  background: linear-gradient(90deg, #fbbf24, #10b981);
   z-index: 1;
+  border-radius: 2px;
 }
 
 .timeline-step {
@@ -543,7 +561,7 @@ onMounted(() => {
   gap: 0.5rem;
   position: relative;
   z-index: 2;
-  background: #f9fafb;
+  background: white;
   padding: 0 1rem;
 }
 
@@ -551,18 +569,21 @@ onMounted(() => {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #e5e7eb;
+  background: #f3f4f6;
   color: #6b7280;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
   transition: all 0.3s ease;
+  border: 2px solid #e5e7eb;
 }
 
 .timeline-step.active .step-icon {
-  background: #fbbf24;
+  background: linear-gradient(135deg, #fbbf24, #10b981);
   color: white;
+  border-color: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .step-text {
@@ -570,10 +591,11 @@ onMounted(() => {
   color: #6b7280;
   text-align: center;
   font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .timeline-step.active .step-text {
-  color: #fbbf24;
+  color: #10b981;
   font-weight: 600;
 }
 
@@ -610,6 +632,41 @@ onMounted(() => {
   font-size: 0.9rem;
   font-weight: 500;
   margin-bottom: 0.75rem;
+}
+
+.status-tag.status-processing {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.status-tag.status-shipped {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-tag.status-delivered {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-tag.status-customs {
+  background: #fed7aa;
+  color: #c2410c;
+}
+
+.status-tag.status-cleared {
+  background: #e9d5ff;
+  color: #6b21a8;
+}
+
+.status-tag.status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-tag.status-cancelled {
+  background: #f3f4f6;
+  color: #6b7280;
 }
 
 .status-timestamp {
