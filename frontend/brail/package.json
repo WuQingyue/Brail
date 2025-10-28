@@ -15,7 +15,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
     "test:header": "vitest run tests/unit/Header.test.js tests/unit/user-store.test.js",
-    "test:admin": "vitest run tests/unit/admin.test.js",
+    "test:admin": "vitest run tests/unit/admin.test.js tests/unit/logistics-1.test.js",
     "test:categories": "vitest run tests/unit/Categories.test.js tests/unit/product.test.js tests/unit/cart.test.js tests/unit/order.test.js",
     "test:unit": "vitest run tests/unit",
     "test:integration": "vitest run tests/integration",
