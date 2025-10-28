@@ -451,6 +451,12 @@ const handleLogin = async () => {
         // 如果是管理员，自动跳转到管理员页面
         if (response.user.role === 'admin') {
           window.location.href = '/admin'
+        } else if (response.user.role === 'logistics') {
+          // 如果是物流管理员，跳转到物流管理页面
+          console.log('检测到物流管理员角色，跳转到物流管理页面')
+          window.location.href = '/Logistics-1'
+        } else {
+          console.log('普通用户角色，不进行跳转')
         }
       }, 1500)
     } else {

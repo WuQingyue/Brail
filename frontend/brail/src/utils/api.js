@@ -432,6 +432,23 @@ export const loginUser = async (loginData) => {
             company: '系统管理'
           }
         }
+      } else if (loginData.email === 'logistics.admin2@example.com' && loginData.password === 'logistics123') {
+        console.log('=== 物流管理员登录成功 ===')
+        console.log('邮箱:', loginData.email)
+        console.log('密码:', loginData.password)
+        return {
+          success: true,
+          code: 200,
+          message: '登录成功',
+          user: {
+            id: 3,
+            name: '物流管理员',
+            email: 'logistics.admin2@example.com',
+            avatar: null,
+            role: 'logistics',
+            company: '物流管理'
+          }
+        }
       } else {
         return {
           success: false,
@@ -961,6 +978,147 @@ export const getProcessedOrders = async (userId) => {
   }
 }
 
+// 物流管理相关API
+export const getLogisticsProcessingOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('📦 [开发模式] 使用模拟数据获取Processing状态订单')
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders || []
+      
+      // 筛选Processing状态的订单
+      const processingOrders = mockOrders.filter(order => order.status === 'Processing')
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return {
+        success: true,
+        orders: processingOrders
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/logistics/processing', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get processing orders:', error)
+    throw error
+  }
+}
+
+export const getLogisticsShippedOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('🚚 [开发模式] 使用模拟数据获取Shipped状态订单')
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders || []
+      
+      // 筛选Shipped状态的订单
+      const shippedOrders = mockOrders.filter(order => order.status === 'Shipped')
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return {
+        success: true,
+        orders: shippedOrders
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/logistics/shipped', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get shipped orders:', error)
+    throw error
+  }
+}
+
+export const getLogisticsSampleProcessedOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('✅ [开发模式] 使用模拟数据获取Customs和Delivered状态订单')
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders || []
+      
+      // 筛选Customs和Delivered状态的订单
+      const sampleProcessedOrders = mockOrders.filter(order => 
+        order.status === 'Customs' || order.status === 'Delivered'
+      )
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return {
+        success: true,
+        orders: sampleProcessedOrders
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/logistics/sample_processed_orders', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get sample processed orders:', error)
+    throw error
+  }
+}
+
+// 物流管理相关API
+export const updateLogisticsOrderStatus = async (orderId, userId, action, reason = '') => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('🔄 [开发模式] 模拟更新订单状态')
+      console.log('订单ID:', orderId)
+      console.log('操作:', action)
+      console.log('原因:', reason)
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 500))
+      
+      return {
+        success: true,
+        message: '订单状态已更新'
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/logistics/update_status', {
+      method: 'POST',
+      body: JSON.stringify({ 
+        order_id: orderId, 
+        user_id: userId, 
+        action: action, 
+        reason: reason 
+      })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to update order status:', error)
+    throw error
+  }
+}
+
 // 错误处理
 export const handleApiError = (error) => {
   console.error('API Error:', error)
@@ -998,6 +1156,10 @@ export default {
   getProcessedOrders,
   approveOrder,
   rejectOrder,
+  getLogisticsProcessingOrders,
+  getLogisticsShippedOrders,
+  getLogisticsSampleProcessedOrders,
+  updateLogisticsOrderStatus,
   handleApiError
 }
 

@@ -1195,5 +1195,127 @@
         "description": "支持快速发货"
       }
     ]
+  },
+  "logisticsTestData": {
+    "processingOrders": [
+      {
+        "id": "ORD-AP001",
+        "orderDate": "2024-10-25T14:30:00",
+        "statusStep": 2,
+        "statusText": "生产和准备发货",
+        "statusDetailText": "订单已批准，正在生产",
+        "status": "Processing",
+        "statusClass": "status-processing",
+        "customer_name": "王明",
+        "total_amount": 1499.70,
+        "items": [
+          {
+            "id": "ITEM-001",
+            "productName": "Test Product",
+            "price": 149.97,
+            "quantity": 10,
+            "image": "https://via.placeholder.com/100x100"
+          }
+        ]
+      }
+    ],
+    "shippedOrders": [
+      {
+        "id": "ORD-SH001",
+        "orderDate": "2024-10-26T10:00:00",
+        "statusStep": 3,
+        "statusText": "运输中",
+        "statusDetailText": "订单已发货，正在运输中",
+        "status": "Shipped",
+        "statusClass": "status-shipped",
+        "customer_name": "李四",
+        "total_amount": 2599.99,
+        "items": [
+          {
+            "id": "ITEM-002",
+            "productName": "Shipped Product",
+            "price": 2599.99,
+            "quantity": 1,
+            "image": "https://via.placeholder.com/100x100"
+          }
+        ]
+      }
+    ],
+    "processedSampleOrders": [
+      {
+        "id": "ORD-CU001",
+        "orderDate": "2024-10-27T15:00:00",
+        "statusStep": 4,
+        "statusText": "到达巴西清关",
+        "statusDetailText": "货物已到达巴西海关，正在清关",
+        "status": "Customs",
+        "statusClass": "status-customs",
+        "customer_name": "赵六",
+        "total_amount": 1599.99,
+        "items": [
+          {
+            "id": "ITEM-003",
+            "productName": "Customs Product",
+            "price": 1599.99,
+            "quantity": 1,
+            "image": "https://via.placeholder.com/100x100"
+          }
+        ]
+      },
+      {
+        "id": "ORD-DE001",
+        "orderDate": "2024-10-28T12:00:00",
+        "statusStep": 6,
+        "statusText": "已交付",
+        "statusDetailText": "订单已完成交付",
+        "status": "Delivered",
+        "statusClass": "status-delivered",
+        "customer_name": "孙八",
+        "total_amount": 2247.30,
+        "items": [
+          {
+            "id": "ITEM-004",
+            "productName": "Delivered Product",
+            "price": 2247.30,
+            "quantity": 1,
+            "image": "https://via.placeholder.com/100x100"
+          }
+        ]
+      }
+    ],
+    "apiResponses": {
+      "processingOrdersSuccess": {
+        "success": true,
+        "orders": []
+      },
+      "shippedOrdersSuccess": {
+        "success": true,
+        "orders": []
+      },
+      "processedSampleOrdersSuccess": {
+        "success": true,
+        "orders": []
+      },
+      "updateOrderStatusSuccess": {
+        "success": true,
+        "message": "订单状态已更新"
+      },
+      "apiError": {
+        "success": false,
+        "message": "API调用失败"
+      }
+    },
+    "userStoreMock": {
+      "logisticsAdmin": {
+        "getUserId": 1,
+        "user": {
+          "id": 1,
+          "user_id": 1,
+          "user_name": "Logistics Admin",
+          "user_email": "logistics.admin2@example.com",
+          "role": "logistics"
+        }
+      }
+    }
   }
 }

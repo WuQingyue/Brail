@@ -4,9 +4,37 @@ import Header from './components/Layout/Header.vue'
 import Categories from './components/Home/Categories.vue'
 import Order from './components/Order/Order.vue'
 import Databash from './components/Admin/Databash.vue'
+import LogisticsManagement from './components/Logistics/LogisticsManagement.vue'
+import { useUserStore } from './stores/user.js'
 
 // 简单的路由状态管理
 const currentRoute = ref('home')
+const userStore = useUserStore()
+
+// 检查用户角色并跳转
+const checkUserRoleAndRedirect = () => {
+  if (userStore.isLoggedIn && userStore.user) {
+    const currentPath = window.location.pathname
+    const userRole = userStore.user.role
+    
+    console.log('=== 页面加载时角色检查 ===')
+    console.log('当前路径:', currentPath)
+    console.log('用户角色:', userRole)
+    console.log('用户信息:', userStore.user)
+    
+    // 如果用户是物流管理员但不在物流页面，则跳转
+    if (userRole === 'logistics' && currentPath !== '/Logistics-1') {
+      console.log('物流管理员不在正确页面，跳转到物流管理页面')
+      window.location.href = '/Logistics-1'
+    }
+    // 如果用户是管理员但不在管理员页面，则跳转
+    else if (userRole === 'admin' && currentPath !== '/admin') {
+      console.log('管理员不在正确页面，跳转到管理员页面')
+      window.location.href = '/admin'
+    }
+    console.log('=== 角色检查结束 ===')
+  }
+}
 
 // 监听URL变化
 const updateRoute = () => {
@@ -15,6 +43,8 @@ const updateRoute = () => {
     currentRoute.value = 'order'
   } else if (path === '/admin') {
     currentRoute.value = 'admin'
+  } else if (path === '/Logistics-1') {
+    currentRoute.value = 'logistics'
   } else {
     currentRoute.value = 'home'
   }
@@ -27,6 +57,8 @@ const currentComponent = computed(() => {
       return Order
     case 'admin':
       return Databash
+    case 'logistics':
+      return LogisticsManagement
     default:
       return Categories
   }
@@ -34,7 +66,12 @@ const currentComponent = computed(() => {
 
 // 生命周期
 onMounted(() => {
+  // 初始化用户状态
+  userStore.initUserFromStorage()
+  
   updateRoute()
+  checkUserRoleAndRedirect()
+  
   // 监听浏览器前进后退
   window.addEventListener('popstate', updateRoute)
   
