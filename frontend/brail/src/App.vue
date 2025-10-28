@@ -5,6 +5,7 @@ import Categories from './components/Home/Categories.vue'
 import Order from './components/Order/Order.vue'
 import Databash from './components/Admin/Databash.vue'
 import LogisticsManagement from './components/Logistics/LogisticsManagement.vue'
+import LogisticsManagement2 from './components/Logistics/LogisticsManagement2.vue'
 import { useUserStore } from './stores/user.js'
 
 // 简单的路由状态管理
@@ -13,6 +14,11 @@ const userStore = useUserStore()
 
 // 检查用户角色并跳转
 const checkUserRoleAndRedirect = () => {
+  console.log('=== 开始角色检查 ===')
+  console.log('userStore.isLoggedIn:', userStore.isLoggedIn)
+  console.log('userStore.user:', userStore.user)
+  console.log('localStorage userInfo:', localStorage.getItem('userInfo'))
+  
   if (userStore.isLoggedIn && userStore.user) {
     const currentPath = window.location.pathname
     const userRole = userStore.user.role
@@ -26,6 +32,11 @@ const checkUserRoleAndRedirect = () => {
     if (userRole === 'logistics' && currentPath !== '/Logistics-1') {
       console.log('物流管理员不在正确页面，跳转到物流管理页面')
       window.location.href = '/Logistics-1'
+    }
+    // 如果用户是物流管理员1或2但不在物流2页面，则跳转
+    else if ((userRole === 'logistics1' || userRole === 'logistics2') && currentPath !== '/Logistics-2') {
+      console.log('物流管理员1或2不在正确页面，跳转到物流管理2页面')
+      window.location.href = '/Logistics-2'
     }
     // 如果用户是管理员但不在管理员页面，则跳转
     else if (userRole === 'admin' && currentPath !== '/admin') {
@@ -45,6 +56,8 @@ const updateRoute = () => {
     currentRoute.value = 'admin'
   } else if (path === '/Logistics-1') {
     currentRoute.value = 'logistics'
+  } else if (path === '/Logistics-2') {
+    currentRoute.value = 'logistics2'
   } else {
     currentRoute.value = 'home'
   }
@@ -59,6 +72,8 @@ const currentComponent = computed(() => {
       return Databash
     case 'logistics':
       return LogisticsManagement
+    case 'logistics2':
+      return LogisticsManagement2
     default:
       return Categories
   }
@@ -70,7 +85,25 @@ onMounted(() => {
   userStore.initUserFromStorage()
   
   updateRoute()
-  checkUserRoleAndRedirect()
+  
+  // 延迟执行角色检查，确保用户状态已经正确设置
+  setTimeout(() => {
+    checkUserRoleAndRedirect()
+  }, 500)
+  
+  // 额外的检查，以防第一次检查失败
+  setTimeout(() => {
+    console.log('=== 第二次角色检查 ===')
+    checkUserRoleAndRedirect()
+  }, 1000)
+  
+  // 页面完全加载后的最终检查
+  window.addEventListener('load', () => {
+    console.log('=== 页面完全加载后的角色检查 ===')
+    setTimeout(() => {
+      checkUserRoleAndRedirect()
+    }, 200)
+  })
   
   // 监听浏览器前进后退
   window.addEventListener('popstate', updateRoute)

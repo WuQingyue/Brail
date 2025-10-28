@@ -64,7 +64,7 @@
       "employee_count": "50",
       "monthly_revenue": "200000",
       "phone": "13800138001",
-      "role": "admin"
+      "role": "logistics1"
     },
     {
       "id": 7,
@@ -75,7 +75,7 @@
       "employee_count": "80",
       "monthly_revenue": "400000",
       "phone": "13800138002",
-      "role": "admin"
+      "role": "logistics"
     }
   ],
   "categories": [

@@ -436,14 +436,18 @@ const handleLogin = async () => {
       messageType.value = 'success'
       
       // 使用 Pinia store 设置用户登录状态（自动持久化）
-      userStore.setUser({
+      const userInfo = {
         user_id: response.user.id,
         user_email: response.user.email,
         user_name: response.user.name,
         role: response.user.role
-      })
+      }
+      
+      userStore.setUser(userInfo)
       
       console.log('登录成功，用户信息已保存:', response.user)
+      console.log('保存的用户信息:', userInfo)
+      console.log('localStorage中的用户信息:', localStorage.getItem('userInfo'))
       
       // 延迟关闭模态框并根据用户角色跳转
       setTimeout(() => {
@@ -455,6 +459,14 @@ const handleLogin = async () => {
           // 如果是物流管理员，跳转到物流管理页面
           console.log('检测到物流管理员角色，跳转到物流管理页面')
           window.location.href = '/Logistics-1'
+        } else if (response.user.role === 'logistics1') {
+          // 如果是物流管理员1，跳转到物流管理2页面
+          console.log('检测到物流管理员1角色，跳转到物流管理2页面')
+          window.location.href = '/Logistics-2'
+        } else if (response.user.role === 'logistics2') {
+          // 如果是物流管理员2，跳转到物流管理2页面
+          console.log('检测到物流管理员2角色，跳转到物流管理2页面')
+          window.location.href = '/Logistics-2'
         } else {
           console.log('普通用户角色，不进行跳转')
         }

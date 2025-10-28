@@ -612,7 +612,7 @@ async def get_sample_processed_orders(
         
         result = []
         for order in orders:
-            # 获取订单商品
+            # 获取订单商品 
             items = db.query(OrderItem).filter(OrderItem.order_id == order.id).all()
             
             order_data = {
@@ -658,6 +658,231 @@ async def get_sample_processed_orders(
         raise HTTPException(status_code=500, detail=f"获取Customs和Delivered状态订单列表失败: {str(e)}")
 
 
+@router.post("/logistics/customs")
+async def get_customs_orders(
+    request: Request,
+    db: Session = Depends(get_db)
+    ):
+    """
+    获取状态为Customs的订单列表（物流管理员使用）
+    
+    请求体参数:
+        user_id (int): 用户ID（必填，用于验证物流管理员权限）
+    
+    Returns:
+        dict: 包含Customs状态订单列表
+    """
+    try:
+        # 从请求中获取JSON数据
+        request_data = await request.json()
+        
+        # 验证必填参数
+        if not request_data.get('user_id'):
+            raise HTTPException(status_code=400, detail="user_id 参数不能为空")
+        
+        # 查询状态为 "Customs" 的订单
+        orders = db.query(Order).filter(
+            Order.status == "Customs"
+        ).order_by(Order.order_date.desc()).all()
+        
+        result = []
+        for order in orders:
+            # 获取订单商品
+            items = db.query(OrderItem).filter(OrderItem.order_id == order.id).all()
+            
+            order_data = {
+                "id": order.id,
+                "status": order.status,
+                "status_step": order.status_step,
+                "status_text": order.status_text,
+                "status_detail_text": order.status_detail_text,
+                "customer_name": order.customer_name,
+                "total_amount": float(order.total_amount),
+                "shipping": {
+                    "street": order.shipping_street,
+                    "city": order.shipping_city,
+                    "zipcode": order.shipping_zipcode
+                },
+                "payment_method": order.payment_method,
+                "notes": order.notes,
+                "orderDate": order.order_date.isoformat() if order.order_date else None,
+                "statusStep": order.status_step,
+                "statusText": order.status_text,
+                "statusDetailText": order.status_detail_text,
+                "statusClass": f"status-{order.status.lower()}",
+                "items": [
+                    {
+                        "id": item.id,
+                        "product_id": item.product_id,
+                        "productName": item.product_name,
+                        "image": item.product_image,
+                        "quantity": item.quantity,
+                        "price": float(item.price)
+                    }
+                    for item in items
+                ]
+            }
+            result.append(order_data)
+        
+        return {
+            "success": True,
+            "orders": result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取Customs状态订单列表失败: {str(e)}")
+
+
+@router.post("/logistics/cleared")
+async def get_cleared_orders(
+    request: Request,
+    db: Session = Depends(get_db)
+    ):
+    """
+    获取状态为Cleared的订单列表（物流管理员使用）
+    
+    请求体参数:
+        user_id (int): 用户ID（必填，用于验证物流管理员权限）
+    
+    Returns:
+        dict: 包含Cleared状态订单列表
+    """
+    try:
+        # 从请求中获取JSON数据
+        request_data = await request.json()
+        
+        # 验证必填参数
+        if not request_data.get('user_id'):
+            raise HTTPException(status_code=400, detail="user_id 参数不能为空")
+        
+        # 查询状态为 "Cleared" 的订单
+        orders = db.query(Order).filter(
+            Order.status == "Cleared"
+        ).order_by(Order.order_date.desc()).all()
+        
+        result = []
+        for order in orders:
+            # 获取订单商品
+            items = db.query(OrderItem).filter(OrderItem.order_id == order.id).all()
+            
+            order_data = {
+                "id": order.id,
+                "status": order.status,
+                "status_step": order.status_step,
+                "status_text": order.status_text,
+                "status_detail_text": order.status_detail_text,
+                "customer_name": order.customer_name,
+                "total_amount": float(order.total_amount),
+                "shipping": {
+                    "street": order.shipping_street,
+                    "city": order.shipping_city,
+                    "zipcode": order.shipping_zipcode
+                },
+                "payment_method": order.payment_method,
+                "notes": order.notes,
+                "orderDate": order.order_date.isoformat() if order.order_date else None,
+                "statusStep": order.status_step,
+                "statusText": order.status_text,
+                "statusDetailText": order.status_detail_text,
+                "statusClass": f"status-{order.status.lower()}",
+                "items": [
+                    {
+                        "id": item.id,
+                        "product_id": item.product_id,
+                        "productName": item.product_name,
+                        "image": item.product_image,
+                        "quantity": item.quantity,
+                        "price": float(item.price)
+                    }
+                    for item in items
+                ]
+            }
+            result.append(order_data)
+        
+        return {
+            "success": True,
+            "orders": result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取Cleared状态订单列表失败: {str(e)}")
+
+
+@router.post("/logistics/delivered")
+async def get_delivered_orders(
+    request: Request,
+    db: Session = Depends(get_db)
+    ):
+    """
+    获取状态为Delivered的订单列表（物流管理员使用）
+    
+    请求体参数:
+        user_id (int): 用户ID（必填，用于验证物流管理员权限）
+    
+    Returns:
+        dict: 包含Delivered状态订单列表
+    """
+    try:
+        # 从请求中获取JSON数据
+        request_data = await request.json()
+        
+        # 验证必填参数
+        if not request_data.get('user_id'):
+            raise HTTPException(status_code=400, detail="user_id 参数不能为空")
+        
+        # 查询状态为 "Delivered" 的订单
+        orders = db.query(Order).filter(
+            Order.status == "Delivered"
+        ).order_by(Order.order_date.desc()).all()
+        
+        result = []
+        for order in orders:
+            # 获取订单商品
+            items = db.query(OrderItem).filter(OrderItem.order_id == order.id).all()
+            
+            order_data = {
+                "id": order.id,
+                "status": order.status,
+                "status_step": order.status_step,
+                "status_text": order.status_text,
+                "status_detail_text": order.status_detail_text,
+                "customer_name": order.customer_name,
+                "total_amount": float(order.total_amount),
+                "shipping": {
+                    "street": order.shipping_street,
+                    "city": order.shipping_city,
+                    "zipcode": order.shipping_zipcode
+                },
+                "payment_method": order.payment_method,
+                "notes": order.notes,
+                "orderDate": order.order_date.isoformat() if order.order_date else None,
+                "statusStep": order.status_step,
+                "statusText": order.status_text,
+                "statusDetailText": order.status_detail_text,
+                "statusClass": f"status-{order.status.lower()}",
+                "items": [
+                    {
+                        "id": item.id,
+                        "product_id": item.product_id,
+                        "productName": item.product_name,
+                        "image": item.product_image,
+                        "quantity": item.quantity,
+                        "price": float(item.price)
+                    }
+                    for item in items
+                ]
+            }
+            result.append(order_data)
+        
+        return {
+            "success": True,
+            "orders": result
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"获取Delivered状态订单列表失败: {str(e)}")
+
+
 @router.post("/logistics/update_status")
 async def update_order_status(
     request: Request,
@@ -669,7 +894,12 @@ async def update_order_status(
     请求体参数:
         order_id (str): 订单ID（必填）
         user_id (int): 用户ID（必填，用于验证物流管理员权限）
-        action (str): 操作类型（必填，"approve" 或 "reject"）
+        action (str): 操作类型（必填）
+            - "approve": 批准订单（Processing -> Shipped）
+            - "arrive_customs": 到达海关（Shipped -> Customs）
+            - "clear_customs": 清关完成（Customs -> Cleared）
+            - "deliver": 确认交付（Cleared -> Delivered）
+            - "reject": 拒绝订单（任何状态 -> Rejected）
         reason (str): 拒绝原因（可选，仅在reject时需要）
     
     Returns:
@@ -717,6 +947,26 @@ async def update_order_status(
                 order.status_detail_text = "货物已到达巴西海关，正在清关"
             else:
                 raise HTTPException(status_code=400, detail="只能处理Shipped状态的订单")
+                
+        elif action == "clear_customs":
+            # 清关完成，从Customs转为Cleared
+            if order.status == "Customs":
+                order.status = "Cleared"
+                order.status_step = 5
+                order.status_text = "清关完成"
+                order.status_detail_text = "货物已清关完成，准备运输"
+            else:
+                raise HTTPException(status_code=400, detail="只能处理Customs状态的订单")
+                
+        elif action == "deliver":
+            # 确认交付，从Cleared转为Delivered
+            if order.status == "Cleared":
+                order.status = "Delivered"
+                order.status_step = 6
+                order.status_text = "已交付"
+                order.status_detail_text = "订单已完成交付"
+            else:
+                raise HTTPException(status_code=400, detail="只能处理Cleared状态的订单")
                 
         elif action == "reject":
             # 拒绝订单

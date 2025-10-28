@@ -432,8 +432,8 @@ export const loginUser = async (loginData) => {
             company: '系统管理'
           }
         }
-      } else if (loginData.email === 'logistics.admin2@example.com' && loginData.password === 'logistics123') {
-        console.log('=== 物流管理员登录成功 ===')
+      } else if (loginData.email === 'logistics.admin1@example.com' && loginData.password === 'logistics123') {
+        console.log('=== 物流管理员1登录成功 ===')
         console.log('邮箱:', loginData.email)
         console.log('密码:', loginData.password)
         return {
@@ -442,7 +442,24 @@ export const loginUser = async (loginData) => {
           message: '登录成功',
           user: {
             id: 3,
-            name: '物流管理员',
+            name: '物流管理员1',
+            email: 'logistics.admin1@example.com',
+            avatar: null,
+            role: 'logistics1',
+            company: '物流管理1'
+          }
+        }
+      } else if (loginData.email === 'logistics.admin2@example.com' && loginData.password === 'logistics123') {
+        console.log('=== 物流管理员2登录成功 ===')
+        console.log('邮箱:', loginData.email)
+        console.log('密码:', loginData.password)
+        return {
+          success: true,
+          code: 200,
+          message: '登录成功',
+          user: {
+            id: 4,
+            name: '物流管理员2',
             email: 'logistics.admin2@example.com',
             avatar: null,
             role: 'logistics',
@@ -1083,6 +1100,111 @@ export const getLogisticsSampleProcessedOrders = async (userId) => {
   }
 }
 
+// 新增：获取Customs状态订单
+export const getLogisticsCustomsOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('🏛️ [开发模式] 使用模拟数据获取Customs状态订单')
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders || []
+      
+      // 筛选Customs状态的订单
+      const customsOrders = mockOrders.filter(order => order.status === 'Customs')
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return {
+        success: true,
+        orders: customsOrders
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/logistics/customs', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get customs orders:', error)
+    throw error
+  }
+}
+
+// 新增：获取Cleared状态订单
+export const getLogisticsClearedOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('✅ [开发模式] 使用模拟数据获取Cleared状态订单')
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders || []
+      
+      // 筛选Cleared状态的订单
+      const clearedOrders = mockOrders.filter(order => order.status === 'Cleared')
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return {
+        success: true,
+        orders: clearedOrders
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/logistics/cleared', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get cleared orders:', error)
+    throw error
+  }
+}
+
+// 新增：获取Delivered状态订单
+export const getLogisticsDeliveredOrders = async (userId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      console.log('🎉 [开发模式] 使用模拟数据获取Delivered状态订单')
+      
+      // 从 mock-data.json 导入订单数据
+      const { orderTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockOrders = orderTestData.mockOrders || []
+      
+      // 筛选Delivered状态的订单
+      const deliveredOrders = mockOrders.filter(order => order.status === 'Delivered')
+      
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      return {
+        success: true,
+        orders: deliveredOrders
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/logistics/delivered', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to get delivered orders:', error)
+    throw error
+  }
+}
+
 // 物流管理相关API
 export const updateLogisticsOrderStatus = async (orderId, userId, action, reason = '') => {
   try {
@@ -1159,6 +1281,9 @@ export default {
   getLogisticsProcessingOrders,
   getLogisticsShippedOrders,
   getLogisticsSampleProcessedOrders,
+  getLogisticsCustomsOrders,
+  getLogisticsClearedOrders,
+  getLogisticsDeliveredOrders,
   updateLogisticsOrderStatus,
   handleApiError
 }
