@@ -535,9 +535,9 @@ describe('管理员页面单元测试', () => {
         const timeline = wrapper.find('.progress-timeline')
         expect(timeline.exists()).toBe(true)
         
-        // 应该有4个步骤
+        // 应该有6个步骤
         const steps = wrapper.findAll('.timeline-step')
-        expect(steps.length).toBe(4)
+        expect(steps.length).toBe(6)
       }
     })
 

@@ -98,20 +98,28 @@
               <h3 class="tracking-title">跟踪您的请求</h3>
               <div class="progress-timeline">
                 <div class="timeline-step" :class="{ active: order.statusStep >= 1 }">
-                  <div class="step-icon">🛒</div>
-                  <div class="step-text">订单和审批</div>
+                  <div class="step-icon">📋</div>
+                  <div class="step-text">订单审批</div>
                 </div>
                 <div class="timeline-step" :class="{ active: order.statusStep >= 2 }">
-                  <div class="step-icon">⚙️</div>
-                  <div class="step-text">生产和准备发货</div>
+                  <div class="step-icon">📦</div>
+                  <div class="step-text">准备发货</div>
                 </div>
                 <div class="timeline-step" :class="{ active: order.statusStep >= 3 }">
                   <div class="step-icon">🚚</div>
-                  <div class="step-text">运输和到达巴西</div>
+                  <div class="step-text">运输中</div>
                 </div>
                 <div class="timeline-step" :class="{ active: order.statusStep >= 4 }">
-                  <div class="step-icon">📦</div>
-                  <div class="step-text">清关和交付</div>
+                  <div class="step-icon">🏛️</div>
+                  <div class="step-text">到达巴西清关</div>
+                </div>
+                <div class="timeline-step" :class="{ active: order.statusStep >= 5 }">
+                  <div class="step-icon">✅</div>
+                  <div class="step-text">清关完成-运输</div>
+                </div>
+                <div class="timeline-step" :class="{ active: order.statusStep >= 6 }">
+                  <div class="step-icon">🎉</div>
+                  <div class="step-text">已交付</div>
                 </div>
               </div>
             </div>
@@ -455,8 +463,10 @@ onMounted(() => {
 .order-tracking {
   margin-top: 2rem;
   padding: 1.5rem;
-  background: #f9fafb;
+  background: linear-gradient(135deg, #fef3c7, #d1fae5);
   border-radius: 8px;
+  border: 1px solid #fbbf24;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.1);
 }
 
 .tracking-title {
@@ -479,9 +489,10 @@ onMounted(() => {
   top: 20px;
   left: 0;
   right: 0;
-  height: 2px;
-  background: #e5e7eb;
+  height: 3px;
+  background: linear-gradient(90deg, #fbbf24, #10b981);
   z-index: 1;
+  border-radius: 2px;
 }
 
 .timeline-step {
@@ -499,18 +510,21 @@ onMounted(() => {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: #e5e7eb;
+  background: #f3f4f6;
   color: #6b7280;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
   transition: all 0.3s ease;
+  border: 2px solid #e5e7eb;
 }
 
 .timeline-step.active .step-icon {
-  background: #10b981;
+  background: linear-gradient(135deg, #fbbf24, #10b981);
   color: white;
+  border-color: #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .step-text {
@@ -518,6 +532,7 @@ onMounted(() => {
   color: #6b7280;
   text-align: center;
   font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .timeline-step.active .step-text {
@@ -529,9 +544,29 @@ onMounted(() => {
 .order-status-detail {
   margin-top: 1.5rem;
   padding: 1.5rem;
-  background: #f9fafb;
-  border-radius: 8px;
-  border-left: 4px solid #10b981;
+  background: linear-gradient(135deg, #fef3c7, #fed7aa);
+  border-radius: 12px;
+  border: 1px solid #f59e0b;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.order-status-detail::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(254, 243, 199, 0.8), rgba(254, 215, 170, 0.8));
+  border-radius: 12px;
+  z-index: 1;
+}
+
+.order-status-detail > * {
+  position: relative;
+  z-index: 2;
 }
 
 .status-header {
@@ -548,41 +583,64 @@ onMounted(() => {
 .status-title {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #1f2937;
+  color: #92400e;
 }
 
 .status-tag {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 600;
   margin-bottom: 0.75rem;
+  text-align: center;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #92400e;
+  border: 2px solid #d97706;
+  box-shadow: 0 2px 4px rgba(217, 119, 6, 0.2);
+  min-width: 200px;
 }
 
 .status-tag.status-pending {
-  background: #fef3c7;
+  background: linear-gradient(135deg, #fef3c7, #fbbf24);
   color: #92400e;
+  border: 2px solid #f59e0b;
 }
 
 .status-tag.status-processing {
-  background: #d1fae5;
-  color: #065f46;
+  background: linear-gradient(135deg, #fef3c7, #fbbf24);
+  color: #92400e;
+  border: 2px solid #f59e0b;
 }
 
 .status-tag.status-shipped {
-  background: #fef3c7;
+  background: linear-gradient(135deg, #fef3c7, #fbbf24);
   color: #92400e;
+  border: 2px solid #f59e0b;
+}
+
+.status-tag.status-customs {
+  background: linear-gradient(135deg, #fef3c7, #fbbf24);
+  color: #92400e;
+  border: 2px solid #f59e0b;
+}
+
+.status-tag.status-cleared {
+  background: linear-gradient(135deg, #fef3c7, #fbbf24);
+  color: #92400e;
+  border: 2px solid #f59e0b;
 }
 
 .status-tag.status-delivered {
-  background: #d1fae5;
+  background: linear-gradient(135deg, #d1fae5, #10b981);
   color: #065f46;
+  border: 2px solid #059669;
 }
 
 .status-timestamp {
   font-size: 0.9rem;
-  color: #6b7280;
+  color: #92400e;
+  font-weight: 500;
 }
 
 /* 暂无数据页面 */

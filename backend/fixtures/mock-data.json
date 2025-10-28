@@ -54,6 +54,28 @@
       "monthly_revenue": "800000",
       "phone": "15555555555",
       "role": "user"
+    },
+    {
+      "id": 6,
+      "name": "大宗物流管理部",
+      "email": "logistics.admin1@example.com",
+      "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "cnpj": "11111111000111",
+      "employee_count": "50",
+      "monthly_revenue": "200000",
+      "phone": "13800138001",
+      "role": "admin"
+    },
+    {
+      "id": 7,
+      "name": "小样物流管理部",
+      "email": "logistics.admin2@example.com",
+      "password": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+      "cnpj": "22222222000222",
+      "employee_count": "80",
+      "monthly_revenue": "400000",
+      "phone": "13800138002",
+      "role": "admin"
     }
   ],
   "categories": [
@@ -3681,8 +3703,8 @@
       "user_id": 1,
       "status": "Pending",
       "status_step": 1,
-      "status_text": "订单和审批",
-      "status_detail_text": "订单已接收",
+      "status_text": "订单审批",
+      "status_detail_text": "订单已接收，等待审批",
       "customer_name": "张三",
       "total_amount": 1299.99,
       "shipping_street": "北京市朝阳区建国路88号",
@@ -3713,8 +3735,8 @@
       "user_id": 1,
       "status": "Processing",
       "status_step": 2,
-      "status_text": "生产和准备发货",
-      "status_detail_text": "正在处理",
+      "status_text": "准备发货",
+      "status_detail_text": "订单已审批，正在准备发货",
       "customer_name": "李四",
       "total_amount": 2599.99,
       "shipping_street": "上海市浦东新区陆家嘴环路1000号",
@@ -3735,11 +3757,11 @@
     },
     {
       "id": "ORD-003",
-      "user_id": 2,
+      "user_id": 1,
       "status": "Shipped",
       "status_step": 3,
-      "status_text": "运输和到达巴西",
-      "status_detail_text": "已发货",
+      "status_text": "运输中",
+      "status_detail_text": "货物已发出，正在运输途中",
       "customer_name": "王五",
       "total_amount": 899.99,
       "shipping_street": "广州市天河区珠江新城花城大道85号",
@@ -3760,11 +3782,11 @@
     },
     {
       "id": "ORD-004",
-      "user_id": 3,
-      "status": "Delivered",
+      "user_id": 1,
+      "status": "Customs",
       "status_step": 4,
-      "status_text": "清关和交付",
-      "status_detail_text": "已送达",
+      "status_text": "到达巴西清关",
+      "status_detail_text": "货物已到达巴西，正在进行清关手续",
       "customer_name": "赵六",
       "total_amount": 1599.99,
       "shipping_street": "深圳市南山区科技园南区深南大道9988号",
@@ -3785,11 +3807,11 @@
     },
     {
       "id": "ORD-005",
-      "user_id": 2,
-      "status": "Pending",
-      "status_step": 1,
-      "status_text": "订单和审批",
-      "status_detail_text": "订单已接收",
+      "user_id": 1,
+      "status": "Cleared",
+      "status_step": 5,
+      "status_text": "清关完成-运输",
+      "status_detail_text": "清关手续已完成，正在最后运输阶段",
       "customer_name": "钱七",
       "total_amount": 1847.50,
       "shipping_street": "杭州市西湖区文三路388号",
@@ -3819,6 +3841,38 @@
           "product_image": "http://http2.mlstatic.com/D_NQ_NP_2X_789012-MLB00000000000_012024-F.webp",
           "quantity": 24,
           "price": 933.60
+        }
+      ]
+    },
+    {
+      "id": "ORD-006",
+      "user_id": 1,
+      "status": "Delivered",
+      "status_step": 6,
+      "status_text": "已交付",
+      "status_detail_text": "订单已完成，货物已成功交付",
+      "customer_name": "孙八",
+      "total_amount": 2247.30,
+      "shipping_street": "成都市锦江区春熙路123号",
+      "shipping_city": "成都",
+      "shipping_zipcode": "610000",
+      "payment_method": "WeChat Pay",
+      "notes": "已签收确认",
+      "order_date": "2024-01-10T08:30:00",
+      "items": [
+        {
+          "product_id": "agri-003",
+          "product_name": "Sementes Hortaliças Orgânicas Kit 10 Variedades",
+          "product_image": "http://http2.mlstatic.com/D_NQ_NP_2X_345678-MLB00000000000_012024-F.webp",
+          "quantity": 10,
+          "price": 149.90
+        },
+        {
+          "product_id": "agri-004",
+          "product_name": "Adubo Orgânico Natural 5kg NPK 10-10-10",
+          "product_image": "http://http2.mlstatic.com/D_NQ_NP_2X_456789-MLB00000000000_012024-F.webp",
+          "quantity": 3,
+          "price": 748.50
         }
       ]
     }
