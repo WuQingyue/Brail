@@ -408,6 +408,7 @@
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
       "max_order_quantity": 1000,
+      "user_limit_quantity": 1,
       "cost_price": 0.0,
       "selling_price": 71.24,
       "discount_price": null,
@@ -459,6 +460,7 @@
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
       "max_order_quantity": 1000,
+      "user_limit_quantity": 2,
       "cost_price": 0.72,
       "selling_price": 25.35,
       "discount_price": null,
@@ -510,6 +512,7 @@
       "reserved_quantity": 0,
       "low_stock_threshold": 20,
       "max_order_quantity": 1000,
+      "user_limit_quantity": 1,
       "cost_price": 103.0,
       "selling_price": 209.0,
       "discount_price": null,
@@ -583,7 +586,8 @@
           "specification": "6英寸 全黑版本",
           "stock_quantity": 245
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "fb3c14ce-9546-47fe-96ad-3bca1bdbfc55",
@@ -634,7 +638,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 388
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "f55842a3-68e5-4a99-a52e-355bf56added",
@@ -685,7 +690,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 66
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "d509c859-b195-4693-b2ae-c55583b59dd0",
@@ -736,7 +742,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 444
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "c55a99c5-ea5c-4706-9fdb-5e4cee425386",
@@ -787,7 +794,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 260
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "fa9026d0-1a07-413a-a250-34a8f64c3761",
@@ -838,7 +846,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 110
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "9e31da01-66e9-49b6-a7e3-e2272548ba42",
@@ -889,7 +898,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 66
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "cacc27f7-a772-47de-bd9c-74c472e4c890",
@@ -940,7 +950,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 141
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "9e31dcfa-de17-4c4a-ac97-9324d52c6237",
@@ -991,7 +1002,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 256
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "dd28f5cb-f3e8-47aa-a74c-c09dd039e98c",
@@ -1042,7 +1054,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 374
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "d9e114af-b34d-4e33-bea8-71cefccaa491",
@@ -1093,7 +1106,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 268
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "dca38723-ba84-493e-9417-ef2acbef6361",
@@ -1144,7 +1158,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 312
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "c70178b1-ba62-4d3a-92c7-6b3938ef9f5e",
@@ -1195,7 +1210,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 303
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "fa197fe3-e8c5-4a8d-97e5-2ec3939d24e3",
@@ -1246,7 +1262,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 164
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "e85c3f0e-65a8-4854-919a-12d3c517ea87",
@@ -1297,7 +1314,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 142
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "e1a83226-14fa-4dd1-9904-71c301c10ef6",
@@ -1348,7 +1366,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 246
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "ed2dc3e0-49de-419f-8679-e3bff8e417bd",
@@ -1399,7 +1418,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 139
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "agri-001",
@@ -1450,7 +1470,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 130
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "agri-002",
@@ -1501,7 +1522,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 180
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "agri-003",
@@ -1552,7 +1574,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 100
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "agri-004",
@@ -1603,7 +1626,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 280
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "agri-005",
@@ -1654,7 +1678,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 160
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "agri-006",
@@ -1705,7 +1730,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 230
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "food-001",
@@ -1756,7 +1782,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 380
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "food-002",
@@ -1807,7 +1834,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 330
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "food-003",
@@ -1858,7 +1886,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 200
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "food-004",
@@ -1909,7 +1938,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 160
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "food-005",
@@ -1960,7 +1990,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 300
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "food-006",
@@ -2011,7 +2042,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 430
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "pet-002",
@@ -2062,7 +2094,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 130
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "pet-003",
@@ -2113,7 +2146,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 180
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "pet-004",
@@ -2164,7 +2198,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 330
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "pet-005",
@@ -2215,7 +2250,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 480
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "pet-006",
@@ -2266,7 +2302,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 260
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "antique-001",
@@ -2317,7 +2354,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 25
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "antique-002",
@@ -2368,7 +2406,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 40
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "antique-003",
@@ -2419,7 +2458,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 100
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "antique-004",
@@ -2470,7 +2510,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 160
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "antique-005",
@@ -2521,7 +2562,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 35
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "antique-006",
@@ -2572,7 +2614,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 70
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "art-001",
@@ -2623,7 +2666,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 230
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "art-002",
@@ -2674,7 +2718,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 280
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "art-003",
@@ -2725,7 +2770,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 380
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "art-004",
@@ -2776,7 +2822,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 200
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "art-005",
@@ -2827,7 +2874,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 65
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "art-006",
@@ -2878,7 +2926,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 430
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "baby-001",
@@ -2929,7 +2978,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 45
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "baby-002",
@@ -2980,7 +3030,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 300
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "baby-003",
@@ -3031,7 +3082,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 260
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "baby-004",
@@ -3082,7 +3134,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 75
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "baby-005",
@@ -3133,7 +3186,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 160
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "baby-006",
@@ -3184,7 +3238,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 125
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-001",
@@ -3235,7 +3290,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 400
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-002",
@@ -3286,7 +3342,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 360
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-003",
@@ -3337,7 +3394,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 240
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-004",
@@ -3388,7 +3446,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 500
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-005",
@@ -3439,7 +3498,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 320
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-006",
@@ -3490,7 +3550,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 660
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-007",
@@ -3541,7 +3602,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 200
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-008",
@@ -3592,7 +3654,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 160
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-009",
@@ -3643,7 +3706,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 390
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     },
     {
       "id": "auto-010",
@@ -3694,7 +3758,8 @@
           "specification": "银色配色版本",
           "stock_quantity": 270
         }
-      ]
+      ],
+      "user_limit_quantity": 1
     }
   ],
   "orders": [
@@ -3813,7 +3878,7 @@
       "status_text": "清关完成-运输",
       "status_detail_text": "清关手续已完成，正在最后运输阶段",
       "customer_name": "钱七",
-      "total_amount": 1847.50,
+      "total_amount": 1847.5,
       "shipping_street": "杭州市西湖区文三路388号",
       "shipping_city": "杭州",
       "shipping_zipcode": "310000",
@@ -3826,21 +3891,21 @@
           "product_name": "Pulverizador Costal Manual 20 Litros Agrícola",
           "product_image": "http://http2.mlstatic.com/D_NQ_NP_2X_123456-MLB00000000000_012024-F.webp",
           "quantity": 5,
-          "price": 449.50
+          "price": 449.5
         },
         {
           "product_id": "agri-002",
           "product_name": "Kit Ferramentas Jardinagem 5 Peças Aço Inox",
           "product_image": "http://http2.mlstatic.com/D_NQ_NP_2X_234567-MLB00000000000_012024-F.webp",
           "quantity": 10,
-          "price": 655.00
+          "price": 655.0
         },
         {
           "product_id": "food-001",
           "product_name": "Café Gourmet Torrado Moído 500g Arábica",
           "product_image": "http://http2.mlstatic.com/D_NQ_NP_2X_789012-MLB00000000000_012024-F.webp",
           "quantity": 24,
-          "price": 933.60
+          "price": 933.6
         }
       ]
     },
@@ -3852,7 +3917,7 @@
       "status_text": "已交付",
       "status_detail_text": "订单已完成，货物已成功交付",
       "customer_name": "孙八",
-      "total_amount": 2247.30,
+      "total_amount": 2247.3,
       "shipping_street": "成都市锦江区春熙路123号",
       "shipping_city": "成都",
       "shipping_zipcode": "610000",
@@ -3865,14 +3930,14 @@
           "product_name": "Sementes Hortaliças Orgânicas Kit 10 Variedades",
           "product_image": "http://http2.mlstatic.com/D_NQ_NP_2X_345678-MLB00000000000_012024-F.webp",
           "quantity": 10,
-          "price": 149.90
+          "price": 149.9
         },
         {
           "product_id": "agri-004",
           "product_name": "Adubo Orgânico Natural 5kg NPK 10-10-10",
           "product_image": "http://http2.mlstatic.com/D_NQ_NP_2X_456789-MLB00000000000_012024-F.webp",
           "quantity": 3,
-          "price": 748.50
+          "price": 748.5
         }
       ]
     }

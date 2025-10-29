@@ -100,33 +100,52 @@
                 <div class="variation-spec">{{ variation.specification || '标准版本' }}</div>
                 <div class="variation-price">R$ {{ variation.price.toFixed(2) }}</div>
                 <div class="quantity-controls">
-                  <button 
-                    class="quantity-btn decrease" 
-                    :disabled="selectedVariation?.id !== variation.id"
-                    @click.stop="decreaseQuantity(variation)"
-                  >-</button>
-                  <input 
-                    type="number" 
-                    :value="getVariationQuantity(variation.id)"
-                    :min="product.moq"
-                    :disabled="selectedVariation?.id !== variation.id"
-                    class="quantity-input"
-                    @input="updateVariationQuantity(variation.id, $event.target.value)"
-                  />
-                  <button 
-                    class="quantity-btn increase" 
-                    :disabled="selectedVariation?.id !== variation.id"
-                    @click.stop="increaseQuantity(variation)"
-                  >+</button>
+                  <!-- 先试后用模式：只显示数量，不显示增减按钮 -->
+                  <div v-if="isSample" class="quantity-display">
+                    {{ product.user_limit_quantity || 1 }} 件
+                  </div>
+                  <!-- 普通模式：显示完整的数量控制 -->
+                  <template v-else>
+                    <button 
+                      class="quantity-btn decrease" 
+                      :disabled="selectedVariation?.id !== variation.id"
+                      @click.stop="decreaseQuantity(variation)"
+                    >-</button>
+                    <input 
+                      type="number" 
+                      :value="getVariationQuantity(variation.id)"
+                      :min="product.moq"
+                      :disabled="selectedVariation?.id !== variation.id"
+                      class="quantity-input"
+                      @input="updateVariationQuantity(variation.id, $event.target.value)"
+                    />
+                    <button 
+                      class="quantity-btn increase" 
+                      :disabled="selectedVariation?.id !== variation.id"
+                      @click.stop="increaseQuantity(variation)"
+                    >+</button>
+                  </template>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- MOQ信息 -->
-          <div class="moq-info" v-if="product.moq">
+          <div class="moq-info" v-if="product.moq && !isSample">
             <span class="moq-icon">📦</span>
             <span>最小订购量 (MOQ) {{ product.moq }} 件</span>
+          </div>
+
+          <!-- 先试后用限购信息 -->
+          <div class="moq-info" v-if="product.user_limit_quantity && isSample && !hasPurchased">
+            <span class="moq-icon">🎯</span>
+            <span>每用户限购数量 {{ product.user_limit_quantity }} 件</span>
+          </div>
+          
+          <!-- 已购买提示 -->
+          <div class="purchased-info" v-if="hasPurchased && isSample">
+            <span class="purchased-icon">✨</span>
+            <span>商品已限购</span>
           </div>
 
           <!-- 价格信息 -->
@@ -158,9 +177,14 @@
             </div>
           </div>
 
-          <!-- 添加到购物车按钮 -->
-          <button class="add-to-cart-btn" @click="addToCart">
-            加入购物车
+          <!-- 添加到购物车/立即下单按钮 -->
+          <button 
+            class="add-to-cart-btn" 
+            :class="{ 'disabled': hasPurchased && isSample }"
+            :disabled="hasPurchased && isSample"
+            @click="addToCart"
+          >
+            {{ isSample ? '立即下单' : '加入购物车' }}
           </button>
         </div>
       </div>
@@ -170,14 +194,18 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import { getProductDetail, addToCart as addToCartApi, getCartId } from '../../utils/api.js'
+import { getProductDetail, addToCart as addToCartApi, getCartId, createSampleOrder, checkSamplePurchase } from '../../utils/api.js'
 import { useUserStore } from '../../stores/user.js'
 
 // Props
 const props = defineProps({
   productId: {
-    type: Number,
+    type: [Number, String],
     required: true
+  },
+  isSample: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -193,6 +221,8 @@ const selectedVariation = ref(null)
 const quantity = ref(50)
 const variationQuantities = ref({}) // 为每个变体维护独立的数量
 const isVideo = ref(false)
+const hasPurchased = ref(false) // 是否已购买（先试用模式）
+const purchaseCheckLoading = ref(false) // 购买检查加载状态
 
  // 计算属性
  const currentImage = computed(() => {
@@ -237,6 +267,8 @@ const isVideo = ref(false)
    try {
      loading.value = true
      error.value = null
+     
+     // 使用统一的API获取产品详情
      const response = await getProductDetail(props.productId)
      
      console.log('🔍 后端返回的响应:', response)
@@ -255,20 +287,55 @@ const isVideo = ref(false)
        product.value = response
      }
      
-     // 默认选择第一个变体（如果存在）
-     if (product.value && product.value.variations && product.value.variations.length > 0) {
-       selectedVariation.value = product.value.variations[0]
-     } else {
-       // 如果没有 variations，设置为 null
-       selectedVariation.value = null
-     }
-   } catch (err) {
-     console.error('❌ 加载产品详情异常:', err)
-     error.value = '加载产品详情失败，请重试'
-   } finally {
-     loading.value = false
-   }
- }
+    // 默认选择第一个变体（如果存在）
+    if (product.value && product.value.variations && product.value.variations.length > 0) {
+      selectedVariation.value = product.value.variations[0]
+    } else {
+      // 如果没有 variations，设置为 null
+      selectedVariation.value = null
+    }
+    
+    // 如果是先试后用模式，检查是否已购买
+    if (props.isSample) {
+      await checkPurchaseStatus()
+    }
+  } catch (err) {
+    console.error('❌ 加载产品详情异常:', err)
+    error.value = '加载产品详情失败，请重试'
+  } finally {
+    loading.value = false
+  }
+}
+
+// 检查购买状态（先试后用模式）
+const checkPurchaseStatus = async () => {
+  try {
+    purchaseCheckLoading.value = true
+    
+    // 获取用户信息
+    const userStore = useUserStore()
+    const userId = userStore.getUserId()
+    
+    if (!userId) {
+      console.log('⚠️ 用户未登录，跳过购买检查')
+      return
+    }
+    
+    // 调用API检查购买状态
+    const response = await checkSamplePurchase(userId, props.productId)
+    
+    if (response.success) {
+      hasPurchased.value = response.has_purchased
+      console.log('✅ 购买状态检查完成:', hasPurchased.value)
+    }
+  } catch (err) {
+    console.error('❌ 检查购买状态失败:', err)
+    // 如果检查失败，默认为未购买，允许用户尝试下单
+    hasPurchased.value = false
+  } finally {
+    purchaseCheckLoading.value = false
+  }
+}
 
 const selectImage = (index) => {
   currentImageIndex.value = index
@@ -293,13 +360,15 @@ const selectVariation = (variation) => {
 }
 
 const getVariationQuantity = (variationId) => {
-  return variationQuantities.value[variationId] || product.value?.moq || 50
+  const limitQuantity = props.isSample ? product.value?.user_limit_quantity : product.value?.moq
+  return variationQuantities.value[variationId] || limitQuantity || 50
 }
 
 const updateVariationQuantity = (variationId, newQuantity) => {
-  const numQuantity = parseInt(newQuantity) || product.value?.moq || 50
-  if (numQuantity < product.value.moq) {
-    variationQuantities.value[variationId] = product.value.moq
+  const limitQuantity = props.isSample ? product.value?.user_limit_quantity : product.value?.moq
+  const numQuantity = parseInt(newQuantity) || limitQuantity || 50
+  if (numQuantity < limitQuantity) {
+    variationQuantities.value[variationId] = limitQuantity
   } else {
     variationQuantities.value[variationId] = numQuantity
   }
@@ -315,23 +384,31 @@ const increaseQuantity = (variation) => {
 const decreaseQuantity = (variation) => {
   if (selectedVariation.value && selectedVariation.value.id === variation.id) {
     const currentQty = getVariationQuantity(variation.id)
-    if (currentQty > product.value.moq) {
+    const limitQuantity = props.isSample ? product.value?.user_limit_quantity : product.value?.moq
+    if (currentQty > limitQuantity) {
       variationQuantities.value[variation.id] = currentQty - 1
     }
   }
 }
 
 const updateQuantity = () => {
-  if (selectedVariation.value && quantity.value < product.value.moq) {
-    quantity.value = product.value.moq
+  const limitQuantity = props.isSample ? product.value?.user_limit_quantity : product.value?.moq
+  if (selectedVariation.value && quantity.value < limitQuantity) {
+    quantity.value = limitQuantity
   }
 }
 
 const getSelectedQuantity = () => {
+  if (props.isSample) {
+    // 先试后用模式：直接返回 user_limit_quantity
+    return product.value?.user_limit_quantity || 1
+  }
+  
   if (selectedVariation.value) {
     return getVariationQuantity(selectedVariation.value.id)
   }
-  return product.value?.moq || 50
+  const limitQuantity = product.value?.moq
+  return limitQuantity || 50
 }
 
 const addToCart = async () => {
@@ -354,32 +431,67 @@ const addToCart = async () => {
       return
     }
     
-    // 获取购物车ID
-    const cartId = await getCartId(userId)
-    
-    // 计算要添加的数量
-    let quantity = product.value.moq || 50
-    
-    // 如果有选中的变体，使用变体的数量
-    if (selectedVariation.value) {
-      quantity = getVariationQuantity(selectedVariation.value.id)
-    }
-    
-    // 调用后端API加入购物车
-    const response = await addToCartApi(cartId, props.productId, quantity)
-    
-    if (response.success) {
-      alert('商品已成功加入购物车！')
-      // 触发事件通知父组件
-      emit('add-to-cart', {
-        product: product.value,
-        variation: selectedVariation.value,
-        quantity: quantity
-      })
+    if (props.isSample) {
+      // 先试后用模式：创建小样订单
+      const limitQuantity = product.value?.user_limit_quantity || 1
+      const totalAmount = product.value?.selling_price * limitQuantity
+      
+      const orderData = {
+        user_id: userId,
+        product_id: props.productId,
+        customer_name: userStore.user?.name || '客户',
+        quantity: limitQuantity,
+        total_amount: totalAmount,
+        notes: '小样订单'
+      }
+      
+      const response = await createSampleOrder(orderData)
+      
+      if (response.success) {
+        alert('小样订单已成功创建！')
+        // 触发事件通知父组件
+        emit('add-to-cart', {
+          product: product.value,
+          variation: selectedVariation.value,
+          quantity: limitQuantity
+        })
+      } else {
+        alert(response.message || '创建小样订单失败')
+      }
+    } else {
+      // 普通模式：加入购物车
+      // 获取购物车ID
+      const cartId = await getCartId(userId)
+      
+      // 计算要添加的数量
+      const limitQuantity = product.value?.moq
+      let quantity = limitQuantity || 50
+      
+      // 如果有选中的变体，使用变体的数量
+      if (selectedVariation.value) {
+        quantity = getVariationQuantity(selectedVariation.value.id)
+      }
+      
+      // 调用后端API加入购物车
+      const response = await addToCartApi(cartId, props.productId, quantity)
+      
+      if (response.success) {
+        alert('商品已成功加入购物车！')
+        // 触发事件通知父组件
+        emit('add-to-cart', {
+          product: product.value,
+          variation: selectedVariation.value,
+          quantity: quantity
+        })
+      }
     }
   } catch (error) {
-    console.error('❌ 加入购物车失败:', error)
-    alert('加入购物车失败，请重试')
+    console.error('❌ 操作失败:', error)
+    if (props.isSample) {
+      alert('下单失败，请重试')
+    } else {
+      alert('加入购物车失败，请重试')
+    }
   }
 }
 
@@ -394,8 +506,9 @@ onMounted(() => {
 
 // 监听数量变化
 watch(quantity, (newQuantity) => {
-  if (product.value && newQuantity < product.value.moq) {
-    quantity.value = product.value.moq
+  const limitQuantity = props.isSample ? product.value?.user_limit_quantity : product.value?.moq
+  if (product.value && newQuantity < limitQuantity) {
+    quantity.value = limitQuantity
   }
 })
 </script>
@@ -682,6 +795,16 @@ watch(quantity, (newQuantity) => {
   gap: 0.5rem;
 }
 
+.quantity-display {
+  padding: 0.5rem 1rem;
+  background: #f3f4f6;
+  border-radius: 6px;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+  min-width: 80px;
+}
+
 .quantity-btn {
   background: #f3f4f6;
   border: none;
@@ -735,6 +858,26 @@ watch(quantity, (newQuantity) => {
 }
 
 .moq-icon {
+  font-size: 1.2rem;
+}
+
+/* 已购买提示样式 */
+.purchased-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2px solid #f59e0b;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #92400e;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.15);
+}
+
+.purchased-icon {
   font-size: 1.2rem;
 }
 
@@ -823,9 +966,30 @@ watch(quantity, (newQuantity) => {
   box-shadow: 0 4px 8px rgba(251, 191, 36, 0.3);
 }
 
-.add-to-cart-btn:hover {
+.add-to-cart-btn:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 6px 12px rgba(251, 191, 36, 0.4);
+}
+
+.add-to-cart-btn.disabled {
+  background: linear-gradient(135deg, #9ca3af, #6b7280);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+.add-to-cart-btn:disabled {
+  background: linear-gradient(135deg, #9ca3af, #6b7280);
+  cursor: not-allowed;
+  opacity: 0.6;
+  transform: none;
+  box-shadow: none;
+}
+
+.add-to-cart-btn:disabled:hover {
+  transform: none;
+  box-shadow: none;
 }
 
 /* 加载和错误状态 */

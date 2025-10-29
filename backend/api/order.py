@@ -6,6 +6,9 @@ from sqlalchemy.orm import Session
 from typing import List
 from utils.database import get_db
 from models.order import Order, OrderItem
+from models.sample_purchase import SamplePurchase
+from models.product import Product
+from models.user import User
 from datetime import datetime
 
 router = APIRouter()
@@ -990,3 +993,162 @@ async def update_order_status(
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=500, detail=f"更新订单状态失败: {str(e)}")
+
+
+@router.post("/sample/create")
+async def create_sample_order(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    创建小样订单（先试后用）
+    
+    请求体参数:
+        user_id (int): 用户ID（必填）
+        product_id (str): 产品ID（必填）
+        customer_name (str): 客户名称（必填）
+        shipping_street (str): 街道地址（可选）
+        shipping_city (str): 城市（可选）
+        shipping_zipcode (str): 邮政编码（可选）
+        payment_method (str): 支付方式（可选）
+        notes (str): 备注（可选）
+    
+    Returns:
+        dict: 包含成功状态和订单ID
+    """
+    try:
+        # 从请求中获取JSON数据
+        request_data = await request.json()
+        
+        # 验证必填参数
+        if not request_data.get('user_id'):
+            raise HTTPException(status_code=400, detail="user_id 参数不能为空")
+        if not request_data.get('product_id'):
+            raise HTTPException(status_code=400, detail="product_id 参数不能为空")
+        if not request_data.get('customer_name'):
+            raise HTTPException(status_code=400, detail="customer_name 参数不能为空")
+        
+        user_id = request_data.get('user_id')
+        product_id = request_data.get('product_id')
+        
+        # 检查用户是否存在
+        user = db.query(User).filter(User.id == user_id).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="用户不存在")
+        
+        # 检查产品是否存在
+        product = db.query(Product).filter(Product.id == product_id).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="产品不存在")
+        
+        # 生成订单ID
+        import uuid
+        order_id = f"SMP-{uuid.uuid4().hex[:8].upper()}"
+        
+        # 使用产品的 user_limit_quantity 作为数量
+        quantity = product.user_limit_quantity
+        total_amount = product.selling_price * quantity
+        
+        # 创建小样订单
+        order = Order(
+            id=order_id,
+            user_id=user_id,
+            status="Pending",
+            status_step=1,
+            status_text="小样订单和审批",
+            status_detail_text="小样订单已接收",
+            customer_name=request_data.get('customer_name'),
+            total_amount=total_amount,
+            shipping_street=request_data.get('shipping_street'),
+            shipping_city=request_data.get('shipping_city'),
+            shipping_zipcode=request_data.get('shipping_zipcode'),
+            payment_method=request_data.get('payment_method'),
+            notes=request_data.get('notes', '小样订单'),
+            order_date=datetime.now()
+        )
+        db.add(order)
+        db.flush()  # 获取订单ID
+        
+        # 创建订单商品
+        order_item = OrderItem(
+            order_id=order.id,
+            product_id=product_id,
+            product_name=product.title,
+            product_image=product.img,
+            quantity=quantity,
+            price=product.selling_price
+        )
+        db.add(order_item)
+        
+        # 创建小样购买记录
+        sample_purchase = SamplePurchase(
+            user_id=user_id,
+            product_id=product_id,
+            purchase_date=datetime.now(),
+            status='purchased'
+        )
+        db.add(sample_purchase)
+        
+        db.commit()
+        
+        return {
+            "success": True,
+            "order_id": order.id,
+            "product_id": product_id,
+            "quantity": quantity,
+            "total_amount": float(total_amount),
+            "message": "小样订单创建成功"
+        }
+        
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"创建小样订单失败: {str(e)}")
+
+
+@router.post("/sample/check")
+async def check_sample_purchase(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    检查用户是否已经购买过指定产品的小样
+    
+    请求体参数:
+        user_id (int): 用户ID（必填）
+        product_id (str): 产品ID（必填）
+    
+    Returns:
+        dict: 包含检查结果
+    """
+    try:
+        # 从请求中获取JSON数据
+        request_data = await request.json()
+        
+        # 验证必填参数
+        if not request_data.get('user_id'):
+            raise HTTPException(status_code=400, detail="user_id 参数不能为空")
+        if not request_data.get('product_id'):
+            raise HTTPException(status_code=400, detail="product_id 参数不能为空")
+        
+        user_id = request_data.get('user_id')
+        product_id = request_data.get('product_id')
+        
+        # 检查用户是否已经购买过该产品的小样
+        existing_purchase = db.query(SamplePurchase).filter(
+            SamplePurchase.user_id == user_id,
+            SamplePurchase.product_id == product_id
+        ).first()
+        
+        return {
+            "success": True,
+            "has_purchased": existing_purchase is not None,
+            "purchase_date": existing_purchase.purchase_date.isoformat() if existing_purchase else None,
+            "message": "已购买过该产品小样" if existing_purchase else "可以购买该产品小样"
+        }
+        
+    except HTTPException as he:
+        raise he
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"检查小样购买记录失败: {str(e)}")

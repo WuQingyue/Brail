@@ -6,6 +6,7 @@ import Order from './components/Order/Order.vue'
 import Databash from './components/Admin/Databash.vue'
 import LogisticsManagement from './components/Logistics/LogisticsManagement.vue'
 import LogisticsManagement2 from './components/Logistics/LogisticsManagement2.vue'
+import Sample from './components/Sample/Sample.vue'
 import { useUserStore } from './stores/user.js'
 
 // 简单的路由状态管理
@@ -58,6 +59,8 @@ const updateRoute = () => {
     currentRoute.value = 'logistics'
   } else if (path === '/Logistics-2') {
     currentRoute.value = 'logistics2'
+  } else if (path === '/sample') {
+    currentRoute.value = 'sample'
   } else {
     currentRoute.value = 'home'
   }
@@ -74,6 +77,8 @@ const currentComponent = computed(() => {
       return LogisticsManagement
     case 'logistics2':
       return LogisticsManagement2
+    case 'sample':
+      return Sample
     default:
       return Categories
   }

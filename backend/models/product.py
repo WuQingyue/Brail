@@ -44,7 +44,7 @@ class Product(Base):
     weight = Column(Float, nullable=True, comment="产品重量(kg)")
     dimensions = Column(JSON, nullable=True, comment="产品尺寸(长x宽x高)")
     
-    # 订购信息
+    # 订购信息 
     moq = Column(Integer, default=1, nullable=False, comment="起订量")
     tags = Column(JSON, nullable=True, comment="产品标签")
     
@@ -53,6 +53,7 @@ class Product(Base):
     reserved_quantity = Column(Integer, default=0, nullable=False, comment="已预留数量")
     low_stock_threshold = Column(Integer, default=10, nullable=False, comment="低库存预警阈值")
     max_order_quantity = Column(Integer, nullable=True, comment="最大购买数量")
+    user_limit_quantity = Column(Integer, default=1, nullable=False, comment="每用户限购数量")
     
     # 价格信息
     cost_price = Column(Float, nullable=True, comment="成本价")

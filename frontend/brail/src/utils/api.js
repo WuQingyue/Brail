@@ -174,6 +174,117 @@ export const getProductsByCategory = async (categoryId = null) => {
   }
 }
 
+// 先试后用相关API
+export const getAllSampleProducts = async () => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 从 mock-data.json 导入先试后用产品数据
+      const { sampleTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockProducts = sampleTestData.sampleProducts || []
+      
+      return {
+        success: true,
+        code: 200,
+        count: mockProducts.length,
+        products: mockProducts
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/product/all', {
+      method: 'GET'
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch all sample products:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '获取所有先试后用产品失败',
+        count: 0,
+        products: []
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '获取所有先试后用产品失败，请稍后重试',
+        count: 0,
+        products: []
+      }
+    }
+  }
+}
+
+export const getSampleProducts = async (categoryId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      // 模拟网络延迟
+      await new Promise(resolve => setTimeout(resolve, 300))
+      
+      // 从 mock-data.json 导入先试后用产品数据
+      const { sampleTestData } = await import('../../tests/fixtures/mock-data.json')
+      const mockProducts = sampleTestData.sampleProducts || []
+      
+      // 根据类别ID筛选产品
+      const filteredProducts = categoryId ? 
+        mockProducts.filter(product => product.category_id === categoryId) : 
+        mockProducts
+      
+      return {
+        success: true,
+        code: 200,
+        count: filteredProducts.length,
+        category_id: categoryId,
+        category_name: categoryId ? '测试类别' : '所有类别',
+        products: filteredProducts
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/product/sample', {
+      method: 'POST',
+      body: JSON.stringify({ category_id: categoryId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to fetch sample products:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '获取先试后用产品失败',
+        count: 0,
+        category_id: categoryId,
+        category_name: '',
+        products: []
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '获取先试后用产品失败，请稍后重试',
+        count: 0,
+        category_id: categoryId,
+        category_name: '',
+        products: []
+      }
+    }
+  }
+}
+
 export const searchProducts = async (keyword) => {
   try {
     // 开发环境：返回模拟搜索结果
@@ -830,6 +941,89 @@ export const getOrderId = async () => {
 }
 
 // 订单相关API
+// 小样订单相关API
+export const createSampleOrder = async (orderData) => {
+  try {
+    // 测试环境：返回模拟成功响应
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 500))
+      return {
+        success: true,
+        order_id: `SMP-${Date.now()}`,
+        product_id: orderData.product_id,
+        quantity: orderData.quantity || 1,
+        total_amount: orderData.total_amount || 0,
+        message: "小样订单创建成功"
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/sample/create', {
+      method: 'POST',
+      body: JSON.stringify(orderData)
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to create sample order:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '创建小样订单失败'
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '创建小样订单失败，请稍后重试'
+      }
+    }
+  }
+}
+
+export const checkSamplePurchase = async (userId, productId) => {
+  try {
+    // 测试环境：返回模拟数据
+    if (isDevelopment()) {
+      await new Promise(resolve => setTimeout(resolve, 300))
+      return {
+        success: true,
+        has_purchased: false, // 模拟未购买
+        purchase_date: null,
+        message: "可以购买该产品小样"
+      }
+    }
+    
+    // 生产环境：调用真实API
+    const response = await request('/order/sample/check', {
+      method: 'POST',
+      body: JSON.stringify({ user_id: userId, product_id: productId })
+    })
+    return response
+  } catch (error) {
+    console.error('Failed to check sample purchase:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '检查小样购买记录失败'
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '检查小样购买记录失败，请稍后重试'
+      }
+    }
+  }
+}
+
 export const createOrder = async (orderData) => {
   try {
     // 开发环境：返回模拟成功响应
@@ -1259,6 +1453,8 @@ export const handleApiError = (error) => {
 export default {
   getCategories,
   getProductsByCategory,
+  getAllSampleProducts,
+  getSampleProducts,
   getProductDetail,
   searchProducts,
   getProductTags,
@@ -1273,6 +1469,8 @@ export default {
   removeCartItem,
   getOrderId,
   createOrder,
+  createSampleOrder,
+  checkSamplePurchase,
   getOrderList,
   getPendingOrders,
   getProcessedOrders,

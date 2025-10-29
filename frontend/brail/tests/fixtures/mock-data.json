@@ -1475,5 +1475,73 @@
         "message": "当前没有已交付的订单"
       }
     }
+  },
+  "sampleTestData": {
+    "sampleProducts": [
+      {
+        "id": 1,
+        "name": "优雅陶瓷花瓶",
+        "price": 189,
+        "image": "https://via.placeholder.com/200x200?text=花瓶",
+        "purchased": false,
+        "user_limit_quantity": 1
+      },
+      {
+        "id": 2,
+        "name": "智能桌面台灯",
+        "price": 259,
+        "image": "https://via.placeholder.com/200x200?text=台灯",
+        "purchased": true,
+        "user_limit_quantity": 2
+      },
+      {
+        "id": 3,
+        "name": "降噪耳机",
+        "price": 899,
+        "image": "https://via.placeholder.com/200x200?text=耳机",
+        "purchased": false,
+        "user_limit_quantity": 1
+      },
+      {
+        "id": 4,
+        "name": "便携式咖啡机",
+        "price": 329,
+        "image": "https://via.placeholder.com/200x200?text=咖啡机",
+        "purchased": false,
+        "user_limit_quantity": 1
+      },
+      {
+        "id": 5,
+        "name": "皮革斜挎包",
+        "price": 499,
+        "image": "https://via.placeholder.com/200x200?text=包包",
+        "purchased": true,
+        "user_limit_quantity": 2
+      },
+      {
+        "id": 6,
+        "name": "极简主义腕表",
+        "price": 1299,
+        "image": "https://via.placeholder.com/200x200?text=手表",
+        "purchased": false,
+        "user_limit_quantity": 1
+      },
+      {
+        "id": 7,
+        "name": "原声吉他",
+        "price": 750,
+        "image": "https://via.placeholder.com/200x200?text=吉他",
+        "purchased": false,
+        "user_limit_quantity": 1
+      },
+      {
+        "id": 8,
+        "name": "专业瑜伽垫",
+        "price": 150,
+        "image": "https://via.placeholder.com/200x200?text=瑜伽垫",
+        "purchased": false,
+        "user_limit_quantity": 1
+      }
+    ]
   }
 }
