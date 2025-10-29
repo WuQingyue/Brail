@@ -11,7 +11,7 @@
         <ul class="nav-list">
           <li><a href="/">首页</a></li>
           <li><a href="/products">产品</a></li>
-          <li><a href="/about">关于我们</a></li>
+          <li><a href="/sample">先试后用</a></li>
         </ul>
       </nav>
 

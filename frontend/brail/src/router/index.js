@@ -4,6 +4,7 @@ import Order from '@/components/Order/Order.vue'
 import Databash from '@/components/Admin/Databash.vue'
 import LogisticsManagement from '@/components/Logistics/LogisticsManagement.vue'
 import LogisticsManagement2 from '@/components/Logistics/LogisticsManagement2.vue'
+import Sample from '@/components/Sample/Sample.vue'
 
 const routes = [
   {
@@ -30,6 +31,11 @@ const routes = [
     path: '/Logistics-2',
     name: 'LogisticsManagement2',
     component: LogisticsManagement2
+  },
+  {
+    path: '/sample',
+    name: 'Sample',
+    component: Sample
   }
 ]
 

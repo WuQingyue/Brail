@@ -434,7 +434,7 @@ async def search_products(
 async def create_product(
     request: Request,
     db: Session = Depends(get_db)
-):
+    ):
     """
     创建新产品
     
@@ -778,3 +778,221 @@ async def get_suppliers(db: Session = Depends(get_db)):
             detail=f"获取供应商信息失败: {str(e)}"
         )
 
+
+@router.get("/all")
+async def get_all_products(
+    db: Session = Depends(get_db)
+):
+    """
+    获取所有产品信息
+    
+    Returns:
+        dict: 包含成功状态、产品数量和产品列表
+    
+    Example:
+        GET /api/product/all
+        
+        Response:
+        {
+            "success": true,
+            "code": 200,
+            "count": 100,
+            "products": [
+                {
+                    "id": "MLB123456",
+                    "title": "产品标题",
+                    "description": "产品描述",
+                    "img": "图片URL",
+                    "selling_price": 99.99,
+                    "discount_price": 89.99,
+                    "stock_quantity": 100,
+                    "moq": 5,
+                    "tags": ["标签1", "标签2"],
+                    "created_at": "2024-01-15T10:30:00"
+                },
+                ...
+            ]
+        }
+    """
+    try:
+        # 查询所有产品
+        products = db.query(Product).order_by(Product.created_at.desc()).all()
+        
+        # 转换为字典列表
+        result = []
+        for product in products:
+            # 获取类别名称
+            category = db.query(Category).filter(Category.id == product.category_id).first()
+            result.append({
+                "id": product.id,
+                "title": product.title,
+                "description": product.description,
+                "img": product.img,
+                "product_mlb_thumbnail": product.product_mlb_thumbnail,
+                "category_id": product.category_id,
+                "category_name": category.name if category else None,
+                "supplier_id": product.supplier_id,
+                "shipping_from": product.shipping_from,
+                "weight": product.weight,
+                "dimensions": product.dimensions,
+                "user_limit_quantity": product.user_limit_quantity,
+                "tags": product.tags,
+                "stock_quantity": product.stock_quantity,
+                "reserved_quantity": product.reserved_quantity,
+                "low_stock_threshold": product.low_stock_threshold,
+                "max_order_quantity": product.max_order_quantity,
+                "cost_price": product.cost_price,
+                "selling_price": product.selling_price,
+                "discount_price": product.discount_price,
+                "product_mlb_price": product.product_mlb_price,
+                "roi": product.roi,
+                "created_at": product.created_at.isoformat() if product.created_at else None,
+                "updated_at": product.updated_at.isoformat() if product.updated_at else None
+            })
+        
+        print(f"✅ 成功获取所有 {len(result)} 个产品")
+        
+        return {
+            "success": True,
+            "code": 200,
+            "count": len(result),
+            "products": result
+        }
+        
+    except Exception as e:
+        print(f"❌ 获取所有产品失败: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"获取所有产品失败: {str(e)}"
+        )
+
+
+@router.post("/sample")
+async def get_sample_products(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+    """
+    获取"先试后用"页面的产品信息（不包含moq字段，只包含user_limit_quantity）
+    
+    请求体参数:
+        category_id (str): 类别ID（必填）
+    
+    Returns:
+        dict: 包含成功状态、产品数量和产品列表（仅限购相关字段）
+    
+    Example:
+        POST /api/product/sample
+        
+        Request Body:
+        {
+            "category_id": "MLB5672"
+        }
+        
+        Response:
+        {
+            "success": true,
+            "code": 200,
+            "count": 15,
+            "category_id": "MLB5672",
+            "category_name": "汽车配件",
+            "products": [
+                {
+                    "id": "MLB123456",
+                    "title": "产品标题",
+                    "description": "产品描述",
+                    "img": "图片URL",
+                    "selling_price": 99.99,
+                    "discount_price": 89.99,
+                    "stock_quantity": 100,
+                    "user_limit_quantity": 1,
+                    "tags": ["标签1", "标签2"],
+                    "created_at": "2024-01-15T10:30:00"
+                },
+                ...
+            ]
+        }
+    """
+    try:
+        # 获取请求体数据
+        request_data = await request.json()
+        print(f"接收到的先试后用请求数据: {request_data}")
+        
+        # 获取类别ID
+        category_id = request_data.get('category_id', '').strip()
+        
+        # 验证类别ID不为空
+        if not category_id:
+            raise HTTPException(
+                status_code=400,
+                detail="缺少必填字段: category_id"
+            )
+        
+        print(f"接收到的先试后用类别ID: {category_id}")
+        
+        # 验证类别是否存在
+        category = db.query(Category).filter(Category.id == category_id).first()
+        if not category:
+            raise HTTPException(
+                status_code=404,
+                detail=f"类别 {category_id} 不存在"
+            )
+        
+        # 查询该类别下的所有产品（不使用分页）
+        products = db.query(Product).filter(
+            Product.category_id == category_id
+        ).order_by(Product.created_at.desc()).all()
+        
+        # 转换为字典列表（只包含先试后用需要的字段）
+        result = []
+        for product in products:
+            result.append({
+                "id": product.id,
+                "title": product.title,
+                "description": product.description,
+                "img": product.img,
+                "product_mlb_thumbnail": product.product_mlb_thumbnail,
+                "category_id": product.category_id,
+                "supplier_id": product.supplier_id,
+                "shipping_from": product.shipping_from,
+                "weight": product.weight,
+                "dimensions": product.dimensions,
+                "user_limit_quantity": product.user_limit_quantity,  # 只包含限购数量
+                "tags": product.tags,
+                "stock_quantity": product.stock_quantity,
+                "reserved_quantity": product.reserved_quantity,
+                "low_stock_threshold": product.low_stock_threshold,
+                "max_order_quantity": product.max_order_quantity,
+                "cost_price": product.cost_price,
+                "selling_price": product.selling_price,
+                "discount_price": product.discount_price,
+                "product_mlb_price": product.product_mlb_price,
+                "roi": product.roi,
+                "created_at": product.created_at.isoformat() if product.created_at else None,
+                "updated_at": product.updated_at.isoformat() if product.updated_at else None
+            })
+        
+        print(f"✅ 成功获取先试后用类别 {category_id} 下的 {len(result)} 个产品")
+        
+        return {
+            "success": True,
+            "code": 200,
+            "count": len(result),
+            "category_id": category_id,
+            "category_name": category.name,
+            "products": result
+        }
+        
+    except HTTPException as he:
+        # 重新抛出HTTP异常
+        raise he
+    except Exception as e:
+        print(f"❌ 获取先试后用产品失败: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"获取先试后用产品失败: {str(e)}"
+        )
