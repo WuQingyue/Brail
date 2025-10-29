@@ -451,11 +451,96 @@ def init_orders_data():
         print(f"[ERROR] 读取订单数据失败: {str(e)}")
 
 
+def init_sample_purchases_data():
+    """初始化 sample_purchases 表数据（如果 mock-data.json 中有数据）"""
+    try:
+        import json
+        import os
+        from datetime import datetime
+        from models.sample_purchase import SamplePurchase
+        
+        # 检查 mock-data.json 文件是否存在
+        mock_data_path = 'fixtures/mock-data.json'
+        if not os.path.exists(mock_data_path):
+            print("[WARNING]  未找到 fixtures/mock-data.json 文件，跳过小样购买记录数据初始化")
+            return
+        
+        # 读取 mock 数据
+        with open(mock_data_path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        
+        sample_purchases_data = data.get('sample_purchases', [])
+        
+        if not sample_purchases_data:
+            print("[WARNING]  mock-data.json 中没有 sample_purchases 数据，跳过初始化")
+            return
+        
+        # 获取数据库会话
+        db = SessionLocal()
+        
+        try:
+            # 检查是否已有小样购买记录数据
+            existing_count = db.query(SamplePurchase).count()
+            
+            if existing_count > 0:
+                print(f"[OK] 小样购买记录数据已存在 ({existing_count} 条记录)，跳过初始化")
+                return
+            
+            # 插入小样购买记录数据
+            print(f"[INFO] 正在初始化 {len(sample_purchases_data)} 条小样购买记录...")
+            for sample_data in sample_purchases_data:
+                # 解析购买日期
+                purchase_date = None
+                if sample_data.get('purchase_date'):
+                    try:
+                        purchase_date = datetime.fromisoformat(sample_data['purchase_date'].replace('T', ' '))
+                    except:
+                        pass
+                
+                # 解析创建和更新时间 
+                created_at = None
+                updated_at = None
+                if sample_data.get('created_at'):
+                    try:
+                        created_at = datetime.fromisoformat(sample_data['created_at'].replace('T', ' '))
+                    except:
+                        pass
+                if sample_data.get('updated_at'):
+                    try:
+                        updated_at = datetime.fromisoformat(sample_data['updated_at'].replace('T', ' '))
+                    except:
+                        pass
+                
+                # 创建小样购买记录
+                sample_purchase = SamplePurchase(
+                    id=sample_data['id'],
+                    user_id=sample_data['user_id'],
+                    product_id=sample_data['product_id'],
+                    purchase_date=purchase_date,
+                    status=sample_data.get('status', 'purchased'),
+                    created_at=created_at,
+                    updated_at=updated_at
+                )
+                db.add(sample_purchase)
+            
+            db.commit()
+            print(f"[OK] 成功初始化 {len(sample_purchases_data)} 条小样购买记录")
+            
+        except Exception as e:
+            print(f"[ERROR] 初始化小样购买记录数据失败: {str(e)}") 
+            db.rollback()
+        finally:
+            db.close()
+            
+    except Exception as e:
+        print(f"[ERROR] 读取小样购买记录数据失败: {str(e)}")
+
+
 def create_tables():
-    """创建所有数据库表""" 
+    """创建所有数据库表"""  
     try:
         # 导入所有模型以确保它们被注册到 Base.metadata
-        from models import User, Category, Cart, CartItem, Supplier, Product, Order, OrderItem  # 导入所有模型
+        from models import User, Category, Cart, CartItem, Supplier, Product, Order, OrderItem, SamplePurchase  # 导入所有模型
         
         # 创建所有表
         Base.metadata.create_all(bind=engine)
@@ -475,6 +560,9 @@ def create_tables():
         
         # 初始化 orders 数据（如果有）
         init_orders_data()
+        
+        # 初始化 sample_purchases 数据（如果有）
+        init_sample_purchases_data()
         
         return True
         

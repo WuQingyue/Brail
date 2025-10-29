@@ -3876,5 +3876,52 @@
         }
       ]
     }
+  ],
+  "sample_purchases": [
+    {
+      "id": 1,
+      "user_id": 1,
+      "product_id": "9e31dc48-e690-4963-ad82-0e7dd8b6b360",
+      "purchase_date": "2024-01-10T09:15:00",
+      "status": "purchased",
+      "created_at": "2024-01-10T09:15:00",
+      "updated_at": "2024-01-10T09:15:00"
+    },
+    {
+      "id": 2,
+      "user_id": 1,
+      "product_id": "cc256df6-dd2f-4451-b779-bda57fe7433c",
+      "purchase_date": "2024-01-12T14:30:00",
+      "status": "purchased",
+      "created_at": "2024-01-12T14:30:00",
+      "updated_at": "2024-01-12T14:30:00"
+    },
+    {
+      "id": 3,
+      "user_id": 1,
+      "product_id": "f0b283e9-ded9-4057-ac49-fb1d305ee125",
+      "purchase_date": "2024-01-13T11:45:00",
+      "status": "purchased",
+      "created_at": "2024-01-13T11:45:00",
+      "updated_at": "2024-01-13T11:45:00"
+    },
+    {
+      "id": 4,
+      "user_id": 1,
+      "product_id": "fdcbf4c7-ee6b-4f7e-9787-321908b34b5c",
+      "purchase_date": "2024-01-14T16:20:00",
+      "status": "purchased",
+      "created_at": "2024-01-14T16:20:00",
+      "updated_at": "2024-01-14T16:20:00"
+    },
+    {
+      "id": 5,
+      "user_id": 1,
+      "product_id": "fb3c14ce-9546-47fe-96ad-3bca1bdbfc55",
+      "purchase_date": "2024-01-15T08:30:00",
+      "status": "purchased",
+      "created_at": "2024-01-15T08:30:00",
+      "updated_at": "2024-01-15T08:30:00"
+    }
   ]
 }
