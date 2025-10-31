@@ -23,6 +23,24 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 })
 
+// 确保window.location存在
+if (!window.location) {
+  window.location = {
+    href: 'http://localhost:5173',
+    origin: 'http://localhost:5173',
+    protocol: 'http:',
+    host: 'localhost:5173',
+    hostname: 'localhost',
+    port: '5173',
+    pathname: '/',
+    search: '',
+    hash: ''
+  }
+}
+
+// 模拟window.alert
+window.alert = vi.fn()
+
 // 模拟localStorage - 使用真实的存储逻辑
 const localStorageMock = (() => {
   let store = {}

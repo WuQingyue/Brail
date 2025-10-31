@@ -182,19 +182,98 @@
             class="add-to-cart-btn" 
             :class="{ 'disabled': hasPurchased && isSample }"
             :disabled="hasPurchased && isSample"
-            @click="addToCart"
+            @click="isSample ? showPixPaymentModal() : addToCart()"
           >
             {{ isSample ? '立即下单' : '加入购物车' }}
           </button>
         </div>
       </div>
     </div>
+
+    <!-- PIX支付弹窗 -->
+    <div v-if="showPixModal" class="modal-overlay" @click.self="!showQrCode && closePixModal()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>{{ showQrCode ? '扫描二维码支付' : '确认支付信息' }}</h2>
+          <button class="close-btn" @click="closePixModal">×</button>
+        </div>
+        
+        <!-- 显示二维码 -->
+        <div v-if="showQrCode" class="qr-code-container">
+          <div class="qr-code-wrapper">
+            <img :src="qrCodeUrl" alt="PIX支付二维码" class="qr-code-image" />
+            <p class="qr-code-instruction">请使用您的银行APP扫描二维码完成支付</p>
+            <div class="payment-status-indicator">
+              <div class="status-dot"></div>
+              <span>等待支付中...</span>
+            </div>
+          </div>
+          
+          <!-- 错误信息显示 -->
+          <div v-if="pixError" class="error-message">
+            {{ pixError }}
+          </div>
+        </div>
+        
+        <!-- 显示表单 -->
+        <form v-else @submit.prevent="handlePixPayment" class="payment-form">
+          <div class="form-group">
+            <label for="pix-name">姓名 (Name):</label>
+            <input 
+              id="pix-name" 
+              type="text" 
+              v-model="pixForm.name" 
+              required 
+              placeholder="请输入您的全名"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="pix-email">邮箱 (Email):</label>
+            <input 
+              id="pix-email" 
+              type="email" 
+              v-model="pixForm.email" 
+              required 
+              placeholder="your.email@example.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="pix-tax-id">税号 (CPF/CNPJ):</label>
+            <input 
+              id="pix-tax-id" 
+              type="text" 
+              v-model="pixForm.taxId" 
+              required 
+              placeholder="000.000.000-00"
+            />
+            <small>测试环境使用: 000.000.000-00</small>
+          </div>
+
+          <div class="payment-amount">
+            <p>支付金额: <strong>R$ {{ calculateTotalAmount().toFixed(2) }}</strong></p>
+          </div>
+
+          <!-- 错误信息显示 -->
+          <div v-if="pixError" class="error-message">
+            {{ pixError }}
+          </div>
+
+          <!-- 提交按钮 -->
+          <button type="submit" class="submit-payment-btn" :disabled="pixProcessing || paymentStatus === 'loading'">
+            <span v-if="pixProcessing || paymentStatus === 'loading'">处理中...</span>
+            <span v-else>使用PIX支付</span>
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
-import { getProductDetail, addToCart as addToCartApi, getCartId, createSampleOrder, checkSamplePurchase } from '../../utils/api.js'
+import { ref, computed, onMounted, watch, reactive } from 'vue'
+import { getProductDetail, addToCart as addToCartApi, getCartId, createSampleOrder, checkSamplePurchase, createPixPaymentIntent } from '../../utils/api.js'
 import { useUserStore } from '../../stores/user.js'
 
 // Props
@@ -223,6 +302,23 @@ const variationQuantities = ref({}) // 为每个变体维护独立的数量
 const isVideo = ref(false)
 const hasPurchased = ref(false) // 是否已购买（先试用模式）
 const purchaseCheckLoading = ref(false) // 购买检查加载状态
+
+// PIX支付相关数据
+const showPixModal = ref(false)
+const pixProcessing = ref(false)
+const pixError = ref('')
+const pixForm = reactive({
+  name: '',
+  email: '',
+  taxId: '000.000.000-00' // 默认测试税号
+})
+const showQrCode = ref(false)
+const qrCodeUrl = ref('')
+const paymentStatus = ref('') // 'loading', 'requires_action', 'succeeded', 'requires_payment_method'
+const paymentIntentId = ref('')
+
+// Stripe实例
+const stripe = window.Stripe ? window.Stripe('pk_test_51SNksZ7vw4ltB98R0aQUAqCgN8xm3HeQmcSDHZ6Y5u0gl2UlKYHll2o1BMEnJioEjs6EnbInMpjXVWPGRljI2jw4005eGRnjy6') : null
 
  // 计算属性
  const currentImage = computed(() => {
@@ -439,7 +535,7 @@ const addToCart = async () => {
       const orderData = {
         user_id: userId,
         product_id: props.productId,
-        customer_name: userStore.user?.name || '客户',
+        customer_name: userStore.user?.user_name || userStore.user?.name || '客户',
         quantity: limitQuantity,
         total_amount: totalAmount,
         notes: '小样订单'
@@ -499,9 +595,225 @@ const handleImageError = (event) => {
   event.target.src = 'https://via.placeholder.com/600x400/10b981/ffffff?text=Product+Image'
 }
 
+// PIX支付相关函数
+
+// 显示PIX支付弹窗
+const showPixPaymentModal = () => {
+  if (!props.isSample) {
+    // 非先试后用模式，直接调用addToCart
+    addToCart()
+    return
+  }
+  
+  // 获取用户信息并填充表单
+  const userStore = useUserStore()
+  // 使用 userStore 的正确字段名：user_name 和 user_email
+  pixForm.name = userStore.user?.user_name || userStore.user?.name || ''
+  pixForm.email = userStore.user?.user_email || userStore.user?.email || ''
+  
+  console.log('🔄 填充用户信息到表单:', {
+    姓名: pixForm.name,
+    邮箱: pixForm.email,
+    用户数据: userStore.user
+  })
+  
+  showPixModal.value = true
+}
+
+// 关闭PIX支付弹窗
+const closePixModal = () => {
+  showPixModal.value = false
+  showQrCode.value = false
+  pixError.value = ''
+  paymentStatus.value = ''
+  qrCodeUrl.value = ''
+  paymentIntentId.value = ''
+}
+
+// 计算总金额
+const calculateTotalAmount = () => {
+  if (!product.value) return 0
+  const limitQuantity = product.value?.user_limit_quantity || 1
+  const price = selectedVariation.value?.price || product.value?.selling_price || 0
+  return price * limitQuantity
+}
+
+// 处理PIX支付
+const handlePixPayment = async () => {
+  try {
+    pixProcessing.value = true
+    pixError.value = ''
+    paymentStatus.value = 'loading'
+    
+    // 验证Stripe是否加载
+    if (!stripe) {
+      pixError.value = 'Stripe加载失败，请刷新页面重试'
+      return
+    }
+    
+    // 计算总金额
+    const totalAmount = calculateTotalAmount()
+    
+    // 调用后端API创建PaymentIntent
+    const response = await createPixPaymentIntent(totalAmount)
+    
+    if (!response.client_secret) {
+      pixError.value = response.message || '创建支付意图失败'
+      paymentStatus.value = ''
+      return
+    }
+    
+    paymentIntentId.value = response.client_secret.split('_secret_')[0]
+    
+    // 调用Stripe确认PIX支付（不使用重定向）
+    const { error: confirmError, paymentIntent } = await stripe.confirmPixPayment(
+      response.client_secret,
+      {
+        payment_method: {
+          billing_details: {
+            name: pixForm.name,
+            email: pixForm.email,
+            tax_id: pixForm.taxId,
+          }
+        },
+        return_url: undefined // 不使用重定向
+      }
+    )
+    
+    if (confirmError) {
+      console.error('支付确认错误:', confirmError)
+      paymentStatus.value = ''
+      pixError.value = `支付错误: ${confirmError.message}`
+      return
+    }
+    
+    console.log('PaymentIntent状态:', paymentIntent.status)
+    
+    // 根据PaymentIntent状态处理
+    if (paymentIntent.status === 'requires_action' && paymentIntent.next_action) {
+      // 需要显示二维码等待用户支付
+      paymentStatus.value = 'requires_action'
+      
+      // 获取二维码URL
+      if (paymentIntent.next_action.pix_display_qr_code) {
+        qrCodeUrl.value = paymentIntent.next_action.pix_display_qr_code.image_url_png
+        showQrCode.value = true
+        
+        // 轮询检查支付状态
+        pollPaymentStatus(response.client_secret)
+      }
+    } else if (paymentIntent.status === 'succeeded') {
+      // 支付成功
+      handlePaymentSuccess(totalAmount)
+    } else if (paymentIntent.status === 'requires_payment_method') {
+      // 支付失败或被取消
+      paymentStatus.value = 'requires_payment_method'
+      pixError.value = '支付已取消或失败，请重试'
+    } else {
+      console.log('未处理的状态:', paymentIntent.status)
+      paymentStatus.value = paymentIntent.status
+    }
+  } catch (error) {
+    console.error('❌ PIX支付处理失败:', error)
+    pixError.value = '支付处理失败，请重试'
+    paymentStatus.value = ''
+  } finally {
+    pixProcessing.value = false
+  }
+}
+
+// 轮询支付状态
+const pollPaymentStatus = async (clientSecret) => {
+  const maxAttempts = 120 // 最多轮询2分钟（每秒一次）
+  let attempts = 0
+  
+  const poll = setInterval(async () => {
+    attempts++
+    
+    try {
+      const { paymentIntent, error } = await stripe.retrievePaymentIntent(clientSecret)
+      
+      if (error) {
+        console.error('获取支付状态错误:', error)
+        clearInterval(poll)
+        return
+      }
+      
+      console.log(`轮询第${attempts}次，状态:`, paymentIntent.status)
+      
+      if (paymentIntent.status === 'succeeded') {
+        clearInterval(poll)
+        paymentStatus.value = 'succeeded'
+        showQrCode.value = false
+        const totalAmount = calculateTotalAmount()
+        handlePaymentSuccess(totalAmount)
+      } else if (paymentIntent.status === 'requires_payment_method') {
+        clearInterval(poll)
+        paymentStatus.value = 'requires_payment_method'
+        pixError.value = '支付已取消或失败'
+      } else if (attempts >= maxAttempts) {
+        clearInterval(poll)
+        paymentStatus.value = ''
+        pixError.value = '支付超时，请重新尝试'
+      }
+    } catch (error) {
+      console.error('轮询错误:', error)
+      clearInterval(poll)
+    }
+  }, 1000) // 每秒检查一次
+}
+
+// 处理支付成功
+const handlePaymentSuccess = async (totalAmount) => {
+  try {
+    // 创建小样订单
+    const userStore = useUserStore()
+    const userId = userStore.getUserId()
+    const limitQuantity = product.value?.user_limit_quantity || 1
+    
+    const orderData = {
+      user_id: userId,
+      product_id: props.productId,
+      customer_name: pixForm.name,
+      quantity: limitQuantity,
+      total_amount: totalAmount,
+      notes: 'PIX支付小样订单'
+    }
+    
+    const orderResponse = await createSampleOrder(orderData)
+    
+    if (orderResponse.success) {
+      // 关闭弹窗
+      closePixModal()
+      alert('✅ 支付成功，订单已创建！')
+      // 触发事件通知父组件
+      emit('add-to-cart', {
+        product: product.value,
+        variation: selectedVariation.value,
+        quantity: limitQuantity
+      })
+    } else {
+      pixError.value = orderResponse.message || '订单创建失败'
+      paymentStatus.value = ''
+    }
+  } catch (error) {
+    console.error('创建订单失败:', error)
+    pixError.value = '订单创建失败，请重试'
+    paymentStatus.value = ''
+  }
+}
+
 // 生命周期
 onMounted(() => {
   loadProduct()
+  
+  // 初始化用户信息到表单
+  const userStore = useUserStore()
+  if (userStore.user) {
+    // 使用 userStore 的正确字段名：user_name 和 user_email
+    pixForm.name = userStore.user.user_name || userStore.user.name || ''
+    pixForm.email = userStore.user.user_email || userStore.user.email || ''
+  }
 })
 
 // 监听数量变化
@@ -1136,6 +1448,256 @@ watch(quantity, (newQuantity) => {
   .variation-image img {
     width: 35px;
     height: 35px;
+  }
+}
+
+/* PIX支付弹窗样式 */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  border-radius: 16px;
+  padding: 0;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: #1f2937;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #6b7280;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #f3f4f6;
+  color: #1f2937;
+}
+
+.payment-form {
+  padding: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #10b981;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 0.5rem;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.payment-amount {
+  padding: 1rem;
+  background: #f3f4f6;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.payment-amount p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #374151;
+}
+
+.payment-amount strong {
+  color: #10b981;
+  font-size: 1.3rem;
+}
+
+.error-message {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  border: 1px solid #fecaca;
+}
+
+.submit-payment-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.submit-payment-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(16, 185, 129, 0.4);
+}
+
+.submit-payment-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 二维码容器样式 */
+.qr-code-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+.qr-code-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.qr-code-image {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1rem;
+  background: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.qr-code-instruction {
+  color: #374151;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.payment-status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #059669;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  background: #10b981;
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .modal-header {
+    padding: 1rem;
+  }
+  
+  .modal-header h2 {
+    font-size: 1.25rem;
+  }
+  
+  .payment-form {
+    padding: 1rem;
+  }
+  
+  .qr-code-container {
+    padding: 1.5rem;
+  }
+  
+  .qr-code-image {
+    max-width: 250px;
   }
 }
 </style>

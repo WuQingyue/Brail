@@ -1049,14 +1049,14 @@ async def create_sample_order(
         quantity = product.user_limit_quantity
         total_amount = product.selling_price * quantity
         
-        # 创建小样订单
+        # 创建小样订单（直接设置为准备出货状态，不需要管理员审核）
         order = Order(
             id=order_id,
             user_id=user_id,
-            status="Pending",
-            status_step=1,
-            status_text="小样订单和审批",
-            status_detail_text="小样订单已接收",
+            status="Processing",
+            status_step=2,
+            status_text="生产和准备发货",
+            status_detail_text="小样订单已接收，准备发货",
             customer_name=request_data.get('customer_name'),
             total_amount=total_amount,
             shipping_street=request_data.get('shipping_street'),

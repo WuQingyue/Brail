@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from utils.config import settings
 from utils.database import verify_connection, engine, check_database_exists, create_database_with_tables
-from api import auth, product, cart, order
+from api import auth, product, cart, order, pay
 
 # 应用启动时连接数据库
 @asynccontextmanager
@@ -64,6 +64,7 @@ app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
 app.include_router(product.router, prefix="/api/product", tags=["product"])
 app.include_router(cart.router, prefix="/api/cart", tags=["cart"])
 app.include_router(order.router, prefix="/api/order", tags=["order"])
+app.include_router(pay.router, prefix="/api/pay", tags=["pay"])
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

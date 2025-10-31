@@ -1435,6 +1435,43 @@ export const updateLogisticsOrderStatus = async (orderId, userId, action, reason
   }
 }
 
+// PIX支付相关API
+export const createPixPaymentIntent = async (amount) => {
+  try {
+    // 金额从元转换为分（以分为单位）
+    const amountInCents = Math.round(amount * 100)
+    
+    // 调用后端API创建PaymentIntent
+    const response = await request('/pay/secret', {
+      method: 'POST',
+      body: JSON.stringify({
+        amount: amountInCents,
+        currency: 'brl'
+      })
+    })
+    
+    return response
+  } catch (error) {
+    console.error('Failed to create PIX payment intent:', error)
+    
+    // 解析错误信息
+    try {
+      const errorData = JSON.parse(error.message)
+      return {
+        success: false,
+        code: errorData.status_code || 500,
+        message: errorData.detail || '创建支付意图失败'
+      }
+    } catch (parseError) {
+      return {
+        success: false,
+        code: 500,
+        message: '创建支付意图失败，请稍后重试'
+      }
+    }
+  }
+}
+
 // 错误处理
 export const handleApiError = (error) => {
   console.error('API Error:', error)
@@ -1483,6 +1520,7 @@ export default {
   getLogisticsClearedOrders,
   getLogisticsDeliveredOrders,
   updateLogisticsOrderStatus,
+  createPixPaymentIntent,
   handleApiError
 }
 

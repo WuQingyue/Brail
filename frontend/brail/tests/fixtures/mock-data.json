@@ -1,4 +1,32 @@
 {
+  "mockProduct": {
+    "id": "prod-123",
+    "name": "测试产品",
+    "title": "测试产品标题",
+    "description": "这是一个测试产品",
+    "img": "https://example.com/test.jpg",
+    "images": ["https://example.com/test1.jpg", "https://example.com/test2.jpg"],
+    "selling_price": 100.00,
+    "stock_quantity": 1000,
+    "moq": 50,
+    "user_limit_quantity": 1,
+    "variations": [
+      {
+        "id": "var-1",
+        "name": "红色",
+        "price": 100.00,
+        "image": "https://example.com/red.jpg",
+        "specification": "标准版本"
+      },
+      {
+        "id": "var-2",
+        "name": "蓝色",
+        "price": 110.00,
+        "image": "https://example.com/blue.jpg",
+        "specification": "豪华版本"
+      }
+    ]
+  },
   "validRegistrationData": [
     {
       "name": "测试科技有限公司",
@@ -1543,5 +1571,94 @@
         "user_limit_quantity": 1
       }
     ]
+  },
+  "payTestData": {
+    "mockUser": {
+      "user_id": 1,
+      "user_name": "测试用户",
+      "user_email": "test@example.com",
+      "name": "测试用户",
+      "email": "test@example.com"
+    },
+    "mockProduct": {
+      "id": 1,
+      "name": "测试产品",
+      "description": "测试产品描述",
+      "selling_price": 28.90,
+      "stock_quantity": 100,
+      "user_limit_quantity": 1,
+      "variations": []
+    },
+    "mockProductDetail": {
+      "success": true,
+      "code": 200,
+      "product": {
+        "id": 1,
+        "name": "测试产品",
+        "description": "测试产品描述",
+        "selling_price": 28.90,
+        "stock_quantity": 100,
+        "user_limit_quantity": 1,
+        "variations": []
+      }
+    },
+    "mockPaymentIntent": {
+      "client_secret": "pi_test_123_secret_abc"
+    },
+    "mockCheckPurchase": {
+      "success": true,
+      "has_purchased": false
+    },
+    "mockCheckPurchaseTrue": {
+      "success": true,
+      "has_purchased": true
+    },
+    "mockPaymentSuccess": {
+      "paymentIntent": {
+        "status": "succeeded"
+      }
+    },
+    "mockPaymentRequiresAction": {
+      "paymentIntent": {
+        "status": "requires_action",
+        "next_action": {
+          "pix_display_qr_code": {
+            "image_url_png": "https://example.com/qr-code.png"
+          }
+        }
+      }
+    },
+    "mockPaymentRequiresMethod": {
+      "paymentIntent": {
+        "status": "requires_payment_method"
+      }
+    },
+    "mockCreateOrderSuccess": {
+      "success": true,
+      "order_id": "ORD-123"
+    },
+    "mockPaymentIntentError": {
+      "success": false,
+      "message": "创建支付意图失败"
+    },
+    "mockTaxId": "000.000.000-00",
+    "mockPollSucceeded": {
+      "paymentIntent": {
+        "status": "succeeded"
+      }
+    },
+    "mockPollRequiresAction": {
+      "paymentIntent": {
+        "status": "requires_action"
+      }
+    },
+    "mockPollRequiresMethod": {
+      "paymentIntent": {
+        "status": "requires_payment_method"
+      }
+    },
+    "mockPollError": {
+      "error": "Network error"
+    }
   }
 }
