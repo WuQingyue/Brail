@@ -29,6 +29,9 @@ class Settings(BaseSettings):
     SESSION_COOKIE_DOMAIN: Optional[str] = None
     SESSION_COOKIE_SECURE: bool = False
     SESSION_COOKIE_SAMESITE: str = "lax"
+
+    # Stripe 配置（从 .env 读取）
+    STRIPE_SECRET_KEY: Optional[str] = None
     
     model_config = SettingsConfigDict(
         env_file=".env",

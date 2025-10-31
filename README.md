@@ -169,8 +169,39 @@ TDD:
 - 电汇
 - 线下转账
 
-# 创建账户
+# 小样支付
+pix支付：单位为分
+## 🔄 支付流程
 
+```
+用户点击"立即下单"
+    ↓
+显示PIX支付弹窗（已填充姓名和邮箱）
+    ↓
+用户填写税号并点击"使用PIX支付"
+    ↓
+调用后端API创建PaymentIntent
+    ↓
+获取client_secret
+    ↓
+调用stripe.confirmPixPayment显示二维码
+    ↓
+用户扫码支付
+    ↓
+支付完成后重定向到 /payment-complete
+    ↓
+创建小样订单
+```
+## 🧪 测试
+
+### 测试税号
+使用固定测试税号：`000.000.000-00`
+
+### 测试邮箱
+根据[Stripe文档](https://docs.stripe.com/payments/pix/accept-a-payment)，可使用不同邮箱模拟场景：
+- `succeed_immediately@test.com` - 立即支付成功
+- `expire_immediately@test.com` - 立即过期失败
+- 其他邮箱 - 3分钟后自动成功
 
 Github Actions 进度
 test_database.yml ：
@@ -218,3 +249,4 @@ test_database.yml ：
 - 测试小样物流状态更新功能前端显示和接口对接 巴西海关-交付绿阶段
 - 测试创建小样购买记录表绿阶段
 - 测试小样购买界面、对接小样创建订单绿阶段
+- 测试小样支付成功后创建订单绿阶段
