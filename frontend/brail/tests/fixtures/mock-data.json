@@ -1659,6 +1659,51 @@
     },
     "mockPollError": {
       "error": "Network error"
+    },
+    "cartReceiptUploadTestData": {
+      "mockCartData": {
+        "items": [
+          {
+            "id": 1,
+            "product_id": 1,
+            "name": "测试产品",
+            "description": "测试产品描述",
+            "image": "https://example.com/test.jpg",
+            "quantity": 2,
+            "unitPrice": 28.90,
+            "totalPrice": 57.80,
+            "moq": 1,
+            "specification": "标准版本",
+            "selected": true
+          }
+        ],
+        "summary": {
+          "totalAmount": 57.80
+        }
+      },
+      "mockOrderData": {
+        "user_id": 1,
+        "customer_name": "测试用户",
+        "shipping_street": "待填写",
+        "shipping_city": "待填写",
+        "shipping_zipcode": "待填写",
+        "payment_method": "待选择",
+        "notes": "来自购物车",
+        "items": [
+          {
+            "product_id": 1,
+            "product_name": "测试产品",
+            "product_image": "https://example.com/test.jpg",
+            "quantity": 2,
+            "price": 28.90
+          }
+        ]
+      },
+      "mockOrderDataMinimal": {
+        "user_id": 1,
+        "customer_name": "测试用户",
+        "items": []
+      }
     }
   }
 }
