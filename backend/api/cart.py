@@ -14,14 +14,14 @@ router = APIRouter()
 
 
 class UpdateQuantityRequest(BaseModel):
-    """更新数量请求模型"""
+    """更新数量请求模型""" 
     quantity: int
 
 
 class AddToCartRequest(BaseModel):
     """加入购物车请求模型"""
     cart_id: int
-    product_id: str  # 产品ID可能是字符串格式，如 "agri-005"
+    product_id: str  # 产品ID可能是字符串格式，如 "agri-005" 
     quantity: int
 
 

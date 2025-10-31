@@ -127,6 +127,79 @@
         </div>
       </div>
     </div>
+
+    <!-- 订单确认与票据上传模态框 -->
+    <div v-if="showOrderConfirmModal" class="order-confirm-overlay" @click="closeOrderConfirmModal">
+      <div class="order-confirm-modal" @click.stop>
+        <!-- 标题栏 -->
+        <div class="modal-header">
+          <h2 class="modal-title">订单确认与票据上传</h2>
+          <button class="modal-close-btn" @click="closeOrderConfirmModal">&times;</button>
+        </div>
+
+        <!-- 说明文字 -->
+        <div class="modal-instruction">
+          <p>请上传您的银行付款票据以完成订单。</p>
+        </div>
+
+        <!-- 上传区域 -->
+        <div class="upload-section">
+          <label class="upload-label">上传银行票据</label>
+          <div 
+            class="upload-area"
+            :class="{ 'dragover': isDragover, 'has-file': uploadedFile }"
+            @drop="handleDrop"
+            @dragover.prevent="isDragover = true"
+            @dragleave="isDragover = false"
+            @click="triggerFileInput"
+          >
+            <input 
+              ref="fileInput"
+              type="file"
+              accept=".jpg,.jpeg,.png,.pdf"
+              @change="handleFileSelect"
+              style="display: none"
+            />
+            <div v-if="!uploadedFile" class="upload-placeholder">
+              <div class="upload-icon">☁️ ⬆️</div>
+              <div class="upload-text">
+                <span class="upload-link">点击上传</span> 或拖拽文件到此
+              </div>
+              <div class="upload-hint">支持 JPG, PNG, PDF</div>
+            </div>
+            <div v-else class="uploaded-file">
+              <div class="file-icon">{{ getFileIcon(uploadedFile.name) }}</div>
+              <div class="file-info">
+                <div class="file-name">{{ uploadedFile.name }}</div>
+                <div class="file-size">{{ formatFileSize(uploadedFile.size) }}</div>
+              </div>
+              <button class="remove-file-btn" @click.stop="removeFile">×</button>
+            </div>
+          </div>
+
+          <!-- 上传要求 -->
+          <div class="upload-requirements">
+            <ul>
+              <li>支持 JPG, PNG, PDF 格式</li>
+              <li>文件大小不超过 5MB</li>
+              <li>请确保票据内容清晰可见,信息完整</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="modal-actions">
+          <button class="btn-cancel" @click="closeOrderConfirmModal">取消</button>
+          <button 
+            class="btn-confirm" 
+            @click="confirmOrder"
+            :disabled="!uploadedFile || isSubmittingOrder"
+          >
+            {{ isSubmittingOrder ? '提交中...' : '确认下单' }}
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -158,6 +231,14 @@ const cartItems = ref([])
 const cartSummary = ref({
   totalAmount: 0
 })
+
+// 订单确认模态框相关
+const showOrderConfirmModal = ref(false)
+const uploadedFile = ref(null)
+const fileInput = ref(null)
+const isDragover = ref(false)
+const isSubmittingOrder = ref(false)
+const pendingOrderData = ref(null)
 
 // 计算属性
 const totalUnits = computed(() => {
@@ -293,40 +374,155 @@ const submitOrder = async () => {
     return
   }
   
+  // 获取用户信息
+  const userStore = useUserStore()
+  
+  // 构建订单数据（先保存，等上传票据后再创建）
+  pendingOrderData.value = {
+    user_id: props.userId,
+    customer_name: userStore.user?.name || '客户',
+    shipping_street: '待填写',
+    shipping_city: '待填写',
+    shipping_zipcode: '待填写',
+    payment_method: '待选择',
+    notes: '来自购物车',
+    items: selectedItems.map(item => ({
+      product_id: item.product_id,  // 直接使用 product_id
+      product_name: item.name,
+      product_image: item.image,
+      quantity: item.quantity,
+      price: item.unitPrice
+    }))
+  }
+  
+  // 显示订单确认模态框
+  showOrderConfirmModal.value = true
+}
+
+// 文件上传相关方法
+const triggerFileInput = () => {
+  if (fileInput.value) {
+    fileInput.value.click()
+  }
+}
+
+const handleFileSelect = (event) => {
+  const file = event.target.files?.[0]
+  if (file) {
+    validateAndSetFile(file)
+  }
+}
+
+const handleDrop = (event) => {
+  event.preventDefault()
+  isDragover.value = false
+  
+  const file = event.dataTransfer.files?.[0]
+  if (file) {
+    validateAndSetFile(file)
+  }
+}
+
+const validateAndSetFile = (file) => {
+  // 验证文件格式
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']
+  const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf']
+  const fileExtension = '.' + file.name.split('.').pop().toLowerCase()
+  
+  if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
+    alert('不支持的文件格式。请上传 JPG, PNG 或 PDF 格式的文件。')
+    return
+  }
+  
+  // 验证文件大小（5MB）
+  const maxSize = 5 * 1024 * 1024 // 5MB
+  if (file.size > maxSize) {
+    alert('文件大小不能超过 5MB。')
+    return
+  }
+  
+  uploadedFile.value = file
+}
+
+const removeFile = () => {
+  uploadedFile.value = null
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
+}
+
+const getFileIcon = (fileName) => {
+  const extension = fileName.split('.').pop().toLowerCase()
+  if (['jpg', 'jpeg', 'png'].includes(extension)) {
+    return '🖼️'
+  } else if (extension === 'pdf') {
+    return '📄'
+  }
+  return '📎'
+}
+
+const formatFileSize = (bytes) => {
+  if (bytes === 0) return '0 Bytes'
+  const k = 1024
+  const sizes = ['Bytes', 'KB', 'MB']
+  const i = Math.floor(Math.log(bytes) / Math.log(k))
+  return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i]
+}
+
+// 关闭订单确认模态框
+const closeOrderConfirmModal = () => {
+  showOrderConfirmModal.value = false
+  uploadedFile.value = null
+  pendingOrderData.value = null
+  if (fileInput.value) {
+    fileInput.value.value = ''
+  }
+}
+
+// 确认下单（只有上传了文件后才创建订单）
+const confirmOrder = async () => {
+  if (!uploadedFile.value) {
+    alert('请先上传银行付款票据')
+    return
+  }
+  
+  if (!pendingOrderData.value) {
+    alert('订单数据丢失，请重新操作')
+    closeOrderConfirmModal()
+    return
+  }
+  
   try {
-    // 获取用户信息
-    const userStore = useUserStore()
+    isSubmittingOrder.value = true
     
-    // 构建订单数据
+    // 这里可以将文件上传到服务器
+    // 为了演示，我们假设文件已经上传，只创建订单
+    // 在实际应用中，你需要先上传文件，获取文件URL，然后将URL添加到订单数据中
+    
+    // 创建订单
     const orderData = {
-      user_id: props.userId,
-      customer_name: userStore.user?.name || '客户',
-      shipping_street: '待填写',
-      shipping_city: '待填写',
-      shipping_zipcode: '待填写',
-      payment_method: '待选择',
-      notes: '来自购物车',
-      items: selectedItems.map(item => ({
-        product_id: item.product_id,  // 直接使用 product_id
-        product_name: item.name,
-        product_image: item.image,
-        quantity: item.quantity,
-        price: item.unitPrice
-      }))
+      ...pendingOrderData.value,
+      payment_receipt_file: uploadedFile.value.name, // 实际应用中应该是文件URL
+      notes: `来自购物车，付款票据: ${uploadedFile.value.name}`
     }
     
-    // 调用创建订单API
     const response = await createOrder(orderData)
     
     if (response.success) {
       alert(`订单创建成功！订单号: ${response.order_id}`)
-      // 关闭购物车
+      // 关闭模态框和购物车
+      closeOrderConfirmModal()
       closeCart()
       // 可以在这里触发刷新订单列表等操作
+    } else {
+      // 处理订单创建失败的情况
+      alert(response.message || '订单提交失败，请重试')
     }
   } catch (error) {
     console.error('Failed to submit order:', error)
     alert('订单提交失败，请重试')
+  } finally {
+    isSubmittingOrder.value = false
   }
 }
 
@@ -809,6 +1005,306 @@ onMounted(() => {
     flex-direction: column;
     gap: 0.5rem;
     align-items: flex-start;
+  }
+}
+
+/* 订单确认与票据上传模态框样式 */
+.order-confirm-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  backdrop-filter: blur(4px);
+}
+
+.order-confirm-modal {
+  background: white;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1.5rem 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.modal-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #6b7280;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.modal-instruction {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-instruction p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.upload-section {
+  padding: 1.5rem;
+}
+
+.upload-label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.75rem;
+}
+
+.upload-area {
+  border: 2px dashed #d1d5db;
+  border-radius: 8px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: #f9fafb;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-area.dragover {
+  border-color: #10b981;
+  background: #ecfdf5;
+}
+
+.upload-area.has-file {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.upload-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.upload-text {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.upload-link {
+  color: #10b981;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.upload-hint {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+}
+
+.uploaded-file {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+}
+
+.file-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.file-info {
+  flex: 1;
+  text-align: left;
+}
+
+.file-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+  word-break: break-all;
+}
+
+.file-size {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.remove-file-btn {
+  background: #fef2f2;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #dc2626;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.remove-file-btn:hover {
+  background: #fee2e2;
+  transform: scale(1.1);
+}
+
+.upload-requirements {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.upload-requirements ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.upload-requirements li {
+  font-size: 0.85rem;
+  color: #6b7280;
+  padding: 0.25rem 0;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.upload-requirements li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #10b981;
+  font-weight: bold;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.btn-cancel {
+  padding: 0.75rem 1.5rem;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #374151;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancel:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.btn-confirm {
+  padding: 0.75rem 1.5rem;
+  background: #9ca3af;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-confirm:not(:disabled) {
+  background: linear-gradient(135deg, #10b981, #fbbf24);
+}
+
+.btn-confirm:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.btn-confirm:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .order-confirm-modal {
+    width: 95%;
+    margin: 1rem;
+  }
+  
+  .upload-area {
+    padding: 1.5rem;
+    min-height: 150px;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+  }
+  
+  .btn-cancel,
+  .btn-confirm {
+    width: 100%;
   }
 }
 </style>
