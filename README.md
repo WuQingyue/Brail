@@ -203,6 +203,8 @@ pix支付：单位为分
 - `expire_immediately@test.com` - 立即过期失败
 - 其他邮箱 - 3分钟后自动成功
 
+
+
 Github Actions 进度
 test_database.yml ：
 - 测试数据库连接红阶段
@@ -251,3 +253,7 @@ test_database.yml ：
 - 测试小样购买界面、对接小样创建订单绿阶段
 - 测试小样支付成功后创建订单绿阶段
 - 测试批量上传银行票据后创建订单绿阶段
+
+# 网站订单与物流全流程图（小样&批量共用物流）
+
+![网站订单与物流全流程图](backend/utils/流程图.png)
